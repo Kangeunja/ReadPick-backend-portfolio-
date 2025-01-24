@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.ReadPick.dao.BookCategoryMapper">
+
+    <insert id="insertBmCategories" parameterType="String">insert ignore into bookMainCategory values(null,
+        #{bmCategory})</insert>
+
+    <insert id="insertBsCategories" parameterType="bc">insert ignore into bookSubCategory values(null, #{bmIdx},
+        #{bsName})</insert>
+
+    <insert id="insertBssCategories" parameterType="bc">insert ignore into bookSubSubCategory
+        values(null, #{bsIdx}, #{bssName})</insert>
+
+    <insert id="insertBsssCategories" parameterType="bc">insert ignore into bookDetailCategory
+        values(null, #{bssIdx}, #{bsssName})</insert>
+
+
+    <select id="selectMaxBmIdx" resultType="int">select max(bmIdx) from bookMainCategory</select>
+    <select id="selectMaxBsIdx" resultType="int">select max(bsIdx) from bookSubCategory</select>
+    <select id="selectMaxBssIdx" resultType="int">select max(bssIdx) from bookSubSubCategory</select>
+    <select id="selectMaxBsssIdx" resultType="int">select max(bsssIdx) from bookDetailCategory</select>
+
+    <select id="selectBmIdxByName" resultType="int">select bmIdx from bookMainCategory where bmName = #{bmName}</select>
+    <select id="selectBsIdxByName" resultType="int">select bsIdx from bookSubCategory where bsName = #{bsName}</select>
+    <select id="selectBssIdxByName" resultType="int">select bssIdx from bookSubSubCategory where bssName = #{bssName}</select>
+    
+</mapper>
