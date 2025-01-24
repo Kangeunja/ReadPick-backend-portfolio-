@@ -19,4 +19,9 @@ public class BookVo {
     int pubDate;
     String link;
     String isbn;
+
+
+    // 검색용
+    String keywordName;
+    
 }
