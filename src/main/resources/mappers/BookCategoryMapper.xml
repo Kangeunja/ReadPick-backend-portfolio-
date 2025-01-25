@@ -3,6 +3,8 @@
 
 <mapper namespace="com.portfolio.ReadPick.dao.BookCategoryMapper">
 
+    <!-- insert -->
+
     <insert id="insertBmCategories" parameterType="bc">insert into bookMainCategory values(null,
         #{bmName}) on duplicate key update bmName=#{bmName}</insert>
 
@@ -15,6 +17,10 @@
     <insert id="insertBsssCategories" parameterType="bc">insert ignore into bookDetailCategory
         values(null, #{bssIdx}, #{bsssName}) on duplicate key update bsssName=#{bsssName}</insert>
 
+    <!-- /insert -->
+
+
+    <!-- select -->
 
     <select id="selectMaxBmIdx" resultType="int">select max(bmIdx) from bookMainCategory</select>
     <select id="selectMaxBsIdx" resultType="int">select max(bsIdx) from bookSubCategory</select>
@@ -29,8 +35,21 @@
         bssName = #{bssName}</select>
     <select id="selectBsssIdxBybsssName" resultType="int">select bsssIdx from bookDetailCategory
         where bsssName=#{bsssName}</select>
-    <!-- <select id="selectIntegerBsssIdxBybsssName" resultType="Integer">select bsssIdx from
-        bookDetailCategory where bsssName=#{bsssName}</select> -->
+
+
+    <!-- /select -->
+
+
+    <!-- update -->
+
+
+    <!-- /update -->
+
+
+    <!-- delete -->
+
+
+    <!-- /delete -->
 
 
 </mapper>
