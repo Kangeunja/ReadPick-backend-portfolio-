@@ -11,13 +11,17 @@ public interface BookMapper {
 
     List<BookVo> selectSearchList();
 
-    void isbnInsert(String isbn);
+    void isbnInsert(BookVo book);
 
     List<BookVo> selectIsbnList();
 
     void insertBook(BookVo bookVo);
 
     int selectMaxBIdx();
+
+    int selectMaxIsbnIdx();
+    
+    String selectIsbnByIsbnIdx(int isbnIdx);
     
 
 }

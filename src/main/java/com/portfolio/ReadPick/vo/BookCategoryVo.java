@@ -16,4 +16,6 @@ public class BookCategoryVo {
     String bsName;
     String bssName;
     String bsssName;
+
+    String bmIsbn;
 }

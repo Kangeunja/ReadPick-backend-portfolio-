@@ -5,7 +5,7 @@
 
 <!-- insert -->
 
-    <insert id="isbnInsert" parameterType="String"> insert into isbn values(null, #{isbn})</insert>
+    <insert id="isbnInsert" parameterType="book"> insert into isbn values(null, #{bsssIdx}, #{isbn})</insert>
     <insert id="insertBook" parameterType="book">
         insert into book values (null, #{bmIdx}, #{bsIdx}, #{bssIdx}, #{bsssIdx}, #{bName}, #{author}, #{bContent}, #{link}, #{publisher}, #{pubDate}, #{isbn})
     </insert>
@@ -23,10 +23,16 @@
     <select id="selectSearchList" resultType="book"> select keywordName from searchKeyword</select>
 
     <!-- 네이버 검색 결과 isbn을 조회 -->
-    <select id="selectIsbnList" resultType="book">select isbn from isbn</select>
+    <select id="selectIsbnList" resultType="book">select isbn from isbn order by isbnIdx</select>
 
     <!-- 사진을 넣기 위 가장 최근에 추가된 책 조회 -->
     <select id="selectMaxBIdx" resultType="int"> select max(bIdx) from book</select>
+
+    <!-- 최근에 등록한 isbn -->
+    <select id="selectMaxIsbnIdx" resultType="int"> select max(isbnIdx) from isbn</select>
+
+    <!-- isbnIdx를 이용해 최근에 등록한 isbn 한개를 조회 -->
+    <select id="selectIsbnByIsbnIdx" resultType="String">select isbn from isbn where isbnIdx = #{isbnIdx}</select>
 
 
 <!-- /select -->

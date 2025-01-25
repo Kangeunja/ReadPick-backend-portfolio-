@@ -1,7 +1,5 @@
 package com.portfolio.ReadPick.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookCategoryVo;
@@ -10,7 +8,7 @@ import com.portfolio.ReadPick.vo.BookCategoryVo;
 public interface BookCategoryMapper {
 
 
-    Integer insertBmCategories(String bmCategory);
+    Integer insertBmCategories(String bmName);
 
     Integer insertBsCategories(BookCategoryVo bc);
 
@@ -32,6 +30,8 @@ public interface BookCategoryMapper {
     int selectBsIdxByName(String bsName);
 
     int selectBssIdxByName(String bssName);
+
+    int selectBsssIdxBybsssName(String bsssName);
 
     // List<BookCategoryVo> selectCategories();
 

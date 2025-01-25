@@ -11,7 +11,7 @@ public class BookVo {
     int bmIdx;  //메인카테고리
     int bsIdx;  //하위카테고리
     int bssIdx; //하위카테고리
-    int bsssIdx;   //세부카테고리
+    Integer bsssIdx;   //세부카테고리
     String bName;
     String author;
     String bContent;
@@ -19,6 +19,8 @@ public class BookVo {
     String publisher;
     int pubDate;
     String isbn;
+
+    int bsssIsbnIdx;
 
 
     // 검색용

@@ -2,7 +2,6 @@ package com.portfolio.ReadPick.service;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portfolio.ReadPick.dao.BookMapper;
-import com.portfolio.ReadPick.vo.BookVo;
 
 @Service
 public class NaverSearchIsbnService {
@@ -32,12 +30,12 @@ public class NaverSearchIsbnService {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-
+    HashSet<String> duplicate = new HashSet<>();
 
     public void searchIsbnSave(String searchOneName) {
-        HashSet<String> duplicate = new HashSet<>();
+        System.out.println("searchOneName : " + searchOneName);
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 5;
+        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 50;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);
@@ -52,14 +50,8 @@ public class NaverSearchIsbnService {
             while (elements.hasNext()) {
                 JsonNode item = elements.next();
                 String isbn = item.get("isbn").asText();
-                if (!duplicate.contains(isbn)) {
-                    bookMapper.isbnInsert(isbn);
-                }
-            }
-            List<BookVo>isbnList = bookMapper.selectIsbnList();
-            for(int i=0; i<isbnList.size(); i++) {
-                String isbn = isbnList.get(i).getIsbn();
                 aladinBookSearchService.searchCategorySave(isbn);
+                Thread.sleep(100);
                 // System.out.println(isbn);
             }
         } catch (Exception e) {
