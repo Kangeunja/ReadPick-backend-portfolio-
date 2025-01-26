@@ -17,13 +17,13 @@ public interface BookCategoryMapper {
     Integer insertBsssCategories(BookCategoryVo bc);
 
 
-    int selectMaxBmIdx();
+    int selectBmIdxOne(String isbn);
 
-    int selectMaxBsIdx();
+    int selectBsIdxOne(String isbn);
 
-    int selectMaxBssIdx();
-
-    int selectMaxBsssIdx();
+    int selectBssIdxOne(String isbn);
+    
+    int selectBsssIdxOne(String isbn);
 
     int selectBmIdxByName(String bmName);
 

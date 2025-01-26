@@ -17,7 +17,7 @@ public class BookVo {
     String bContent;
     String link;
     String publisher;
-    int pubDate;
+    String pubDate;
     String isbn;
 
     int bsssIsbnIdx;

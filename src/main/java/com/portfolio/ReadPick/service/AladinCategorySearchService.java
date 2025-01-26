@@ -89,6 +89,7 @@ public class AladinCategorySearchService {
                                 bookVo.setBsssIdx(bsssIdx);
                                 bookVo.setIsbn(searchIsbn);
                                 bookMapper.isbnInsert(bookVo);
+                                aladinBookSearchService.searchBookSave(searchIsbn);
                             } else {
                                 int bssIdx = bookCategoryMapper.selectBssIdxByName(bssName);
                                 bCVo.setBssIdx(bssIdx);
@@ -98,6 +99,7 @@ public class AladinCategorySearchService {
                                 bookVo.setBsssIdx(bsssIdx);
                                 bookVo.setIsbn(searchIsbn);
                                 bookMapper.isbnInsert(bookVo);
+                                aladinBookSearchService.searchBookSave(searchIsbn);
                             }
                         }
                     }
@@ -105,7 +107,6 @@ public class AladinCategorySearchService {
                     return;
                 }
 
-                // // aladinBookSearchService.searchBookSave(searchIsbn);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -50,10 +50,11 @@ public class AladinBookSearchService {
             Iterator<JsonNode> elements = jsonNode.get("item").elements();
             while (elements.hasNext()) {
                 JsonNode item = elements.next();
-                bookVo.setBmIdx(bookCategoryMapper.selectMaxBmIdx());
-                bookVo.setBsIdx(bookCategoryMapper.selectMaxBsIdx());
-                bookVo.setBssIdx(bookCategoryMapper.selectMaxBssIdx());
-                bookVo.setBsssIdx(bookCategoryMapper.selectMaxBsssIdx());
+                System.out.println("책 추가중 ... : " + item.get("title").asText());    
+                bookVo.setBmIdx(bookCategoryMapper.selectBmIdxOne(searchIsbn));
+                bookVo.setBsIdx(bookCategoryMapper.selectBsIdxOne(searchIsbn));
+                bookVo.setBssIdx(bookCategoryMapper.selectBssIdxOne(searchIsbn));
+                bookVo.setBsssIdx(bookCategoryMapper.selectBsssIdxOne(searchIsbn));
                 String title = item.get("title").asText();
                 // title = title.replaceAll("</b>", "");
                 bookVo.setBName(title);
@@ -61,8 +62,8 @@ public class AladinBookSearchService {
                 bookVo.setBContent(item.get("description").asText());
                 bookVo.setLink(item.get("link").asText());
                 bookVo.setPublisher(item.get("publisher").asText());
-                bookVo.setPubDate(item.get("pubDate").asInt());
-                bookVo.setIsbn(item.get("isbn13").asText());
+                bookVo.setPubDate(item.get("pubDate").asText());
+                bookVo.setIsbn(searchIsbn);
 
                 bookMapper.insertBook(bookVo);
 

@@ -22,10 +22,19 @@
 
     <!-- select -->
 
-    <select id="selectMaxBmIdx" resultType="int">select max(bmIdx) from bookMainCategory</select>
+    <!-- <select id="selectMaxBmIdx" resultType="int">select max(bmIdx) from
+    bookMainCategory</select>
     <select id="selectMaxBsIdx" resultType="int">select max(bsIdx) from bookSubCategory</select>
     <select id="selectMaxBssIdx" resultType="int">select max(bssIdx) from bookSubSubCategory</select>
-    <select id="selectMaxBsssIdx" resultType="int">select max(bsssIdx) from bookDetailCategory</select>
+    <select id="selectMaxBsssIdx" resultType="int">select max(bsssIdx) from bookDetailCategory</select> -->
+
+    <select id="selectBmIdxOne">select bmIdx from fullCategoryView where isbn = #{isbn}</select>
+
+    <select id="selectBsIdxOne">select bsIdx from fullCategoryView where isbn = #{isbn}</select>
+
+    <select id="selectBssIdxOne">select bssIdx from fullCategoryView where isbn = #{isbn}</select>
+
+    <select id="selectBsssIdxOne">select bsssIdx from fullCategoryView where isbn = #{isbn}</select>
 
     <select id="selectBmIdxByName" resultType="int">select bmIdx from bookMainCategory where bmName
         = #{bmName}</select>
