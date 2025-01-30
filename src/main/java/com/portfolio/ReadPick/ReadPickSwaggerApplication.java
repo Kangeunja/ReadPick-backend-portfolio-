@@ -21,21 +21,6 @@ public class ReadPickSwaggerApplication {
 @RequestMapping("/api")
 class ExampleController {
 
-    // @GetMapping("/hello")
-    // @ResponseBody
-    // public String hello() {
-    //     return "감자!";
-    // }
-    
-    
-    // @PostMapping("/post")
-    // @ResponseBody
-    // public String postMethodName(@RequestBody String entity) {
-
-    //     entity = "hello";
-    //     return entity;
-    // }
-
     
     
 }
