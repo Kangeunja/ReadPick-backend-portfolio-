@@ -13,4 +13,6 @@ public interface UserMapper {
 
     UserVo selectOneFromId(String id);
 
+    int userInsert(UserVo user);
+
 }

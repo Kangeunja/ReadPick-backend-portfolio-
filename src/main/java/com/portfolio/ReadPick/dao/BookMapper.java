@@ -22,6 +22,11 @@ public interface BookMapper {
     int selectMaxIsbnIdx();
     
     String selectIsbnByIsbnIdx(int isbnIdx);
+
+    // mainPage
+    // List<String> selectBmNameList();
+
+    List<String> selectBsNameList();
     
 
 }

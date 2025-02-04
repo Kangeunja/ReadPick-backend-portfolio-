@@ -10,9 +10,9 @@ public class UserVo {
 
     int userIdx;
     String userName;
+    String nickName;
     String Id;
     String Password;
-    String nickName;
     String email;
     String adminAt; //Y/N
 

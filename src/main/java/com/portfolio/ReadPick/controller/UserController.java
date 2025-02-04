@@ -21,6 +21,8 @@ public class UserController {
     @Autowired
     UserMapper userMapper;
 
+
+
     @RequestMapping("list.do")
     public String list(Model model) {
 
@@ -66,4 +68,14 @@ public class UserController {
 
         return "redirect:../home.do";
     }// end:logout()
+
+    // 회원가입
+    @RequestMapping("userInsert.do")
+    public String userInsert(UserVo user) {
+
+        user.setAdminAt("N");
+        int res = userMapper.userInsert(user);
+
+        return "redirect:../home";
+    }
 }
