@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookMapper;
 import com.portfolio.ReadPick.service.NaverSearchIsbnService;
+import com.portfolio.ReadPick.vo.BookCategoryVo;
 import com.portfolio.ReadPick.vo.BookVo;
 
 @Controller
@@ -15,6 +18,9 @@ public class BookController {
 
     @Autowired
     BookMapper bookMapper;
+
+    @Autowired 
+    BookCategoryMapper bookCategoryMapper;
 
     @Autowired
     NaverSearchIsbnService searchIsbn;
@@ -31,5 +37,22 @@ public class BookController {
         System.out.println("=====책 저장 끝=====");
         return "home";
     }
+
+    // bsName으로 책 리스트를 찾아와 bsCategory에 출력
+    @RequestMapping("bookSubCategory.do")
+    public String requestMethodName(int bsIdx, Model model) {
+
+        List<BookCategoryVo> bsList = bookCategoryMapper.selectBsList();
+        model.addAttribute("bsList", bsList);
+
+        List<BookVo> bookListByBsName = bookMapper.selectBookListByBsName(bsIdx);
+        model.addAttribute("bookListByBsName", bookListByBsName);
+
+        return "bookSubCategory";
+    }
+
+    
+
+
 
 }

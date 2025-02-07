@@ -26,7 +26,9 @@ public interface BookMapper {
     // mainPage
     // List<String> selectBmNameList();
 
-    List<String> selectBsNameList();
+    // List<String> selectBsNameList();
+
+    List<BookVo> selectBookListByBsName(int bsIdx);
     
 
 }

@@ -45,6 +45,8 @@
     <select id="selectBsssIdxBybsssName" resultType="int">select bsssIdx from bookDetailCategory
         where bsssName=#{bsssName}</select>
 
+    <select id="selectBsList" resultType="bc"> select * from bookSubCategory order by bsIdx; </select>
+
 
     <!-- /select -->
 

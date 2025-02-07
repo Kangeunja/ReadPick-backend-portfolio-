@@ -34,9 +34,9 @@
     <!-- isbnIdx를 이용해 최근에 등록한 isbn 한개를 조회 -->
     <select id="selectIsbnByIsbnIdx" resultType="String">select isbn from isbn where isbnIdx = #{isbnIdx}</select>
 
-    <!-- categoryName만 조회 -->
-    <select id="selectBsNameList" resultType="String">
-        select bsName from bookSubCategory order by bsIdx;
+    <!-- bsName으로 해당하는 책 리스트 조회 -->
+    <select id="selectBookListByBsName" resultType="book" parameterType="int">
+        select * from book where bsIdx = #{bsIdx}
     </select>
 
 <!-- /select -->

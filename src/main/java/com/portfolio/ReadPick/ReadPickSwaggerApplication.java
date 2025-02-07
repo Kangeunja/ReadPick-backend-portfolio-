@@ -5,13 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookMapper;
+import com.portfolio.ReadPick.vo.BookCategoryVo;
+import com.portfolio.ReadPick.vo.BookVo;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -32,14 +33,24 @@ class ExampleController {
     @Autowired
     BookMapper bookMapper;
 
-    @GetMapping("bsNameList")
-    public List<String> bsNameList() {
+    @Autowired
+    BookCategoryMapper bookCategoryMapper;
 
-        // mainPage에 출력할 메인카테고리 이름들
-        List<String> bsNameList = bookMapper.selectBsNameList();
+    // mainPage에 출력할 서브카테고리들
+    @GetMapping("bsList")
+    public List<BookCategoryVo> bsNameList() {
 
-        return bsNameList;
+        return bookCategoryMapper.selectBsList();
     }
+
+    // bsIdx로 책 리스트를 조회
+    @GetMapping("bookListByBsIdx")
+    public List<BookVo> requestMethodName(int bsIdx) {
+
+        return bookMapper.selectBookListByBsName(bsIdx);
+    }
+
+
 
 }
 
