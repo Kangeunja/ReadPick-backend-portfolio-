@@ -12,6 +12,9 @@ import com.portfolio.ReadPick.dao.BookMapper;
 import com.portfolio.ReadPick.service.NaverSearchIsbnService;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
 import com.portfolio.ReadPick.vo.BookVo;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class BookController {
@@ -50,6 +53,14 @@ public class BookController {
 
         return "bookSubCategory";
     }
+
+    @RequestMapping("bookOne.do") // isbn 프론트에서 보내줄 것
+    public String requestMethodName(String isbn, Model model) {
+        BookVo bookVo = bookMapper.selectOneBookByIsbn(isbn);
+        model.addAttribute("bookVo", bookVo);
+        return "bookOne";
+    }
+    
 
     
 

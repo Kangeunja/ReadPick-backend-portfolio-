@@ -3,22 +3,17 @@
 
 <mapper namespace="com.portfolio.ReadPick.dao.BookMapper">
 
-<!-- insert -->
+    <!-- insert -->
 
     <insert id="isbnInsert" parameterType="book"> insert into isbn values(null, #{bsssIdx}, #{isbn})</insert>
-    <insert id="insertBook" parameterType="book">
-        insert into book values (null, #{bmIdx}, #{bsIdx}, #{bssIdx}, #{bsssIdx}, #{isbn}, #{bName}, #{author}, #{bContent}, #{link}, #{publisher}, #{pubDate})
-    </insert>
+    <insert id="insertBook" parameterType="book"> insert into book values (null, #{bmIdx}, #{bsIdx},
+        #{bssIdx}, #{bsssIdx}, #{isbn}, #{bName}, #{author}, #{bContent}, #{link}, #{publisher},
+        #{pubDate}) </insert>
 
-<!-- /insert -->
-
-
+    <!-- /insert -->
 
 
-
-
-
-<!-- select -->
+    <!-- select -->
     <!-- 네이버 검색을 위한 키워드 조회 -->
     <select id="selectSearchList" resultType="book"> select keywordName from searchKeyword</select>
 
@@ -32,38 +27,30 @@
     <select id="selectMaxIsbnIdx" resultType="int"> select max(isbnIdx) from isbn</select>
 
     <!-- isbnIdx를 이용해 최근에 등록한 isbn 한개를 조회 -->
-    <select id="selectIsbnByIsbnIdx" resultType="String">select isbn from isbn where isbnIdx = #{isbnIdx}</select>
+    <select id="selectIsbnByIsbnIdx" resultType="String">select isbn from isbn where isbnIdx =
+        #{isbnIdx}</select>
 
     <!-- bsName으로 해당하는 책 리스트 조회 -->
-    <select id="selectBookListByBsName" resultType="book" parameterType="int">
-        select * from book where bsIdx = #{bsIdx}
-    </select>
+    <select id="selectBookListByBsName" resultType="book" parameterType="int"> select * from book
+        where bsIdx = #{bsIdx} </select>
 
-<!-- /select -->
+    <!-- isbn으로 책 한 권 조회 -->
+    <select id="selectOneBookByIsbn" resultType="book" parameterType="String"> select * from book
+        where isbn = #{isbn} </select>
 
-
-
-
-
+    <!-- /select -->
 
 
-<!-- update -->
+    <!-- update -->
 
 
-<!-- /update -->
+    <!-- /update -->
 
 
+    <!-- delete -->
 
 
-
-
-
-<!-- delete -->
-
-
-<!-- /delete -->
-
-
+    <!-- /delete -->
 
 
 </mapper>

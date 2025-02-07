@@ -29,6 +29,8 @@ public interface BookMapper {
     // List<String> selectBsNameList();
 
     List<BookVo> selectBookListByBsName(int bsIdx);
+
+    BookVo selectOneBookByIsbn(String isbn);
     
 
 }

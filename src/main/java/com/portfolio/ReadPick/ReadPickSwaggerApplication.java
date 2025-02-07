@@ -50,6 +50,12 @@ class ExampleController {
         return bookMapper.selectBookListByBsName(bsIdx);
     }
 
+    @GetMapping("bookOneByIsbn") // isbn : 프론트에서 보내줄 것
+    public BookVo requestMethodName(String isbn) {
+
+        return bookMapper.selectOneBookByIsbn(isbn);
+    }
+
 
 
 }
