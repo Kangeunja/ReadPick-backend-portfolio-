@@ -16,6 +16,8 @@
 
     <select id="selectList" resultType="user">select * from users order by userIdx</select>
 
+    <select id="selectOneFromId" parameterType="String"> select id from users where id = #{id} </select>
+
     <!-- /select -->
 
 

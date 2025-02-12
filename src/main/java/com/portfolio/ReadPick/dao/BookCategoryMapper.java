@@ -37,6 +37,8 @@ public interface BookCategoryMapper {
 
     List<BookCategoryVo> selectBsList();
 
+    List<BookCategoryVo> selectBssList(int bsIdx);
+
     // List<BookCategoryVo> selectCategories();
 
 

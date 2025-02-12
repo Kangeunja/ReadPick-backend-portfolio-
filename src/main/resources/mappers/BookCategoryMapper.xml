@@ -47,6 +47,9 @@
 
     <select id="selectBsList" resultType="bc"> select * from bookSubCategory order by bsIdx; </select>
 
+    <select id="selectBssList" parameterType="int">
+        select * from bookSubSubCategory where bsIdx = #{bsIdx}
+    </select>
 
     <!-- /select -->
 
