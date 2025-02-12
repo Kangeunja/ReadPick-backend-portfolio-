@@ -1,6 +1,8 @@
 package com.portfolio.ReadPick;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -10,12 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
+import com.portfolio.ReadPick.dao.BookImageMapper;
 import com.portfolio.ReadPick.dao.BookMapper;
+import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
+import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
+import com.portfolio.ReadPick.vo.BookmarkVo;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 @SpringBootApplication
 public class ReadPickSwaggerApplication {
@@ -25,9 +31,10 @@ public class ReadPickSwaggerApplication {
     }
 }
 
-@Tag(name = "readPick-api", description = "Controller to demonstrate Springdoc OpenAPI")
+@Tag(name = "readPick-api", description = "readPick-api")
 @RestController
 @RequestMapping("/api")
+// @Hidden
 class ExampleController {
 
     @Autowired
@@ -36,8 +43,15 @@ class ExampleController {
     @Autowired
     BookCategoryMapper bookCategoryMapper;
 
+    @Autowired
+    BookImageMapper bookImageMapper;
+
+    @Autowired
+    BookmarkMapper bookmarkMapper;
+
     // mainPage에 출력할 서브카테고리들
     @GetMapping("bsList")
+    @Operation(summary = "bsList 전체조회", description = "bsList : bookSubCategory의 전체가 담긴 데이터")
     public List<BookCategoryVo> bsNameList() {
 
         return bookCategoryMapper.selectBsList();
@@ -45,19 +59,64 @@ class ExampleController {
 
     // bsIdx로 책 리스트를 조회
     @GetMapping("bookListByBsIdx")
-    public List<BookVo> requestMethodName(int bsIdx) {
+    @Operation(summary = "bsIdx를 이용해 해당되는 책리스트 전체조회", description = "bsIdx : bookSubCategory의 고유번호")
+    public List<BookVo> bookListByBsIdx(int bsIdx) {
 
         return bookMapper.selectBookListByBsName(bsIdx);
     }
 
-    @GetMapping("bookOneByIsbn") // isbn : 프론트에서 보내줄 것
-    public BookVo requestMethodName(String isbn) {
+    @GetMapping("bookOneByIsbn") //
+    @Operation(summary = "isbn을 이용해 책 한 권의 데이터전체조회", description = "isbn : 프론트에서 보내줄 데이터")
+    public BookVo bookOneByIsbn(String isbn) {
 
         return bookMapper.selectOneBookByIsbn(isbn);
     }
 
+    @GetMapping("imageOneByBIdx")
+    @Operation(summary = "bIdx로 이미지정보 조회")
+    public BookImageVo imageOneByBIdx(int bIdx) {
 
+        return bookImageMapper.selectOneImageByBIdx(bIdx);
+    }
+
+    @GetMapping("bookmark")
+    @Operation(summary = "북마크 추가/삭제", description = "로그인한 유저가 특정 게시물을 북마크 추가 또는 삭제할 수 있습니다.")
+    public Map<String, Object> bookmark(int bIdx, Integer user) {
+
+        // UserVo user = (UserVo) session.getAttribute("user");
+        Map<String, Object> bookmark = new HashMap<>();
+
+        if (user == null) {
+            bookmark.put("message", "로그인이 필요한 서비스입니다.");
+            return bookmark;
+        }
+
+        // int userIdx = user.getUserIdx();
+        String nowBookmark = bookmarkMapper.selectOneUserBookmark(bIdx, user);
+        if (nowBookmark == null) {
+            BookmarkVo bookmarkVo = new BookmarkVo();
+            bookmarkVo.setUserIdx(user);
+            bookmarkVo.setBIdx(bIdx);
+            bookmarkVo.setIsBookmarked("Y");
+            int res = bookmarkMapper.insertBookmark(bookmarkVo);
+            bookmark.put("message", "북마크추가완료");
+        } else if (nowBookmark.equals("N")) {
+            BookmarkVo bookmarkVo = new BookmarkVo();
+            bookmarkVo.setUserIdx(user);
+            bookmarkVo.setBIdx(bIdx);
+            bookmarkVo.setIsBookmarked("Y");
+            int res = bookmarkMapper.updateBookmark(bookmarkVo);
+            bookmark.put("message", "북마크추가완료");
+        } else if (nowBookmark.equals("Y")) {
+            BookmarkVo bookmarkVo = new BookmarkVo();
+            bookmarkVo.setUserIdx(user);
+            bookmarkVo.setBIdx(bIdx);
+            bookmarkVo.setIsBookmarked("N");
+            int res = bookmarkMapper.updateBookmark(bookmarkVo);
+            bookmark.put("message", "북마크해제완료");
+        }
+
+        return bookmark;
+    }
 
 }
-
-

@@ -7,6 +7,8 @@ import com.portfolio.ReadPick.vo.BookImageVo;
 @Mapper
 public interface BookImageMapper {
 
-    void insertFile(BookImageVo bookImageVo);
+    int insertFile(BookImageVo bookImageVo);
+
+    BookImageVo selectOneImageByBIdx(int bIdx);
 
 }

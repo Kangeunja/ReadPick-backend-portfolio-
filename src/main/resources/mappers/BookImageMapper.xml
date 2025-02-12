@@ -16,6 +16,10 @@
 
 <!-- select -->
 
+    <select id="selectOneImageByBIdx" resultType="bookImage" parameterType="int">
+        select * from bookimage where bIdx = #{bIdx}
+    </select>
+
 <!-- /select -->
 
 
