@@ -17,6 +17,8 @@
     <insert id="insertBsssCategories" parameterType="bc">insert ignore into bookDetailCategory
         values(null, #{bssIdx}, #{bsssName}) on duplicate key update bsssName=#{bsssName}</insert>
 
+    <insert id="insertUserPick" parameterType="int"> insert into userPick values(#{userIdx},
+        #{bmIdx},#{bsIdx},#{bssIdx}) </insert>
     <!-- /insert -->
 
 
@@ -47,9 +49,11 @@
 
     <select id="selectBsList" resultType="bc"> select * from bookSubCategory order by bsIdx; </select>
 
-    <select id="selectBssList" parameterType="int">
-        select * from bookSubSubCategory where bsIdx = #{bsIdx}
-    </select>
+    <select id="selectBssList" parameterType="int"> select * from bookSubSubCategory where bsIdx =
+        #{bsIdx} </select>
+
+    <select id="selectBmIdxOneByBsIdx" parameterType="int"> select bmIdx from bookSubCategory where
+        bsIdx = #{bsIdx} </select>
 
     <!-- /select -->
 

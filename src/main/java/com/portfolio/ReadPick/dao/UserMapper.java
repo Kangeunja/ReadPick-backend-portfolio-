@@ -15,4 +15,8 @@ public interface UserMapper {
 
     int userInsert(UserVo user);
 
+	int userFirstAtUpdate(UserVo user);
+
+    int userInfoModify(UserVo user);
+
 }

@@ -7,8 +7,11 @@
 
     <!-- 회원가입 -->
     <insert id="userInsert" parameterType="user"> insert into users value(null, #{userName},
-        #{nickName}, #{Id}, #{pw}, #{eMail}, #{adminAt}); </insert>
+        #{nickName}, #{id}, #{pw}, #{email}, #{adminAt}, #{firstAt}); </insert>
 
+    <insert id="insertUserPick" parameterType="int">
+        insert into userPick values(#{userIdx}, #{bmIdx}, #{bsIdx}, #{bssIdx});
+    </insert>
     <!-- /insert -->
 
 
@@ -16,14 +19,19 @@
 
     <select id="selectList" resultType="user">select * from users order by userIdx</select>
 
-    <select id="selectOneFromId" parameterType="String"> select id from users where id = #{id} </select>
+    <select id="selectOneFromId" parameterType="String"> select * from users where id = #{id} </select>
 
     <!-- /select -->
 
 
     <!-- update -->
+    <update id="userFirstAtUpdate" parameterType="user">
+        update users set firstAt = #{firstAt} where userIdx = #{userIdx}
+    </update>
 
-
+    <update id="userInfoModify" parameterType="user">
+        update users set userName = #{userName}, nickName = #{nickName}, id = #{id}, pw = #{pw}, email = #{email} where userIdx = #{userIdx}
+    </update>
     <!-- /update -->
 
 

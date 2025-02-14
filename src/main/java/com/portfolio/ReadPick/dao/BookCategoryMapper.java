@@ -39,8 +39,8 @@ public interface BookCategoryMapper {
 
     List<BookCategoryVo> selectBssList(int bsIdx);
 
-    // List<BookCategoryVo> selectCategories();
+    int insertUserPick(int userIdx, int bmIdx, int bsIdx, int bssIdx);
 
-
+    int selectBmIdxOneByBsIdx(int bsIdx);
 
 }

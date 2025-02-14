@@ -13,4 +13,6 @@ public interface BookmarkMapper {
 
     int updateBookmark(BookmarkVo bookmarkVo);
 
+    BookmarkVo selectMyPageBookList(int userIdx);
+
 }

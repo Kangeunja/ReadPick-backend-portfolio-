@@ -11,10 +11,11 @@ public class UserVo {
     int userIdx;
     String userName;
     String nickName;
-    String Id;
-    String Password;
+    String id;
+    String pw;
     String email;
     String adminAt; //Y/N
+    String firstAt; //Y/N
 
 
 }
