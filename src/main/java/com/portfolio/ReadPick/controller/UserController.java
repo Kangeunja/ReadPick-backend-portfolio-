@@ -86,7 +86,7 @@ public class UserController {
     // 아이디 중복체크
     @PostMapping("checkId")
     @Operation (summary = "아이디 중복체크", description = "회원가입 시 아이디 중복체크")
-    public String check_id(String id) {
+    public ResponseEntity<String> check_id(String id) {
 
         UserVo vo = userMapper.selectOneFromId(id);
 
@@ -98,7 +98,7 @@ public class UserController {
 
         String json = String.format("{\"result\": %b }", bResult);
 
-        return json;
+        return ResponseEntity.ok(json);
     }// end:check_id()
 
     // 회원가입
