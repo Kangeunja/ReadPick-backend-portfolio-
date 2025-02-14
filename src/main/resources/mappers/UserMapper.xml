@@ -7,7 +7,7 @@
 
     <!-- 회원가입 -->
     <insert id="userInsert" parameterType="user"> insert into users (userName, nickName, Id, pw,
-        email) value(#{userName}, #{nickName}, #{id}, #{pw}, #{email}); </insert>
+        email) values(#{userName}, #{nickName}, #{id}, #{pw}, #{email}); </insert>
 
     <insert id="insertUserPick" parameterType="int"> insert into userPick values(#{userIdx},
         #{bmIdx}, #{bsIdx}, #{bssIdx}); </insert>

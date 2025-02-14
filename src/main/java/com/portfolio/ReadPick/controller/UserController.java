@@ -105,7 +105,7 @@ public class UserController {
     @PostMapping("userInsert")
     @Operation (summary = "회원가입", description = "회원가입하기")
     public ResponseEntity<String> userInsert(UserVo user) {
-
+        System.out.println(user);
         int res = userMapper.userInsert(user);
 
         return ResponseEntity.ok("success");
