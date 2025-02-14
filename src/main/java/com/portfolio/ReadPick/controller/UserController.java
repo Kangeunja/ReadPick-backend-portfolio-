@@ -104,11 +104,11 @@ public class UserController {
     // 회원가입
     @PostMapping("userInsert")
     @Operation (summary = "회원가입", description = "회원가입하기")
-    public RedirectView userInsert(UserVo user) {
+    public ResponseEntity<String> userInsert(UserVo user) {
 
         int res = userMapper.userInsert(user);
 
-        return new RedirectView("/mainPage.do");
+        return ResponseEntity.ok("success");
     }
 
     // 로그인체크
