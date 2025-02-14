@@ -6,12 +6,11 @@
     <!-- insert -->
 
     <!-- 회원가입 -->
-    <insert id="userInsert" parameterType="user"> insert into users value(null, #{userName},
-        #{nickName}, #{id}, #{pw}, #{email}, #{adminAt}, #{firstAt}); </insert>
+    <insert id="userInsert" parameterType="user"> insert into users (userName, nickName, Id, pw,
+        email) value(#{userName}, #{nickName}, #{id}, #{pw}, #{email}); </insert>
 
-    <insert id="insertUserPick" parameterType="int">
-        insert into userPick values(#{userIdx}, #{bmIdx}, #{bsIdx}, #{bssIdx});
-    </insert>
+    <insert id="insertUserPick" parameterType="int"> insert into userPick values(#{userIdx},
+        #{bmIdx}, #{bsIdx}, #{bssIdx}); </insert>
     <!-- /insert -->
 
 
@@ -25,13 +24,8 @@
 
 
     <!-- update -->
-    <update id="userFirstAtUpdate" parameterType="user">
-        update users set firstAt = #{firstAt} where userIdx = #{userIdx}
-    </update>
-
-    <update id="userInfoModify" parameterType="user">
-        update users set userName = #{userName}, nickName = #{nickName}, id = #{id}, pw = #{pw}, email = #{email} where userIdx = #{userIdx}
-    </update>
+    <update id="userFirstAtUpdate" parameterType="user"> update users set firstAt = #{firstAt} where
+        userIdx = #{userIdx} </update>
     <!-- /update -->
 
 

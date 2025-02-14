@@ -30,9 +30,9 @@
     <select id="selectIsbnByIsbnIdx" resultType="String">select isbn from isbn where isbnIdx =
         #{isbnIdx}</select>
 
-    <!-- bsName으로 해당하는 책 리스트 조회 -->
-    <select id="selectBookListByBsName" resultType="book" parameterType="int"> select * from book
-        where bsIdx = #{bsIdx} </select>
+    <!-- bsIdx으로 해당하는 책 리스트 조회 -->
+    <select id="selectBookListByBsIdx" resultType="book" parameterType="int"> select * from book
+        where bsIdx = #{bsIdx} order by bIdx desc</select>
 
     <!-- isbn으로 책 한 권 조회 -->
     <select id="selectOneBookByIsbn" resultType="book" parameterType="String"> select * from book

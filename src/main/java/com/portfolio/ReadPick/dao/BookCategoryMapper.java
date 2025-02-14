@@ -43,4 +43,6 @@ public interface BookCategoryMapper {
 
     int selectBmIdxOneByBsIdx(int bsIdx);
 
+    BookCategoryVo selectOneBsListByBsIdx(int bsIdx);
+
 }

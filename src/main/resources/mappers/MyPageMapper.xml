@@ -5,27 +5,21 @@
 
     <!-- insert -->
 
-    <insert id="insertBookmark" parameterType="bookmark"> insert into bookmark values(#{userIdx},
-        #{bIdx}, #{isBookmarked})</insert>
-
     <!-- /insert -->
 
 
     <!-- select -->
-    <select id="selectOneUserBookmark"> select isBookmarked from bookmark where bIdx = #{bIdx} and
-        userIdx = #{userIdx}</select>
-    
-    <select id="selectMyPageBookList" parameterType="int" resultType="bookmark">
-        select * from bookmark where userIdx = #{userIdx} order by bookmarkAt desc;
-    </select>
-    
+    <select id="selectMyPageBookList" parameterType="int" resultType="bookmark"> select * from
+        bookmark where userIdx = #{userIdx} order by bookmarkAt desc; </select>
+
     <!-- /select -->
 
 
     <!-- update -->
 
-    <update id="updateBookmark" parameterType="bookmark"> update bookmark set isBookmarked =
-        #{isBookmarked} where userIdx = #{userIdx} and bIdx = #{bIdx}</update>
+
+    <update id="userInfoModify" parameterType="user"> update users set userName = #{userName},
+        nickName = #{nickName}, id = #{id}, pw = #{pw}, email = #{email} where userIdx = #{userIdx} </update>
 
     <!-- /update -->
 

@@ -55,14 +55,8 @@ public class UserController {
         UserVo user = userMapper.selectOneFromId(id);
 
         // 아이디가 없는(틀린)경우
-        if (user == null) {
-            ra.addAttribute("reason", "fail_id");
-            return new RedirectView(url);
-        }
-
-        // 비밀번호가 틀린경우
-        if (user.getPw().equals(pw) == false) {
-            ra.addAttribute("reason", "fail_password");
+        if (user == null || user.getPw().equals(pw) == false) {
+            ra.addAttribute("reason", "fail");
             return new RedirectView(url);
         }
 
@@ -90,7 +84,7 @@ public class UserController {
     }// end:logout()
 
     // 아이디 중복체크
-    @PostMapping(value = "checkId")
+    @PostMapping("checkId")
     @Operation (summary = "아이디 중복체크", description = "회원가입 시 아이디 중복체크")
     public String check_id(String id) {
 
@@ -112,7 +106,6 @@ public class UserController {
     @Operation (summary = "회원가입", description = "회원가입하기")
     public RedirectView userInsert(UserVo user) {
 
-        user.setAdminAt("N");
         int res = userMapper.userInsert(user);
 
         return new RedirectView("/mainPage.do");
