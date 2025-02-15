@@ -17,6 +17,4 @@ public interface UserMapper {
 
 	int userFirstAtUpdate(UserVo user);
 
-    int userInfoModify(UserVo user);
-
 }

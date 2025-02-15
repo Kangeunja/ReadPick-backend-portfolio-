@@ -50,37 +50,30 @@ public class UserController {
 
     @PostMapping("login")
     @Operation(summary = "로그인", description = "로그인하기")
-    public RedirectView login(String id, String pw, String url, RedirectAttributes ra) {
+    public ResponseEntity<String> login(String id, String pw, RedirectAttributes ra) {
 
         UserVo user = userMapper.selectOneFromId(id);
 
         // 아이디가 없는(틀린)경우
         if (user == null || user.getPw().equals(pw) == false) {
             ra.addAttribute("reason", "fail");
-            return new RedirectView(url);
+            return ResponseEntity.ok("fail");
         }
 
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
         session.setAttribute("user", user);
 
-        if (url != null)
-            return new RedirectView(url);
-
-        if(user.getFirstAt().equals("Y")){
-            return new RedirectView("/userPick.do");
-        }    
-
-        return new RedirectView("/mainPage.do");
+        return ResponseEntity.ok("success");
     }
 
     // 로그아웃
     @PostMapping("logout")
     @Operation(summary = "로그아웃", description = "로그아웃하기")
-    public RedirectView logout() {
+    public ResponseEntity<String> logout() {
 
         session.removeAttribute("user");
 
-        return new RedirectView("/mainPage.do");
+        return ResponseEntity.ok("success");
     }// end:logout()
 
     // 아이디 중복체크
@@ -104,7 +97,7 @@ public class UserController {
     // 회원가입
     @PostMapping("userInsert")
     @Operation (summary = "회원가입", description = "회원가입하기")
-    public ResponseEntity<String> userInsert(UserVo user) {
+    public ResponseEntity<String> userInsert(@RequestBody UserVo user) {
         System.out.println(user);
         int res = userMapper.userInsert(user);
 

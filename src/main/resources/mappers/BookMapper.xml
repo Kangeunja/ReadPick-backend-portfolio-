@@ -35,8 +35,8 @@
         where bsIdx = #{bsIdx} order by bIdx desc</select>
 
     <!-- isbn으로 책 한 권 조회 -->
-    <select id="selectOneBookByIsbn" resultType="book" parameterType="String"> select * from book
-        where isbn = #{isbn} </select>
+    <select id="selectOneBookByBIdx" resultType="book" parameterType="int"> select * from book
+        where bIdx = #{bIdx} </select>
 
     <!-- /select -->
 

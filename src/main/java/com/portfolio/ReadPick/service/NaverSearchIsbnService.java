@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,11 +32,11 @@ public class NaverSearchIsbnService {
     ObjectMapper objectMapper = new ObjectMapper();
 
     HashSet<String> duplicate = new HashSet<>();
-
+    @Transactional
     public void searchIsbnSave(String searchOneName) {
         System.out.println("searchOneName : " + searchOneName);
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 10;
+        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 20;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);

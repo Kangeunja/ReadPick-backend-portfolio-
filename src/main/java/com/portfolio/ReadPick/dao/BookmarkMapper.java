@@ -1,5 +1,7 @@
 package com.portfolio.ReadPick.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookmarkVo;
@@ -13,6 +15,6 @@ public interface BookmarkMapper {
 
     int updateBookmark(BookmarkVo bookmarkVo);
 
-    BookmarkVo selectMyPageBookList(int userIdx);
+    // int deleteBookmark(BookmarkVo bookmarkVo);
 
 }

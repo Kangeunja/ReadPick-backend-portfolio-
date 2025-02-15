@@ -11,7 +11,7 @@ public class BookService {
     @Autowired
     BookImageController bookImageController;
 
-    public void bookImageService(String isbn){
-        bookImageController.bookImageOne(isbn);
+    public void bookImageService(int bIdx){
+        bookImageController.bookImageOne(bIdx);
     }
 }

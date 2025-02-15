@@ -9,8 +9,12 @@
 
 
     <!-- select -->
-    <select id="selectMyPageBookList" parameterType="int" resultType="bookmark"> select * from
-        bookmark where userIdx = #{userIdx} order by bookmarkAt desc; </select>
+    <select id="bookmarkList" parameterType="bookmark" resultType="bookmark"> select * from
+        bookmark where userIdx = #{userIdx} and isBookmarked = #{isBookmarked} order by bookmarkAt desc; </select>
+
+    <select id="bookmarkImageList" resultType="bookImage" parameterType="int">
+        select * from bookImage where bIdx = #{bIdx} 
+    </select>
 
     <!-- /select -->
 

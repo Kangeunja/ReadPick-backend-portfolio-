@@ -6,7 +6,7 @@
     <!-- insert -->
 
     <insert id="insertBookmark" parameterType="bookmark"> insert into bookmark values(#{userIdx},
-        #{bIdx}, #{isBookmarked})</insert>
+        #{bIdx}, null, #{isBookmarked})</insert>
 
     <!-- /insert -->
 
@@ -26,6 +26,10 @@
 
 
     <!-- delete -->
+
+    <!-- <delete id="deleteBookmark" parameterType="bookmark">
+        delete 
+    </delete> -->
 
     <!-- /delete -->
 

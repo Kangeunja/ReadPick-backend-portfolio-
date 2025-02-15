@@ -20,8 +20,8 @@ public class BookImageController {
     BookImageMapper bookImageMapper;
 
     @GetMapping("bookImageOne")
-    public ResponseEntity<BookImageVo> bookImageOne(String isbn) {
-        BookVo bookOneByIsbn = bookMapper.selectOneBookByIsbn(isbn);
+    public ResponseEntity<BookImageVo> bookImageOne(int bIdx) {
+        BookVo bookOneByIsbn = bookMapper.selectOneBookByBIdx(bIdx);
         BookImageVo image = bookImageMapper.selectOneImageByBIdx(bookOneByIsbn.getBIdx());
         return ResponseEntity.ok(image);
     }

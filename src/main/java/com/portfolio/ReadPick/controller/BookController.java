@@ -70,21 +70,21 @@ public class BookController {
     }
 
     @GetMapping("bookOne")
-    @Operation(summary = "isbn를 이용해 책의 정보 출력" , description = "호출 시 선택한 책의 isbn을 보내줄 것")
-    public ResponseEntity<BookVo> bookOne(String isbn) {
-        BookVo bookOneByIsbn = bookMapper.selectOneBookByIsbn(isbn);
-        bookService.bookImageService(isbn);
+    @Operation(summary = "isbn를 이용해 책의 정보 출력" , description = "호출 시 선택한 책의 bIdx을 보내줄 것")
+    public ResponseEntity<BookVo> bookOne(int bIdx) {
+        BookVo bookOneByIsbn = bookMapper.selectOneBookByBIdx(bIdx);
+        bookService.bookImageService(bIdx);
         return ResponseEntity.ok(bookOneByIsbn);
     }
 
     @GetMapping("isBookmark")
     @Operation(summary = "북마크 확인" , description = "로그인된 사용자와 책의 번호를 확인해서 북마크를 체크하고, 북마크가 있는 경우 Y, 없는 경우 N을 반환")
-    public ResponseEntity<String> isBookmark(int bIdx, HttpSession session) {
+    public ResponseEntity<String> isBookmark(int bIdx) {
         UserVo user = (UserVo) session.getAttribute("user");
         String isBookmark = "N";
         if (user != null) {
             int userIdx = user.getUserIdx();
-            if(bookmarkMapper.selectOneUserBookmark(bIdx, userIdx)==null && bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("N")){
+            if(bookmarkMapper.selectOneUserBookmark(bIdx, userIdx)==null || bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("N")){
                 return ResponseEntity.ok(isBookmark);
             } else if(bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("Y")){
                 isBookmark = "Y";
@@ -95,7 +95,7 @@ public class BookController {
 
     @GetMapping("bookmark")
     @Operation(summary = "북마크 해제 및 추가", description = "북마크 버튼을 누르면 유저의 로그인 여부를 체크 후 토글로 북마크 처리 <br> map 이름은 bookmark")
-    public ResponseEntity<Map<String, Object>> bookmark(int bIdx, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> bookmark(int bIdx) {
 
         UserVo user = (UserVo) session.getAttribute("user");
         Map<String, Object> bookmark = new HashMap<>();
@@ -113,6 +113,7 @@ public class BookController {
             bookmarkVo.setUserIdx(userIdx);
             bookmarkVo.setBIdx(bIdx);
             bookmarkVo.setIsBookmarked("Y");
+            // System.out.println(bookmarkVo);
             int res = bookmarkMapper.insertBookmark(bookmarkVo);
             bookmark.put("message", "북마크추가완료");
         } else if (nowBookmark.equals("N")) {

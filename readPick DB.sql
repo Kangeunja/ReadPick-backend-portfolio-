@@ -14,6 +14,7 @@ drop table if exists bookSubCategory;
 drop table if exists bookMainCategory;
 
 
+
 create table bookMainCategory (
 	bmIdx int primary key auto_increment,
     bmName varchar(48) not null unique
@@ -57,7 +58,7 @@ create table book (
     bsssIdx int not null,
     isbn varchar(13),
     bName varchar(395) not null,
-    author varchar(210) not null,
+    author varchar(300) not null,
     bContent longtext not null,
     link longtext not null,
     publisher varchar(60) not null,
@@ -73,7 +74,7 @@ create table bookImage(
 	fileIdx	int primary key auto_increment,
 	bIdx int not null,
     fileName varchar(150) not null,
-	fileType char(1) default'n' not null, 
+	fileTypeURL char(1) default'N' not null, 
     FOREIGN KEY (bIdx) REFERENCES book (bIdx) ON DELETE CASCADE
 );
 
@@ -83,11 +84,12 @@ create table users(
     nickName varchar(30) not null,
     Id		 varchar(20) not null,
     pw 		 varchar(20) not null, 
-    eMail	 varchar(40) not null,
-	adminAt  char(1) default 'N' not null
+    email	 varchar(40) not null,
+	adminAt  char(1) default 'N' not null,
+    firstAt char(1) default 'Y' not null
 );
 
-insert into users value(null, "관리자","관리자", "admin", "admin", "admin123@gmail.com","Y");
+insert into users value(null, "관리자","관리자", "admin", "admin", "admin123@gmail.com","Y","Y"); 
 
 -- 가입 시 입력한 유저의 관심분야
 create table userPick(
@@ -95,13 +97,11 @@ create table userPick(
     bmIdx int not null,
     bsIdx int not null,
     bssIdx int not null,
-    bsssIdx int not null,
     FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
     foreign key (bmIdx) references bookMainCategory (bmIdx) on delete cascade,
     foreign key (bsIdx) references bookSubCategory (bsIdx) on delete cascade,
     foreign key (bssIdx) references bookSubsubCategory (bssIdx) on delete cascade,
-    foreign key (bsssIdx) references bookDetailCategory (bsssIdx) on delete cascade,
-    primary key(userIdx, bmIdx, bsIdx, bssIdx, bsssIdx)
+    primary key(userIdx, bmIdx, bsIdx, bssIdx)
 );
 
 -- 유저가 검색할 때 중복체크를 위한 테이블
@@ -133,13 +133,16 @@ create table review(
 create table bookmark (
     userIdx int not null,
     bIdx int not null,
+    bookmarkAt int auto_increment unique,
     isBookmarked char(1) default 'N',
     foreign key (userIdx) references users (userIdx) on delete cascade,
     foreign key (bIdx) references book (bIdx) on delete cascade,
     primary key(userIdx, bIdx)
 );
-
-
+-- select isBookmarked from bookmark where bIdx = 1 and userIdx = 1; 
+select * from users;
+select * from bookmark;
+update bookmark set isBookmarked = 'N' where userIdx = 1 and bIdx = 1;
 
 
 -- 검색할때만 쓰일 테이블
@@ -147,6 +150,8 @@ create table searchKeyword(
 	keywordIdx int primary key auto_increment,
     keywordName varchar(23) not null
 );
+
+
 
 insert into searchKeyword (keywordName) values
 ('문학/소설'),
@@ -171,12 +176,13 @@ select keywordName from searchKeyword;
 select * from searchKeyword;
 select * from isbn order by isbnIdx;
 select * from book;
+select * from bookImage;
 select * from bookdetailcategory;
 select * from booksubsubcategory;
 select * from booksubcategory;
 select * from bookmaincategory; 
 select * from users; 
-
+select * from bookmark;
 create or replace view fullCategoryView as
 select 
     bs.bmIdx,
@@ -199,12 +205,24 @@ left join
 inner join 
 	isbn i on bsss.bsssIdx = i.bsssIdx
 group by i.isbn, bs.bmIdx, bm.bmName, bss.bsIdx, bs.bsName, bsss.bssIdx, bss.bssName, bsss.bsssName, i.bsssIdx;
-     
 select * from fullCategoryView;
+
+create or replace view bookAndImageView as
+select 
+    b.bIdx,
+    bi.fileName
+from
+	book b
+left join 
+    bookImage bi on b.bIdx = bi.bIdx
+group by b.bIdx, bi.fileName;
+
+select * from bookAndImageView;
+
 
 select * from bookimage;
 
 select bsName from bookSubCategory order by bsIdx;
 
-select * from fullCategoryView where isbn = "9788958245148";
+select * from fullCategoryView where isbn = "9788937428449";
  

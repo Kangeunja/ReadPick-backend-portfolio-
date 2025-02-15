@@ -18,18 +18,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
-
-    private final JsonArgumentResolver jsonArgumentResolver;
-
-    public WebConfig(JsonArgumentResolver jsonArgumentResolver) {
-        this.jsonArgumentResolver = jsonArgumentResolver;
-        // System.out.println("JsonArgumentResolver 등록됨");
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-
-        // System.out.println("JsonArgumentResolver 등록됨");
-        resolvers.add(jsonArgumentResolver);
-    }
+    
 }
