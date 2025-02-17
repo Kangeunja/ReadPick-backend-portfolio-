@@ -59,7 +59,13 @@ public class UserController {
         if (dBuser == null || user.getPw().equals(dBuser.getPw()) == false) {;
             return ResponseEntity.ok("fail");
         }
-
+        
+        user.setAdminAt(dBuser.getAdminAt());
+        user.setEmail(dBuser.getEmail());
+        user.setFirstAt(dBuser.getFirstAt());
+        user.setNickName(dBuser.getNickName());
+        user.setUserIdx(dBuser.getUserIdx());
+        user.setUserName(dBuser.getUserName());
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
         session.setAttribute("user", user);
 
@@ -170,6 +176,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.ok("로그인필요");
         }
+        // System.out.println(user.getFirstAt());
         return ResponseEntity.ok(user.getFirstAt());
     }
     

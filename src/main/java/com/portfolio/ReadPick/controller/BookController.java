@@ -1,5 +1,6 @@
 package com.portfolio.ReadPick.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +142,7 @@ public class BookController {
     // 책 추천 로직
     @GetMapping("recommend")
     @Operation(summary = "책 추천", description = "책 추천")
-    public ResponseEntity<Map<String,Object>> recommend(int bIdx) {
+    public ResponseEntity<Map<String, Object>> recommend(int bIdx) {
 
         UserVo user = (UserVo) session.getAttribute("user");
         Map<String, Object> rec = new HashMap<>();
@@ -166,7 +167,8 @@ public class BookController {
             RecVo recVo = new RecVo();
             recVo.setUserIdx(userIdx);
             recVo.setBIdx(bIdx);
-            recVo.setIsRecommended("Y");;
+            recVo.setIsRecommended("Y");
+            ;
             int res = recMapper.updateRec(recVo);
             rec.put("message", "추천완료");
         } else if (nowRec.equals("Y")) {
@@ -190,18 +192,35 @@ public class BookController {
         return ResponseEntity.ok(recCount);
     }
 
-    // @GetMapping("todayBook")
-    // @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책을 리턴")
-    // public ResponseEntity<BookVo> todayBook() {
+    @GetMapping("todayBook")
+    @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책을 리턴")
+    public ResponseEntity<BookVo> todayBook() {
+
+        UserVo user = (UserVo) session.getAttribute("user");
+        // if(user == null){
+        //     return ResponseEntity.ok("로그인필요");
+        // }
+        int userIdx = user.getUserIdx();
+        List<Integer> bsssIdxList = recMapper.selectBsssIdxListByUserIdx(userIdx);
+        List<Integer> bssIdxList = recMapper.selectBssIdxListByUserIdx(userIdx);
+        List<Integer> bsIdxList = recMapper.selectBsIdxListByUserIdx(userIdx);
+        List<Integer> bmIdxList = recMapper.selectBmIdxListByUserIdx(userIdx);
+
+        List<Integer> bIdxList = new ArrayList<>();
+        for(int i = 0; i < bsssIdxList.size(); i++){
+            int bsssIdx = bsssIdxList.get(i);
+            int bssIdx = bssIdxList.get(i);
+            int bsIdx = bsIdxList.get(i);
+            int bmIdx = bmIdxList.get(i);
+            bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx, bsssIdx));
+        }
         
-    //     UserVo user = (UserVo) session.getAttribute("user");
-    //     int userIdx = user.getUserIdx();
+        // List<BookVo> bookList = recMapper.selectBookListByBIdx(bIdxList);
+        Integer recCountMaxByList = recMapper.recCountMaxByUserBIdxList(bIdxList);
+        BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(recCountMaxByList);
+        // 제일 높은 추천 수
 
-
-    //     // 제일 높은 추천 수
-    //     int recCountMax = recMapper.recCountMax();
-
-    //     return ResponseEntity.ok(recCountMax);
-    // }
+        return ResponseEntity.ok(bookOneByBIdx);
+    }
 
 }
