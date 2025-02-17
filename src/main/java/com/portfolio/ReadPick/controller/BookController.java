@@ -51,14 +51,14 @@ public class BookController {
     // bsName으로 책 리스트를 찾아와 bsCategory에 출력
 
     @GetMapping("bsListOneByBsIdx")
-    @Operation(summary = "선택한 중분류", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
+    @Operation(summary = "메인 페이지에서 선택한 중분류", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
     public ResponseEntity<BookCategoryVo> bsListOneByBsIdx(int bsIdx) {
         BookCategoryVo bsNameByBsIdx = bookCategoryMapper.selectOneBsListByBsIdx(bsIdx);
         return ResponseEntity.ok(bsNameByBsIdx);
     }
 
     @GetMapping("bssListByBsIdx")
-    @Operation(summary = "선택한 중분류의 소분류 리스트", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
+    @Operation(summary = "메인 페이지에서 선택한 중분류의 소분류 리스트", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
     public ResponseEntity<List<BookCategoryVo>> bssListByBsIdx(int bsIdx) {
         List<BookCategoryVo> bssListByBsIdx = bookCategoryMapper.selectBssList(bsIdx);
         return ResponseEntity.ok(bssListByBsIdx);
@@ -184,14 +184,14 @@ public class BookController {
 
     // 추천 카운트
     @GetMapping("recCount")
-    @Operation(summary = "추천 수", description = "사용 시 bIdx(int)를 보내줄 것 ")
+    @Operation(summary = "추천 수 체크", description = "사용 시 bIdx(int)를 보내줄 것 ")
     public ResponseEntity<Integer> recCount(int bIdx) {
         int recCount = recMapper.recCount(bIdx);
         return ResponseEntity.ok(recCount);
     }
 
     // @GetMapping("todayBook")
-    // @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천 수 받은 책을 리턴")
+    // @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책을 리턴")
     // public ResponseEntity<BookVo> todayBook() {
         
     //     UserVo user = (UserVo) session.getAttribute("user");

@@ -23,6 +23,8 @@ import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class UserController {
@@ -49,19 +51,17 @@ public class UserController {
 
     @PostMapping("login")
     @Operation(summary = "로그인", description = "로그인하기")
-    public ResponseEntity<String> login(@RequestBody UserVo user, RedirectAttributes ra) {
+    public ResponseEntity<String> login(@RequestBody UserVo user) {
 
 
-        UserVo userId = userMapper.selectOneFromId(user.getId());
-
+        UserVo dBuser = userMapper.selectOneFromId(user.getId());
         // 아이디가 없는(틀린)경우
-        if (userId == null || user.getPw().equals(user.getPw()) == false) {
-            ra.addAttribute("reason", "fail");
+        if (dBuser == null || user.getPw().equals(dBuser.getPw()) == false) {;
             return ResponseEntity.ok("fail");
         }
 
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
-        session.setAttribute("user", userId);
+        session.setAttribute("user", user);
 
         return ResponseEntity.ok("success");
     }
@@ -81,10 +81,10 @@ public class UserController {
     @Operation(summary = "아이디 중복체크", description = "회원가입 시 아이디 중복체크")
     public ResponseEntity<String> check_id(String id) {
 
-        UserVo vo = userMapper.selectOneFromId(id);
+        UserVo userId = userMapper.selectOneFromId(id);
 
         boolean bResult = false;
-        if (vo == null)
+        if (userId == null)
             bResult = true;
         else
             bResult = false;
@@ -162,4 +162,15 @@ public class UserController {
 
         return ResponseEntity.ok("fail");
     }
+
+    @GetMapping("firstAt")
+    @Operation(summary = "첫 로그인 여부", description = "유저가 로그인 시 첫 로그인 여부를 확인")
+    public ResponseEntity<String> firstAt() {
+        UserVo user = (UserVo) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("로그인필요");
+        }
+        return ResponseEntity.ok(user.getFirstAt());
+    }
+    
 }
