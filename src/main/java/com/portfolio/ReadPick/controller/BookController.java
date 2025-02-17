@@ -7,21 +7,20 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookImageMapper;
 import com.portfolio.ReadPick.dao.BookMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
+import com.portfolio.ReadPick.dao.RecMapper;
 import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
+import com.portfolio.ReadPick.vo.RecVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 
@@ -46,6 +45,9 @@ public class BookController {
     @Autowired
     BookService bookService;
 
+    @Autowired
+    RecMapper recMapper;
+
     // bsName으로 책 리스트를 찾아와 bsCategory에 출력
 
     @GetMapping("bsListOneByBsIdx")
@@ -57,36 +59,37 @@ public class BookController {
 
     @GetMapping("bssListByBsIdx")
     @Operation(summary = "선택한 중분류의 소분류 리스트", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
-    public ResponseEntity<List<BookCategoryVo>> bssListByBsIdx(int bssIdx) {
-        List<BookCategoryVo> bssListByBsIdx = bookCategoryMapper.selectBssList(bssIdx);
+    public ResponseEntity<List<BookCategoryVo>> bssListByBsIdx(int bsIdx) {
+        List<BookCategoryVo> bssListByBsIdx = bookCategoryMapper.selectBssList(bsIdx);
         return ResponseEntity.ok(bssListByBsIdx);
     }
 
     @GetMapping("bookListByBsIdx")
-    @Operation(summary = "bsIdx를 이용해 책리스트 출력" , description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
+    @Operation(summary = "bsIdx를 이용해 책리스트 출력", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
     public ResponseEntity<List<BookVo>> bookListByBsIdx(int bsIdx) {
         List<BookVo> bookListByBsIdx = bookMapper.selectBookListByBsIdx(bsIdx);
         return ResponseEntity.ok(bookListByBsIdx);
     }
 
     @GetMapping("bookOne")
-    @Operation(summary = "isbn를 이용해 책의 정보 출력" , description = "호출 시 선택한 책의 bIdx을 보내줄 것")
+    @Operation(summary = "bIdx를 이용해 책의 정보 출력", description = "호출 시 선택한 책의 bIdx을 보내줄 것")
     public ResponseEntity<BookVo> bookOne(int bIdx) {
-        BookVo bookOneByIsbn = bookMapper.selectOneBookByBIdx(bIdx);
+        BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(bIdx);
         bookService.bookImageService(bIdx);
-        return ResponseEntity.ok(bookOneByIsbn);
+        return ResponseEntity.ok(bookOneByBIdx);
     }
 
     @GetMapping("isBookmark")
-    @Operation(summary = "북마크 확인" , description = "로그인된 사용자와 책의 번호를 확인해서 북마크를 체크하고, 북마크가 있는 경우 Y, 없는 경우 N을 반환")
+    @Operation(summary = "북마크 확인", description = "로그인된 사용자와 책의 번호를 확인해서 북마크를 체크하고, 북마크가 있는 경우 Y, 없는 경우 N을 반환")
     public ResponseEntity<String> isBookmark(int bIdx) {
         UserVo user = (UserVo) session.getAttribute("user");
         String isBookmark = "N";
         if (user != null) {
             int userIdx = user.getUserIdx();
-            if(bookmarkMapper.selectOneUserBookmark(bIdx, userIdx)==null || bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("N")){
+            if (bookmarkMapper.selectOneUserBookmark(bIdx, userIdx) == null
+                    || bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("N")) {
                 return ResponseEntity.ok(isBookmark);
-            } else if(bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("Y")){
+            } else if (bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("Y")) {
                 isBookmark = "Y";
             }
         }
@@ -134,5 +137,71 @@ public class BookController {
 
         return ResponseEntity.ok(bookmark);
     }
+
+    // 책 추천 로직
+    @GetMapping("recommend")
+    @Operation(summary = "책 추천", description = "책 추천")
+    public ResponseEntity<Map<String,Object>> recommend(int bIdx) {
+
+        UserVo user = (UserVo) session.getAttribute("user");
+        Map<String, Object> rec = new HashMap<>();
+
+        if (user == null) {
+            rec.put("message", "로그인필요.");
+            return ResponseEntity.ok(rec);
+        }
+
+        int userIdx = user.getUserIdx();
+        String nowRec = recMapper.selectOneUserRec(bIdx, userIdx);
+
+        if (nowRec == null) {
+            RecVo recVo = new RecVo();
+            recVo.setUserIdx(userIdx);
+            recVo.setBIdx(bIdx);
+            recVo.setIsRecommended("Y");
+            // System.out.println(recVo);
+            int res = recMapper.insertRec(recVo);
+            rec.put("message", "추천완료");
+        } else if (nowRec.equals("N")) {
+            RecVo recVo = new RecVo();
+            recVo.setUserIdx(userIdx);
+            recVo.setBIdx(bIdx);
+            recVo.setIsRecommended("Y");;
+            int res = recMapper.updateRec(recVo);
+            rec.put("message", "추천완료");
+        } else if (nowRec.equals("Y")) {
+            RecVo recVo = new RecVo();
+            recVo.setUserIdx(userIdx);
+            recVo.setBIdx(bIdx);
+            recVo.setIsRecommended("N");
+            int res = recMapper.updateRec(recVo);
+            rec.put("message", "추천취소");
+        }
+
+        return ResponseEntity.ok(rec);
+
+    }
+
+    // 추천 카운트
+    @GetMapping("recCount")
+    @Operation(summary = "추천 수", description = "사용 시 bIdx(int)를 보내줄 것 ")
+    public ResponseEntity<Integer> recCount(int bIdx) {
+        int recCount = recMapper.recCount(bIdx);
+        return ResponseEntity.ok(recCount);
+    }
+
+    // @GetMapping("todayBook")
+    // @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천 수 받은 책을 리턴")
+    // public ResponseEntity<BookVo> todayBook() {
+        
+    //     UserVo user = (UserVo) session.getAttribute("user");
+    //     int userIdx = user.getUserIdx();
+
+
+    //     // 제일 높은 추천 수
+    //     int recCountMax = recMapper.recCountMax();
+
+    //     return ResponseEntity.ok(recCountMax);
+    // }
 
 }

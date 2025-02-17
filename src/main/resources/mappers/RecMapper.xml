@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.ReadPick.dao.RecMapper">
+
+    <!-- insert -->
+
+    <insert id="insertRec" parameterType="rec"> insert into rec values(#{userIdx}, #{bIdx}, null,
+        #{isRecommended}); </insert>
+
+    <!-- /insert -->
+
+
+    <!-- select -->
+
+    <select id="selectOneUserRec" resultType="String" parameterType="int"> select isRecommended from
+        rec where bIdx = #{bIdx} and userIdx = #{userIdx} </select>
+
+    <select id="recCount"> select count(*) from rec where bIdx = #{bIdx} and isRecommended = 'Y' </select>
+
+    <select id="recCountMax" resultType="int"> select max(recCountMax) from (select count(*) as
+        recCountMax from rec where isRecommended = 'Y' group by bIdx) as countResults; </select>
+    <!-- /select -->
+
+
+    <!-- update -->
+
+    <update id="updateRec" parameterType="rec"> update rec set isRecommended = #{isRecommended}
+        where userIdx = #{userIdx} and bIdx = #{bIdx} </update>
+
+    <!-- /update -->
+
+
+    <!-- delete -->
+
+    <!-- /delete -->
+
+
+</mapper>

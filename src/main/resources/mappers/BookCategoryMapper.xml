@@ -18,7 +18,7 @@
         values(null, #{bssIdx}, #{bsssName}) on duplicate key update bsssName=#{bsssName}</insert>
 
     <insert id="insertUserPick" parameterType="int"> insert into userPick values(#{userIdx},
-        #{bmIdx},#{bsIdx},#{bssIdx}) </insert>
+        #{bmIdx},#{bsIdx},#{bssIdx},#{bsssIdx}) </insert>
     <!-- /insert -->
 
 

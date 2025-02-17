@@ -24,7 +24,6 @@ import com.portfolio.ReadPick.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 
-
 @RestController
 public class UserController {
 
@@ -50,18 +49,19 @@ public class UserController {
 
     @PostMapping("login")
     @Operation(summary = "로그인", description = "로그인하기")
-    public ResponseEntity<String> login(String id, String pw, RedirectAttributes ra) {
+    public ResponseEntity<String> login(@RequestBody UserVo user, RedirectAttributes ra) {
 
-        UserVo user = userMapper.selectOneFromId(id);
+
+        UserVo userId = userMapper.selectOneFromId(user.getId());
 
         // 아이디가 없는(틀린)경우
-        if (user == null || user.getPw().equals(pw) == false) {
+        if (userId == null || user.getPw().equals(user.getPw()) == false) {
             ra.addAttribute("reason", "fail");
             return ResponseEntity.ok("fail");
         }
 
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
-        session.setAttribute("user", user);
+        session.setAttribute("user", userId);
 
         return ResponseEntity.ok("success");
     }
@@ -78,7 +78,7 @@ public class UserController {
 
     // 아이디 중복체크
     @PostMapping("checkId")
-    @Operation (summary = "아이디 중복체크", description = "회원가입 시 아이디 중복체크")
+    @Operation(summary = "아이디 중복체크", description = "회원가입 시 아이디 중복체크")
     public ResponseEntity<String> check_id(String id) {
 
         UserVo vo = userMapper.selectOneFromId(id);
@@ -96,7 +96,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping("userInsert")
-    @Operation (summary = "회원가입", description = "회원가입하기")
+    @Operation(summary = "회원가입", description = "회원가입하기")
     public ResponseEntity<String> userInsert(@RequestBody UserVo user) {
         System.out.println(user);
         int res = userMapper.userInsert(user);
@@ -106,10 +106,10 @@ public class UserController {
 
     // 로그인체크
     @PostMapping(value = "checkLogin")
-    @Operation (summary = "로그인체크", description = "로그인체크")
+    @Operation(summary = "로그인체크", description = "로그인체크")
     public ResponseEntity<String> checkLogin(String id, String pw) {
         UserVo user = (UserVo) session.getAttribute("user");
-        if(user==null){
+        if (user == null) {
             return ResponseEntity.ok("fail");
         }
         return ResponseEntity.ok("success");
@@ -135,19 +135,31 @@ public class UserController {
 
         UserVo user = (UserVo) session.getAttribute("user");
 
-        if(user != null) {
-            for (int i = 0; i < userPick.size(); i++) {
-                int bsIdx = userPick.get(i).get(0);
-                int bssIdx = userPick.get(i).get(1);
-                int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
-    
-                int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx);
+        try {
+            if (user != null) {
+                for (int i = 0; i < userPick.size(); i++) {
+                    int bsIdx = userPick.get(i).get(0);
+                    int bssIdx = userPick.get(i).get(1);
+                    Integer bsssIdx = userPick.get(i).get(2);
+                    if (bsssIdx == null) {
+                        bsssIdx = 0;
+                        int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
+                        int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx, bsssIdx);
+                    }else{
+                        int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
+                        int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx, bsssIdx);
+                    }
+                }
+                user.setFirstAt("N");
+                int res = userMapper.userFirstAtUpdate(user);
+
+                return ResponseEntity.ok("success");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok("fail!!!!!!!!!!!!!!!!!!!!");
         }
-        user.setFirstAt("N");
-        int res = userMapper.userFirstAtUpdate(user);
-        
-        return ResponseEntity.ok("success");
+
+        return ResponseEntity.ok("fail");
     }
-    
 }

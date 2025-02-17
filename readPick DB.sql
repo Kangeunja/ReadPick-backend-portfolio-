@@ -1,4 +1,5 @@
 drop view  if exists fullCategoryView;
+drop table if exists rec;
 drop table if exists searchKeyword;
 drop table if exists review;
 drop table if exists bookmark;
@@ -144,6 +145,17 @@ select * from users;
 select * from bookmark;
 update bookmark set isBookmarked = 'N' where userIdx = 1 and bIdx = 1;
 
+create table rec (
+    userIdx int not null,
+    bIdx int not null,
+    recAt int auto_increment unique,
+    isRecommended char(1) default 'N',
+    foreign key (userIdx) references users (userIdx) on delete cascade,
+    foreign key (bIdx) references book (bIdx) on delete cascade,
+    primary key(userIdx, bIdx)
+);
+select * from rec;
+
 
 -- 검색할때만 쓰일 테이블
 create table searchKeyword(
@@ -225,4 +237,6 @@ select * from bookimage;
 select bsName from bookSubCategory order by bsIdx;
 
 select * from fullCategoryView where isbn = "9788937428449";
+
+-- delete from users where userIdx = 28;
  
