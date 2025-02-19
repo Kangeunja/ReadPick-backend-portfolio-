@@ -197,9 +197,6 @@ public class BookController {
     public ResponseEntity<BookVo> todayBook() {
 
         UserVo user = (UserVo) session.getAttribute("user");
-        // if(user == null){
-        //     return ResponseEntity.ok("로그인필요");
-        // }
         int userIdx = user.getUserIdx();
         List<Integer> bsssIdxList = recMapper.selectBsssIdxListByUserIdx(userIdx);
         List<Integer> bssIdxList = recMapper.selectBssIdxListByUserIdx(userIdx);
@@ -215,8 +212,12 @@ public class BookController {
             bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx, bsssIdx));
         }
         
-        // List<BookVo> bookList = recMapper.selectBookListByBIdx(bIdxList);
-        Integer recCountMaxByList = recMapper.recCountMaxByUserBIdxList(bIdxList);
+        Integer recCountMaxByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
+        System.out.println(bIdxList);
+        if (recCountMaxByList==null) {
+            return ResponseEntity.ok(null);
+        }
+        System.out.println(recCountMaxByList);
         BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(recCountMaxByList);
         // 제일 높은 추천 수
 

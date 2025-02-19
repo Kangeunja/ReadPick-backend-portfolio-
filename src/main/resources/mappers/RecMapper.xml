@@ -21,7 +21,7 @@
     <select id="recCountMax" resultType="int"> select max(recCountMax) from (select count(*) as
         recCountMax from rec where isRecommended = 'Y' group by bIdx) as countResults; </select>
 
-    <select id="recCountMaxByUserBIdxList" resultType="int" parameterType="list"> select max(recCountMax) from (select count(*) as
+    <select id="recCountMaxByUserRecBIdxList" resultType="Integer" parameterType="list"> select max(recCountMax) from (select count(*) as
         recCountMax from rec where bIdx in<foreach item="bIdx" collection="bIdxList" open="(" separator="," close=")">
         #{bIdx} </foreach> and isRecommended = 'Y' group by bIdx) as countResults; </select>
 
@@ -41,6 +41,9 @@
     <select id="selectBIdxByCategoryIdx" resultType="Integer" parameterType="int">
      select bIdx from book where bmIdx = #{bmIdx} and bsIdx = #{bsIdx} and bssIdx = #{bssIdx} and bsssIdx = #{bsssIdx}
     </select>
+
+    <select id=""></select>
+
     <!-- <select id="selectBookListByBIdx" resultType="book" parameterType="list"> select * from book
         where bIdx in <foreach item="id" collection="bIdxList" open="(" separator="," close=")">
         #{bIdx} </foreach>

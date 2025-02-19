@@ -47,4 +47,10 @@ public interface BookCategoryMapper {
 
     int insertUserPick(int userIdx, int bmIdx, int bsIdx, int bssIdx, Integer bsssIdx);
 
+    // BookCategoryVo selectBsOne(int bsIdx);
+
+    // BookCategoryVo selectBssOne(int bssIdx);
+
+    // List<BookCategoryVo> selectFullCategory();
+
 }

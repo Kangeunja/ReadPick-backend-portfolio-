@@ -32,6 +32,6 @@ public interface RecMapper {
 
     // List<BookVo> selectBookListByBIdx(List<Integer> bIdxLis
 
-    Integer recCountMaxByUserBIdxList(List<Integer> bIdxList);
+    Integer recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
 
 }

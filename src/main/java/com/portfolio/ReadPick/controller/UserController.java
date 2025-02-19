@@ -1,9 +1,7 @@
 package com.portfolio.ReadPick.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,20 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.UserMapper;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
-import com.portfolio.ReadPick.vo.BookmarkVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 public class UserController {
@@ -53,13 +46,13 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인하기")
     public ResponseEntity<String> login(@RequestBody UserVo user) {
 
-
         UserVo dBuser = userMapper.selectOneFromId(user.getId());
         // 아이디가 없는(틀린)경우
-        if (dBuser == null || user.getPw().equals(dBuser.getPw()) == false) {;
+        if (dBuser == null || user.getPw().equals(dBuser.getPw()) == false) {
+            ;
             return ResponseEntity.ok("fail");
         }
-        
+
         user.setAdminAt(dBuser.getAdminAt());
         user.setEmail(dBuser.getEmail());
         user.setFirstAt(dBuser.getFirstAt());
@@ -122,17 +115,22 @@ public class UserController {
     }
 
     @GetMapping("userPick")
-    @Operation(summary = "첫 로그인 시 띄울 장르 페이지", description = "여기서 선택 후 확인을 누르면 userPickResult로 이동 <br> 데이터 사용할 때는 Map형식으로 보냈으니 알아서 잘 <br> 참고로 Map이름은 categories 키 밸류는 이름이 같음 각각 bsList/bssList")
-    public ResponseEntity<Map<String, Object>> userPick() {
+    @Operation(summary = "첫 로그인 시 띄울 장르 페이지")
+    public ResponseEntity<List<Object>> userPick() {
         List<BookCategoryVo> bsList = bookCategoryMapper.selectBsList();
-        List<BookCategoryVo> bssList = new ArrayList<BookCategoryVo>();
-        for (int i = 0; i < bsList.size(); i++) {
-            bssList.addAll(bookCategoryMapper.selectBssList(bsList.get(i).getBsIdx()));
+        List<Object> result = new ArrayList<>();
+
+        for (BookCategoryVo bs : bsList) {
+            List<Object> categoryList = new ArrayList<>();
+            categoryList.add(bs);
+
+            List<BookCategoryVo> bssList = bookCategoryMapper.selectBssList(bs.getBsIdx());
+            categoryList.add(bssList);
+
+            result.add(categoryList);
         }
-        Map<String, Object> categories = new HashMap<String, Object>();
-        categories.put("bsList", bsList);
-        categories.put("bssList", bssList);
-        return ResponseEntity.ok(categories);
+
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("userPickResult")
@@ -151,7 +149,7 @@ public class UserController {
                         bsssIdx = 0;
                         int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
                         int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx, bsssIdx);
-                    }else{
+                    } else {
                         int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
                         int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx, bsssIdx);
                     }
@@ -179,5 +177,5 @@ public class UserController {
         // System.out.println(user.getFirstAt());
         return ResponseEntity.ok(user.getFirstAt());
     }
-    
+
 }
