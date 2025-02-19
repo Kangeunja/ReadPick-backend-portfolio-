@@ -1,6 +1,5 @@
 package com.portfolio.ReadPick.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.UserMapper;
-import com.portfolio.ReadPick.vo.BookCategoryVo;
+import com.portfolio.ReadPick.vo.BsVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -116,21 +115,23 @@ public class UserController {
 
     @GetMapping("userPick")
     @Operation(summary = "첫 로그인 시 띄울 장르 페이지")
-    public ResponseEntity<List<Object>> userPick() {
-        List<BookCategoryVo> bsList = bookCategoryMapper.selectBsList();
-        List<Object> result = new ArrayList<>();
+    public ResponseEntity<List<BsVo>> userPick() {
 
-        for (BookCategoryVo bs : bsList) {
-            List<Object> categoryList = new ArrayList<>();
-            categoryList.add(bs);
+        List<BsVo> categories = bookCategoryMapper.selectCategoryView();
 
-            List<BookCategoryVo> bssList = bookCategoryMapper.selectBssList(bs.getBsIdx());
-            categoryList.add(bssList);
+        
 
-            result.add(categoryList);
-        }
+        // for (BookCategoryVo bs : bsList) {
+        //     List<Object> categoryList = new ArrayList<>();
+        //     categoryList.add(bs);
 
-        return ResponseEntity.ok(result);
+        //     List<BookCategoryVo> bssList = bookCategoryMapper.selectBssList(bs.getBsIdx());
+        //     categoryList.add(bssList);
+
+        //     result.add(categoryList);
+        // }
+
+        return ResponseEntity.ok(categories);
     }
 
     @PostMapping("userPickResult")

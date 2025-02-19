@@ -1,12 +1,10 @@
 package com.portfolio.ReadPick.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookVo;
-import com.portfolio.ReadPick.vo.BookmarkVo;
 
 @Mapper
 public interface BookMapper {

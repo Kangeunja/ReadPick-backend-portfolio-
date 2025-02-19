@@ -1,10 +1,12 @@
 package com.portfolio.ReadPick.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookCategoryVo;
+import com.portfolio.ReadPick.vo.BsVo;
 
 @Mapper
 public interface BookCategoryMapper {
@@ -51,6 +53,6 @@ public interface BookCategoryMapper {
 
     // BookCategoryVo selectBssOne(int bssIdx);
 
-    // List<BookCategoryVo> selectFullCategory();
+    List<BsVo> selectCategoryView();
 
 }

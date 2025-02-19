@@ -3,6 +3,18 @@
 
 <mapper namespace="com.portfolio.ReadPick.dao.BookCategoryMapper">
 
+    <resultMap id="BookCategoryResultMap" type="com.portfolio.ReadPick.vo.BsVo">
+        <id property="bsIdx" column="bsIdx" />
+        <result property="bmIdx" column="bmIdx"/>
+        <result property="bsName" column="bsName" />
+        <collection property="bssList" ofType="com.portfolio.ReadPick.vo.BssVo">
+            <id property="bssIdx" column="bssIdx" />
+            <result property="bsIdx" column="bsIdx" />
+            <result property="bssName" column="bssName" />
+            <result property="bmName" column="bm_name" />
+        </collection>
+    </resultMap>
+    
     <!-- insert -->
 
     <insert id="insertBmCategories" parameterType="bc">insert into bookMainCategory values(null,
@@ -61,12 +73,9 @@
     <select id="selectBssOne" resultType="bc" parameterType="int"> select * from bookSubSubCategory
         where bssIdx = #{bssIdx} </select>
 
-    <!-- <select id="selectFullCategory" resultType="bc"> select * from fullCategoryView order by bsIdx
-        asc; </select>
-
-        <select id="selectBsListByBsIdx" resultType="bc">
-            select * from bookSubCategory where bsIdx = #{bsIdx}
-        </select> -->
+    <select id="selectCategoryView" resultMap="BookCategoryResultMap">
+        select * from fullCategoryView order by bsIdx asc;
+    </select>
     <!-- /select -->
 
 
