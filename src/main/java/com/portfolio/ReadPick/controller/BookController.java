@@ -17,6 +17,7 @@ import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.RecMapper;
 import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
+import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
 import com.portfolio.ReadPick.vo.RecVo;
@@ -24,6 +25,8 @@ import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class BookController {
@@ -212,16 +215,24 @@ public class BookController {
             bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx, bsssIdx));
         }
         
-        Integer recCountMaxByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
+        Map<String, Object> recCountMaxByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
         System.out.println(bIdxList);
         if (recCountMaxByList==null) {
             return ResponseEntity.ok(null);
         }
         System.out.println(recCountMaxByList);
-        BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(recCountMaxByList);
+        BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(recCountMaxByList.get("bIdx"));
         // 제일 높은 추천 수
+        todayBookImage(recCountMaxByList.get("bIdx"));
 
         return ResponseEntity.ok(bookOneByBIdx);
     }
+
+    @GetMapping("todayBookImage")
+    public ResponseEntity<BookImageVo> todayBookImage(Object bIdx) {
+        BookImageVo image = bookImageMapper.selectOneImageByBIdx((int) bIdx);
+        return ResponseEntity.ok(image);
+    }
+    
 
 }

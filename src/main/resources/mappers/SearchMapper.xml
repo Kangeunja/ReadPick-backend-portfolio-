@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.ReadPick.dao.SearchMapper">
+
+
+<!-- insert -->
+
+<!-- /insert -->
+
+
+
+
+
+
+
+<!-- select -->
+    <select id="selectBookListByBName" resultType="book" parameterType="String">
+        select * from book where bName = #{bName} order by bIdx asc;
+    </select>
+
+    <select id="selectBookListByAuthor" resultType="book" parameterType="String">
+        select * from book where author = #{author} order by bIdx asc;
+    </select>
+
+    <select id="selectBookListByIsbn" resultType="book" parameterType="String">
+        select * from book where isbn = #{isbn} order by bIdx asc;
+    </select>
+
+<!-- /select -->
+
+
+
+
+
+
+
+<!-- update -->
+
+<!-- /update -->
+
+
+
+
+
+
+
+<!-- delete -->
+
+<!-- /delete -->
+
+
+</mapper>

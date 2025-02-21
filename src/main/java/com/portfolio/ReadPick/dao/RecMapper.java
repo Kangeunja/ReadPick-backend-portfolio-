@@ -1,6 +1,7 @@
 package com.portfolio.ReadPick.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -32,6 +33,6 @@ public interface RecMapper {
 
     // List<BookVo> selectBookListByBIdx(List<Integer> bIdxLis
 
-    Integer recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
+    Map<String, Object> recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
 
 }

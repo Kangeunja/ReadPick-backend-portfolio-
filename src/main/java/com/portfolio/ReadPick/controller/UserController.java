@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.UserMapper;
+import com.portfolio.ReadPick.vo.BookCategoryVo;
 import com.portfolio.ReadPick.vo.BsVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
@@ -119,24 +120,12 @@ public class UserController {
 
         List<BsVo> categories = bookCategoryMapper.selectCategoryView();
 
-        
-
-        // for (BookCategoryVo bs : bsList) {
-        //     List<Object> categoryList = new ArrayList<>();
-        //     categoryList.add(bs);
-
-        //     List<BookCategoryVo> bssList = bookCategoryMapper.selectBssList(bs.getBsIdx());
-        //     categoryList.add(bssList);
-
-        //     result.add(categoryList);
-        // }
-
         return ResponseEntity.ok(categories);
     }
 
     @PostMapping("userPickResult")
     @Operation(summary = "테스트불가", description = "처음 로그인 했을 때 고른 장르들을 저장하는 코드지만 데이터를 정확하게 보내야 하는 이슈로 스웨거에서 테스트불가")
-    public ResponseEntity<String> userPickResult(List<List<Integer>> userPick) {
+    public ResponseEntity<String> userPickResult(@RequestBody List<List<Integer>> userPick) {
 
         UserVo user = (UserVo) session.getAttribute("user");
 
@@ -145,18 +134,13 @@ public class UserController {
                 for (int i = 0; i < userPick.size(); i++) {
                     int bsIdx = userPick.get(i).get(0);
                     int bssIdx = userPick.get(i).get(1);
-                    Integer bsssIdx = userPick.get(i).get(2);
-                    if (bsssIdx == null) {
-                        bsssIdx = 0;
-                        int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
-                        int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx, bsssIdx);
-                    } else {
-                        int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
-                        int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx, bsssIdx);
-                    }
+                    int bmIdx = bookCategoryMapper.selectBmIdxOneByBsIdx(bsIdx);
+                    int res = bookCategoryMapper.insertUserPick(user.getUserIdx(), bmIdx, bsIdx, bssIdx);
+
                 }
                 user.setFirstAt("N");
                 int res = userMapper.userFirstAtUpdate(user);
+                System.out.println("userPick = " + bookCategoryMapper.selectUserPick());
 
                 return ResponseEntity.ok("success");
             }

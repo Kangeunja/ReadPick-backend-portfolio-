@@ -30,7 +30,7 @@
         values(null, #{bssIdx}, #{bsssName}) on duplicate key update bsssName=#{bsssName}</insert>
 
     <insert id="insertUserPick" parameterType="int"> insert into userPick values(#{userIdx},
-        #{bmIdx},#{bsIdx},#{bssIdx},#{bsssIdx}) </insert>
+        #{bmIdx},#{bsIdx},#{bssIdx}) </insert>
     <!-- /insert -->
 
 
@@ -75,6 +75,10 @@
 
     <select id="selectCategoryView" resultMap="BookCategoryResultMap">
         select * from fullCategoryView order by bsIdx asc;
+    </select>
+
+    <select id="selectUserPick" resultType="bc">
+        select * from userPick;
     </select>
     <!-- /select -->
 

@@ -140,10 +140,6 @@ create table bookmark (
     foreign key (bIdx) references book (bIdx) on delete cascade,
     primary key(userIdx, bIdx)
 );
--- select isBookmarked from bookmark where bIdx = 1 and userIdx = 1; 
-select * from users;
-select * from bookmark;
-update bookmark set isBookmarked = 'N' where userIdx = 1 and bIdx = 1;
 
 create table rec (
     userIdx int not null,
@@ -154,8 +150,6 @@ create table rec (
     foreign key (bIdx) references book (bIdx) on delete cascade,
     primary key(userIdx, bIdx)
 );
-select * from rec;
-
 
 -- 검색할때만 쓰일 테이블
 create table searchKeyword(
@@ -184,17 +178,6 @@ insert into searchKeyword (keywordName) values
 ('종교/명상'),
 ('전문/기술');
 
-select keywordName from searchKeyword;
-select * from searchKeyword;
-select * from isbn order by isbnIdx;
-select * from book;
-select * from bookImage;
-select * from bookdetailcategory;
-select * from booksubsubcategory;
-select * from booksubcategory;
-select * from bookmaincategory; 
-select * from users; 
-select * from bookmark;
 create or replace view fullCategoryView as
 select 
     bs.bmIdx,
@@ -217,7 +200,6 @@ left join
 inner join 
 	isbn i on bsss.bsssIdx = i.bsssIdx
 group by i.isbn, bs.bmIdx, bm.bmName, bss.bsIdx, bs.bsName, bsss.bssIdx, bss.bssName, bsss.bsssName, i.bsssIdx;
-select * from fullCategoryView;
 
 create or replace view bookAndImageView as
 select 
@@ -228,15 +210,3 @@ from
 left join 
     bookImage bi on b.bIdx = bi.bIdx
 group by b.bIdx, bi.fileName;
-
-select * from bookAndImageView;
-
-
-select * from bookimage;
-
-select bsName from bookSubCategory order by bsIdx;
-
-select * from fullCategoryView where isbn = "9788937428449";
-
--- delete from users where userIdx = 28;
- 

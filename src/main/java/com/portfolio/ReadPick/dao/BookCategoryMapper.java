@@ -47,12 +47,12 @@ public interface BookCategoryMapper {
 
     BookCategoryVo selectOneBsListByBsIdx(int bsIdx);
 
-    int insertUserPick(int userIdx, int bmIdx, int bsIdx, int bssIdx, Integer bsssIdx);
-
     // BookCategoryVo selectBsOne(int bsIdx);
 
     // BookCategoryVo selectBssOne(int bssIdx);
 
     List<BsVo> selectCategoryView();
+
+    List<BookCategoryVo> selectUserPick();
 
 }
