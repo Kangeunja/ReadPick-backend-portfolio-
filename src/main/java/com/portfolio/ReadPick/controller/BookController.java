@@ -27,7 +27,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 public class BookController {
 
@@ -196,36 +195,35 @@ public class BookController {
     }
 
     @GetMapping("todayBook")
-    @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책을 리턴")
-    public ResponseEntity<BookVo> todayBook() {
+    @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책 4개를 리턴")
+    public ResponseEntity<List<BookVo>> todayBook() {
 
         UserVo user = (UserVo) session.getAttribute("user");
         int userIdx = user.getUserIdx();
-        List<Integer> bsssIdxList = recMapper.selectBsssIdxListByUserIdx(userIdx);
         List<Integer> bssIdxList = recMapper.selectBssIdxListByUserIdx(userIdx);
         List<Integer> bsIdxList = recMapper.selectBsIdxListByUserIdx(userIdx);
         List<Integer> bmIdxList = recMapper.selectBmIdxListByUserIdx(userIdx);
 
         List<Integer> bIdxList = new ArrayList<>();
-        for(int i = 0; i < bsssIdxList.size(); i++){
-            int bsssIdx = bsssIdxList.get(i);
+        for (int i = 0; i < bssIdxList.size(); i++) {
             int bssIdx = bssIdxList.get(i);
             int bsIdx = bsIdxList.get(i);
             int bmIdx = bmIdxList.get(i);
-            bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx, bsssIdx));
+            bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
         }
-        
-        Map<String, Object> recCountMaxByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
-        System.out.println(bIdxList);
-        if (recCountMaxByList==null) {
+
+        List<Map<String, Object>> recCountMaxListByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
+        if (recCountMaxListByList == null) {
             return ResponseEntity.ok(null);
         }
-        System.out.println(recCountMaxByList);
-        BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(recCountMaxByList.get("bIdx"));
-        // 제일 높은 추천 수
-        todayBookImage(recCountMaxByList.get("bIdx"));
-
-        return ResponseEntity.ok(bookOneByBIdx);
+        List<BookVo> bookListByBIdx = new ArrayList<>(); 
+        for (int i = 0; i < recCountMaxListByList.size(); i++) {
+            bookListByBIdx = bookMapper.selectBookByBIdx(recCountMaxListByList.get(i).get("bIdx"));
+        }
+        for (int i = 0; i < recCountMaxListByList.size(); i++) {
+            todayBookImage(recCountMaxListByList.get(i).get("bIdx"));
+        }
+        return ResponseEntity.ok(bookListByBIdx);
     }
 
     @GetMapping("todayBookImage")
@@ -233,6 +231,5 @@ public class BookController {
         BookImageVo image = bookImageMapper.selectOneImageByBIdx((int) bIdx);
         return ResponseEntity.ok(image);
     }
-    
 
 }

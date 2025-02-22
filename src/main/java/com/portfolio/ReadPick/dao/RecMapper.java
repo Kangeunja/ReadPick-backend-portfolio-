@@ -29,10 +29,10 @@ public interface RecMapper {
 
     List<Integer> selectBsssIdxListByUserIdx(int userIdx);
 
-    List<Integer> selectBIdxByCategoryIdx(int bmIdx, int bsIdx, int bssIdx, int bsssIdx);
+    List<Integer> selectBIdxByCategoryIdx(int bmIdx, int bsIdx, int bssIdx);
 
     // List<BookVo> selectBookListByBIdx(List<Integer> bIdxLis
 
-    Map<String, Object> recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
+    List<Map<String, Object>> recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
 
 }

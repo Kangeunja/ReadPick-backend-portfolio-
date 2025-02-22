@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.UserMapper;
-import com.portfolio.ReadPick.vo.BookCategoryVo;
 import com.portfolio.ReadPick.vo.BsVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -45,22 +46,18 @@ public class UserController {
     @PostMapping("login")
     @Operation(summary = "로그인", description = "로그인하기")
     public ResponseEntity<String> login(@RequestBody UserVo user) {
+        String id = user.getId();
+        String pw = user.getPw();
 
-        UserVo dBuser = userMapper.selectOneFromId(user.getId());
-        // 아이디가 없는(틀린)경우
-        if (dBuser == null || user.getPw().equals(dBuser.getPw()) == false) {
-            ;
+        UserVo dbUser = userMapper.selectOneFromId(id);
+        // 조회된 아이디가 없는(틀린)경우 || 비밀번호가 틀린 경우
+        if (dbUser == null || dbUser.getPw().equals(pw) == false) {
             return ResponseEntity.ok("fail");
         }
 
-        user.setAdminAt(dBuser.getAdminAt());
-        user.setEmail(dBuser.getEmail());
-        user.setFirstAt(dBuser.getFirstAt());
-        user.setNickName(dBuser.getNickName());
-        user.setUserIdx(dBuser.getUserIdx());
-        user.setUserName(dBuser.getUserName());
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
-        session.setAttribute("user", user);
+        session.setAttribute("user", dbUser);
+        session.setMaxInactiveInterval(30 * 60); // 세션 유효시간 30분
 
         return ResponseEntity.ok("success");
     }
@@ -68,10 +65,14 @@ public class UserController {
     // 로그아웃
     @PostMapping("logout")
     @Operation(summary = "로그아웃", description = "로그아웃하기")
-    public ResponseEntity<String> logout() {
-
-        session.removeAttribute("user");
-
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        if (session != null)
+            session.invalidate();
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return ResponseEntity.ok("success");
     }// end:logout()
 
@@ -97,7 +98,7 @@ public class UserController {
     @PostMapping("userInsert")
     @Operation(summary = "회원가입", description = "회원가입하기")
     public ResponseEntity<String> userInsert(@RequestBody UserVo user) {
-        System.out.println(user);
+
         int res = userMapper.userInsert(user);
 
         return ResponseEntity.ok("success");
@@ -106,12 +107,12 @@ public class UserController {
     // 로그인체크
     @PostMapping(value = "checkLogin")
     @Operation(summary = "로그인체크", description = "로그인체크")
-    public ResponseEntity<String> checkLogin(String id, String pw) {
+    public ResponseEntity<String> checkLogin() {
         UserVo user = (UserVo) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("fail");
         }
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(user.getId() + " : success");
     }
 
     @GetMapping("userPick")

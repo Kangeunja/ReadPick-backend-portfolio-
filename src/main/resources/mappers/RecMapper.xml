@@ -24,11 +24,8 @@
     <select id="recCountMaxByUserRecBIdxList" resultType="map" parameterType="list"> select bIdx,
         recCountMax from ( select bIdx, count(*) as recCountMax from rec where bIdx in <foreach
             item="bIdx" collection="bIdxList" open="(" separator="," close=")"> #{bIdx} </foreach>
-        and isRecommended = 'Y' group by bIdx ) as countResults order by recCountMax desc limit 1; </select>
+        and isRecommended = 'Y' group by bIdx ) as countResults order by recCountMax desc limit 4; </select>
 
-
-    <select id="selectBsssIdxListByUserIdx" resultType="Integer" parameterType="int"> select bsssIdx
-        from userPick where userIdx = #{userIdx} order by bsssIdx desc </select>
 
     <select id="selectBssIdxListByUserIdx" resultType="Integer" parameterType="int"> select bssIdx
         from userPick where UserIdx = #{UserIdx} order by bssIdx desc </select>
@@ -40,8 +37,7 @@
         from userPick where UserIdx = #{UserIdx} order by bmIdx desc </select>
 
     <select id="selectBIdxByCategoryIdx" resultType="Integer" parameterType="int"> select bIdx from
-        book where bmIdx = #{bmIdx} and bsIdx = #{bsIdx} and bssIdx = #{bssIdx} and bsssIdx =
-        #{bsssIdx} </select>
+        book where bmIdx = #{bmIdx} and bsIdx = #{bsIdx} and bssIdx = #{bssIdx};</select>
 
     <select id=""></select>
 
