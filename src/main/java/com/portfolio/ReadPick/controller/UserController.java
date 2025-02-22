@@ -112,7 +112,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.ok("fail");
         }
-        return ResponseEntity.ok(user.getId() + " : success");
+        return ResponseEntity.ok("success");
     }
 
     @GetMapping("userPick")
