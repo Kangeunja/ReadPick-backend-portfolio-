@@ -56,8 +56,10 @@ public class UserController {
         }
 
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
-        session.setAttribute("user", dbUser);
-        session.setMaxInactiveInterval(30 * 60); // 세션 유효시간 30분
+        if (session.getAttribute("user") == null) {
+            session.setAttribute("user", dbUser);
+            session.setMaxInactiveInterval(30 * 60); // 세션 유효 시간 30분
+        }
 
         return ResponseEntity.ok("success");
     }
@@ -105,7 +107,7 @@ public class UserController {
     }
 
     // 로그인체크
-    @PostMapping(value = "checkLogin")
+    @PostMapping("checkLogin")
     @Operation(summary = "로그인체크", description = "로그인체크")
     public ResponseEntity<String> checkLogin() {
         UserVo user = (UserVo) session.getAttribute("user");

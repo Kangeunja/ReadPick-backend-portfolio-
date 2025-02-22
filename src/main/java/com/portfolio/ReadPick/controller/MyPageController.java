@@ -19,8 +19,9 @@ import com.portfolio.ReadPick.vo.BookmarkVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 
 @RestController
 public class MyPageController {
@@ -42,15 +43,23 @@ public class MyPageController {
 
     // @PostMapping("myPageBookList")
     // public ResponseEntity<BookmarkVo> myPageBookList() {
-    //     UserVo user = (UserVo) session.getAttribute("user");
-    //     BookmarkVo bookmarkList = bookmarkMapper.selectMyPageBookList(user.getUserIdx());
-    //     return ResponseEntity.ok(bookmarkList);
+    // UserVo user = (UserVo) session.getAttribute("user");
+    // BookmarkVo bookmarkList =
+    // bookmarkMapper.selectMyPageBookList(user.getUserIdx());
+    // return ResponseEntity.ok(bookmarkList);
     // }
 
     @PostMapping("userInfo")
     @Operation(summary = "회원정보", description = "회원정보")
-    public ResponseEntity<UserVo> userInfo() {
+    public ResponseEntity<UserVo> userInfo(HttpServletResponse response) {
         UserVo user = (UserVo) session.getAttribute("user");
+        if (user == null) {
+            Cookie cookie = new Cookie("JSESSIONID", null);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
         return ResponseEntity.ok(user);
     }
 
@@ -72,10 +81,11 @@ public class MyPageController {
         bookmarkVo.setIsBookmarked("Y");
         List<BookVo> bookList = new ArrayList<>();
         List<BookmarkVo> bookmarkList = myPageMapper.bookmarkList(bookmarkVo);
-        if(bookmarkList.size() == 0){
+        if (bookmarkList.size() == 0) {
             return ResponseEntity.ok(bookList);
-        };
-        for(int i = 0; i < bookmarkList.size(); i++){
+        }
+        ;
+        for (int i = 0; i < bookmarkList.size(); i++) {
             bookList.add(bookMapper.selectOneBookByBIdx(bookmarkList.get(i).getBIdx()));
         }
         return ResponseEntity.ok(bookList);
@@ -93,10 +103,10 @@ public class MyPageController {
         if (bookmarkList.size() == 0) {
             return ResponseEntity.ok(imageList);
         }
-        for(int i = 0; i < bookmarkList.size(); i++){
+        for (int i = 0; i < bookmarkList.size(); i++) {
             imageList.add(myPageMapper.bookmarkImageList(bookmarkList.get(i).getBIdx()));
         }
         return ResponseEntity.ok(imageList);
     }
-    
+
 }
