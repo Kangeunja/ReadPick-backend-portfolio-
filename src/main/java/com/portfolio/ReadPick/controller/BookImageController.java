@@ -1,5 +1,7 @@
 package com.portfolio.ReadPick.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,13 @@ public class BookImageController {
         BookVo bookOneByIsbn = bookMapper.selectOneBookByBIdx(bIdx);
         BookImageVo image = bookImageMapper.selectOneImageByBIdx(bookOneByIsbn.getBIdx());
         return ResponseEntity.ok(image);
+    }
+    
+
+    @GetMapping("userGenreBookImage")
+    public ResponseEntity<List<BookImageVo>> userGenreBookImage(Object bIdx) {
+        List<BookImageVo> imageList = bookImageMapper.selectImageByBIdx((int) bIdx);
+        return ResponseEntity.ok(imageList);
     }
 
 }

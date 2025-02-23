@@ -43,6 +43,9 @@ public class BookController {
     BookmarkMapper bookmarkMapper;
 
     @Autowired
+    BookImageController bookImageController;
+
+    @Autowired
     HttpSession session;
 
     @Autowired
@@ -194,9 +197,9 @@ public class BookController {
         return ResponseEntity.ok(recCount);
     }
 
-    @GetMapping("todayBook")
+    @GetMapping("userGenreBook")
     @Operation(summary = "유저 장르 별 책 추천", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책 4개를 리턴")
-    public ResponseEntity<List<BookVo>> todayBook() {
+    public ResponseEntity<List<BookVo>> userGenreBook() {
 
         UserVo user = (UserVo) session.getAttribute("user");
         int userIdx = user.getUserIdx();
@@ -212,24 +215,33 @@ public class BookController {
             bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
         }
 
-        List<Map<String, Object>> recCountMaxListByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
-        if (recCountMaxListByList == null) {
+        List<Map<String, Object>> recCountMaxAndBIdxListByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
+        if (recCountMaxAndBIdxListByList == null) {
             return ResponseEntity.ok(null);
         }
-        List<BookVo> bookListByBIdx = new ArrayList<>(); 
-        for (int i = 0; i < recCountMaxListByList.size(); i++) {
-            bookListByBIdx = bookMapper.selectBookByBIdx(recCountMaxListByList.get(i).get("bIdx"));
-        }
-        for (int i = 0; i < recCountMaxListByList.size(); i++) {
-            todayBookImage(recCountMaxListByList.get(i).get("bIdx"));
+        List<BookVo> bookListByBIdx = new ArrayList<>();
+        for (int i = 0; i < recCountMaxAndBIdxListByList.size(); i++) {
+            bookListByBIdx.add(bookMapper.selectBookByBIdx(recCountMaxAndBIdxListByList.get(i).get("bIdx")));
+            bookImageController.userGenreBookImage(recCountMaxAndBIdxListByList.get(i).get("bIdx"));
         }
         return ResponseEntity.ok(bookListByBIdx);
     }
 
-    @GetMapping("todayBookImage")
-    public ResponseEntity<BookImageVo> todayBookImage(Object bIdx) {
-        BookImageVo image = bookImageMapper.selectOneImageByBIdx((int) bIdx);
-        return ResponseEntity.ok(image);
+    @GetMapping("todayBook")
+    @Operation(summary = "오늘의 책", description = "오늘의 책 추천")
+    public ResponseEntity<BookVo> todayBook() {
+        Map<String, Object> bIdxAndMaxCount = new HashMap<>();
+        BookVo book = new BookVo();
+        try {
+            bIdxAndMaxCount = recMapper.recCountMaxBook();
+            int bIdx = (int) bIdxAndMaxCount.get("bIdx");
+            book = bookMapper.selectOneBookByBIdx(bIdx);
+            bookImageController.bookImageOne(bIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(book);
     }
 
 }

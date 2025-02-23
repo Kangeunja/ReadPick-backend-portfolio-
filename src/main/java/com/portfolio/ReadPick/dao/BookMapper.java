@@ -32,7 +32,7 @@ public interface BookMapper {
 
     BookVo selectOneBookByIsbn(String isbn);
 
-    List<BookVo> selectBookByBIdx(Object bIdx);
+    BookVo selectBookByBIdx(Object bIdx);
 
     BookVo selectOneBookByBIdx(int bIdx);
     

@@ -35,4 +35,5 @@ public interface RecMapper {
 
     List<Map<String, Object>> recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
 
+    Map<String, Object> recCountMaxBook();
 }

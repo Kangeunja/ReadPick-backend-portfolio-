@@ -4,43 +4,31 @@
 <mapper namespace="com.portfolio.ReadPick.dao.BookImageMapper">
 
 
-<!-- insert -->
-    <insert id="insertFile" parameterType="bookImage"> insert into bookImage values (null, #{bIdx}, #{fileName}, #{fileType})</insert>
-<!-- /insert -->
+    <!-- insert -->
+    <insert id="insertFile" parameterType="bookImage"> insert into bookImage values (null, #{bIdx},
+        #{fileName}, #{fileType})</insert>
+    <!-- /insert -->
 
 
+    <!-- select -->
+
+    <select id="selectOneImageByBIdx" resultType="bookImage" parameterType="int"> select * from
+        bookimage where bIdx = #{bIdx}</select>
+
+    <select id="selectImageByBIdx" resultType="bookImage" parameterType="int">select * from
+        bookImage where bIdx = #{bIdx}</select>
+
+    <!-- /select -->
 
 
+    <!-- update -->
+
+    <!-- /update -->
 
 
+    <!-- delete -->
 
-<!-- select -->
-
-    <select id="selectOneImageByBIdx" resultType="bookImage" parameterType="int">
-        select * from bookimage where bIdx = #{bIdx}
-    </select>
-
-<!-- /select -->
-
-
-
-
-
-
-
-<!-- update -->
-
-<!-- /update -->
-
-
-
-
-
-
-
-<!-- delete -->
-
-<!-- /delete -->
+    <!-- /delete -->
 
 
 </mapper>
