@@ -109,9 +109,14 @@ public class UserController {
     // 로그인체크
     @PostMapping("checkLogin")
     @Operation(summary = "로그인체크", description = "로그인체크")
-    public ResponseEntity<String> checkLogin() {
+    public ResponseEntity<String> checkLogin(HttpServletResponse response) {
         UserVo user = (UserVo) session.getAttribute("user");
         if (user == null) {
+            Cookie cookie = new Cookie("JSESSIONID", null);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
             return ResponseEntity.ok("fail");
         }
         return ResponseEntity.ok("success");

@@ -195,7 +195,7 @@ public class BookController {
     }
 
     @GetMapping("todayBook")
-    @Operation(summary = "오늘의 책", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책 4개를 리턴")
+    @Operation(summary = "유저 장르 별 책 추천", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책 4개를 리턴")
     public ResponseEntity<List<BookVo>> todayBook() {
 
         UserVo user = (UserVo) session.getAttribute("user");
