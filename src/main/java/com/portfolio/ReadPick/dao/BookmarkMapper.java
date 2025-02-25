@@ -11,7 +11,7 @@ public interface BookmarkMapper {
 
     int insertBookmark(BookmarkVo bookmarkVo);
 
-    String selectOneUserBookmark(int bIdx, int userIdx);
+    String selectOneUserBookmark(int bookIdx, int userIdx);
 
     int updateBookmark(BookmarkVo bookmarkVo);
 

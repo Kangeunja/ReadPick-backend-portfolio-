@@ -17,7 +17,7 @@ public interface BookMapper {
 
     void insertBook(BookVo bookVo);
 
-    int selectMaxBIdx();
+    int selectMaxBookIdx();
 
     int selectMaxIsbnIdx();
     
@@ -32,9 +32,9 @@ public interface BookMapper {
 
     BookVo selectOneBookByIsbn(String isbn);
 
-    BookVo selectBookByBIdx(Object bIdx);
+    BookVo selectBookByBookIdx(Object bookIdx);
 
-    BookVo selectOneBookByBIdx(int bIdx);
+    BookVo selectOneBookByBookIdx(int bookIdx);
     
 
 }

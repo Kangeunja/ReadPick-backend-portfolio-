@@ -56,7 +56,7 @@ public class NaverSearchIsbnService {
                 // System.out.println(isbn);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("NaverSearchIsbnServiceError : " + e);
         }
     }
 }

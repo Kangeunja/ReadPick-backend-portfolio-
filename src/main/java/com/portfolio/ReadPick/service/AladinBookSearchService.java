@@ -67,13 +67,13 @@ public class AladinBookSearchService {
                 bookMapper.insertBook(bookVo);
 
                 // 사진넣는곳
-                bookImageVo.setBIdx(bookMapper.selectMaxBIdx());
+                bookImageVo.setBookIdx(bookMapper.selectMaxBookIdx());
                 bookImageVo.setFileType("Y");
                 bookImageVo.setFileName(item.get("cover").asText());
                 bookImageMapper.insertFile(bookImageVo);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("AladinBookSearchServiceError : " + e);
         }
     }
 

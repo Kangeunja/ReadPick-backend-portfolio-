@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Alias("book")
 public class BookVo {
-    int bIdx;
+    int bookIdx;
     int bmIdx;  //메인카테고리
     int bsIdx;  //하위카테고리
     int bssIdx; //하위카테고리

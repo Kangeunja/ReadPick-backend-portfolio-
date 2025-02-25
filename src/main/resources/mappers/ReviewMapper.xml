@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.ReadPick.dao.ReviewMapper">
+
+
+    <!-- insert -->
+
+    <select id="insertReview" parameterType="review">
+        insert into review (userIdx, bookIdx, content, reviewAt) values(#{userIdx}, #{bookIdx}, #{content}, #{reviewAt})
+    </select>
+    
+    <!-- /insert -->
+
+
+    <!-- select -->
+    <select id="selectOneReview" resultType="review" parameterType="int">
+        select * from review where userIdx = #{userIdx} and bookIdx = #{bookIdx}
+    </select>
+
+    <!-- /select -->
+
+
+    <!-- update -->
+
+    <!-- /update -->
+
+
+    <!-- delete -->
+
+    <!-- /delete -->
+
+
+</mapper>

@@ -106,11 +106,9 @@ public class AladinCategorySearchService {
                 } else {
                     return;
                 }
-
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("AladinCategorySearchServiceError : " + e);
         }
     }
-
 }

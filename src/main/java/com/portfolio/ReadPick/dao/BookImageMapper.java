@@ -11,8 +11,8 @@ public interface BookImageMapper {
 
     int insertFile(BookImageVo bookImageVo);
 
-    BookImageVo selectOneImageByBIdx(int bIdx);
+    BookImageVo selectOneImageByBookIdx(int bookIdx);
 
-    List<BookImageVo> selectImageByBIdx(int bIdx);
+    List<BookImageVo> selectImageByBookIdx(int bookIdx);
 
 }

@@ -78,24 +78,24 @@ public class BookController {
     }
 
     @GetMapping("bookOne")
-    @Operation(summary = "bIdx를 이용해 책의 정보 출력", description = "호출 시 선택한 책의 bIdx을 보내줄 것")
-    public ResponseEntity<BookVo> bookOne(int bIdx) {
-        BookVo bookOneByBIdx = bookMapper.selectOneBookByBIdx(bIdx);
-        bookService.bookImageService(bIdx);
-        return ResponseEntity.ok(bookOneByBIdx);
+    @Operation(summary = "bookIdx를 이용해 책의 정보 출력", description = "호출 시 선택한 책의 bookIdx을 보내줄 것")
+    public ResponseEntity<BookVo> bookOne(int bookIdx) {
+        BookVo bookOneByBookIdx = bookMapper.selectOneBookByBookIdx(bookIdx);
+        bookService.bookImageService(bookIdx);
+        return ResponseEntity.ok(bookOneByBookIdx);
     }
 
     @GetMapping("isBookmark")
     @Operation(summary = "북마크 확인", description = "로그인된 사용자와 책의 번호를 확인해서 북마크를 체크하고, 북마크가 있는 경우 Y, 없는 경우 N을 반환")
-    public ResponseEntity<String> isBookmark(int bIdx) {
+    public ResponseEntity<String> isBookmark(int bookIdx) {
         UserVo user = (UserVo) session.getAttribute("user");
         String isBookmark = "N";
         if (user != null) {
             int userIdx = user.getUserIdx();
-            if (bookmarkMapper.selectOneUserBookmark(bIdx, userIdx) == null
-                    || bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("N")) {
+            if (bookmarkMapper.selectOneUserBookmark(bookIdx, userIdx) == null
+                    || bookmarkMapper.selectOneUserBookmark(bookIdx, userIdx).equals("N")) {
                 return ResponseEntity.ok(isBookmark);
-            } else if (bookmarkMapper.selectOneUserBookmark(bIdx, userIdx).equals("Y")) {
+            } else if (bookmarkMapper.selectOneUserBookmark(bookIdx, userIdx).equals("Y")) {
                 isBookmark = "Y";
             }
         }
@@ -104,7 +104,7 @@ public class BookController {
 
     @GetMapping("bookmark")
     @Operation(summary = "북마크 해제 및 추가", description = "북마크 버튼을 누르면 유저의 로그인 여부를 체크 후 토글로 북마크 처리 <br> map 이름은 bookmark")
-    public ResponseEntity<Map<String, Object>> bookmark(int bIdx) {
+    public ResponseEntity<Map<String, Object>> bookmark(int bookIdx) {
 
         UserVo user = (UserVo) session.getAttribute("user");
         Map<String, Object> bookmark = new HashMap<>();
@@ -115,12 +115,12 @@ public class BookController {
         }
 
         int userIdx = user.getUserIdx();
-        String nowBookmark = bookmarkMapper.selectOneUserBookmark(bIdx, userIdx);
+        String nowBookmark = bookmarkMapper.selectOneUserBookmark(bookIdx, userIdx);
 
         if (nowBookmark == null) {
             BookmarkVo bookmarkVo = new BookmarkVo();
             bookmarkVo.setUserIdx(userIdx);
-            bookmarkVo.setBIdx(bIdx);
+            bookmarkVo.setBookIdx(bookIdx);
             bookmarkVo.setIsBookmarked("Y");
             // System.out.println(bookmarkVo);
             int res = bookmarkMapper.insertBookmark(bookmarkVo);
@@ -128,14 +128,14 @@ public class BookController {
         } else if (nowBookmark.equals("N")) {
             BookmarkVo bookmarkVo = new BookmarkVo();
             bookmarkVo.setUserIdx(userIdx);
-            bookmarkVo.setBIdx(bIdx);
+            bookmarkVo.setBookIdx(bookIdx);
             bookmarkVo.setIsBookmarked("Y");
             int res = bookmarkMapper.updateBookmark(bookmarkVo);
             bookmark.put("message", "북마크추가완료");
         } else if (nowBookmark.equals("Y")) {
             BookmarkVo bookmarkVo = new BookmarkVo();
             bookmarkVo.setUserIdx(userIdx);
-            bookmarkVo.setBIdx(bIdx);
+            bookmarkVo.setBookIdx(bookIdx);
             bookmarkVo.setIsBookmarked("N");
             int res = bookmarkMapper.updateBookmark(bookmarkVo);
             bookmark.put("message", "북마크해제완료");
@@ -147,7 +147,7 @@ public class BookController {
     // 책 추천 로직
     @GetMapping("recommend")
     @Operation(summary = "책 추천", description = "책 추천")
-    public ResponseEntity<Map<String, Object>> recommend(int bIdx) {
+    public ResponseEntity<Map<String, Object>> recommend(int bookIdx) {
 
         UserVo user = (UserVo) session.getAttribute("user");
         Map<String, Object> rec = new HashMap<>();
@@ -158,12 +158,12 @@ public class BookController {
         }
 
         int userIdx = user.getUserIdx();
-        String nowRec = recMapper.selectOneUserRec(bIdx, userIdx);
+        String nowRec = recMapper.selectOneUserRec(bookIdx, userIdx);
 
         if (nowRec == null) {
             RecVo recVo = new RecVo();
             recVo.setUserIdx(userIdx);
-            recVo.setBIdx(bIdx);
+            recVo.setBookIdx(bookIdx);
             recVo.setIsRecommended("Y");
             // System.out.println(recVo);
             int res = recMapper.insertRec(recVo);
@@ -171,7 +171,7 @@ public class BookController {
         } else if (nowRec.equals("N")) {
             RecVo recVo = new RecVo();
             recVo.setUserIdx(userIdx);
-            recVo.setBIdx(bIdx);
+            recVo.setBookIdx(bookIdx);
             recVo.setIsRecommended("Y");
             ;
             int res = recMapper.updateRec(recVo);
@@ -179,7 +179,7 @@ public class BookController {
         } else if (nowRec.equals("Y")) {
             RecVo recVo = new RecVo();
             recVo.setUserIdx(userIdx);
-            recVo.setBIdx(bIdx);
+            recVo.setBookIdx(bookIdx);
             recVo.setIsRecommended("N");
             int res = recMapper.updateRec(recVo);
             rec.put("message", "추천취소");
@@ -191,9 +191,9 @@ public class BookController {
 
     // 추천 카운트
     @GetMapping("recCount")
-    @Operation(summary = "추천 수 체크", description = "사용 시 bIdx(int)를 보내줄 것 ")
-    public ResponseEntity<Integer> recCount(int bIdx) {
-        int recCount = recMapper.recCount(bIdx);
+    @Operation(summary = "추천 수 체크", description = "사용 시 bookIdx(int)를 보내줄 것 ")
+    public ResponseEntity<Integer> recCount(int bookIdx) {
+        int recCount = recMapper.recCount(bookIdx);
         return ResponseEntity.ok(recCount);
     }
 
@@ -207,36 +207,36 @@ public class BookController {
         List<Integer> bsIdxList = recMapper.selectBsIdxListByUserIdx(userIdx);
         List<Integer> bmIdxList = recMapper.selectBmIdxListByUserIdx(userIdx);
 
-        List<Integer> bIdxList = new ArrayList<>();
+        List<Integer> bookIdxList = new ArrayList<>();
         for (int i = 0; i < bssIdxList.size(); i++) {
             int bssIdx = bssIdxList.get(i);
             int bsIdx = bsIdxList.get(i);
             int bmIdx = bmIdxList.get(i);
-            bIdxList.addAll(recMapper.selectBIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
+            bookIdxList.addAll(recMapper.selectBookIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
         }
 
-        List<Map<String, Object>> recCountMaxAndBIdxListByList = recMapper.recCountMaxByUserRecBIdxList(bIdxList);
-        if (recCountMaxAndBIdxListByList == null) {
+        List<Map<String, Object>> recCountMaxAndBookIdxListByList = recMapper.recCountMaxByUserRecBookIdxList(bookIdxList);
+        if (recCountMaxAndBookIdxListByList == null) {
             return ResponseEntity.ok(null);
         }
-        List<BookVo> bookListByBIdx = new ArrayList<>();
-        for (int i = 0; i < recCountMaxAndBIdxListByList.size(); i++) {
-            bookListByBIdx.add(bookMapper.selectBookByBIdx(recCountMaxAndBIdxListByList.get(i).get("bIdx")));
-            bookImageController.userGenreBookImage(recCountMaxAndBIdxListByList.get(i).get("bIdx"));
+        List<BookVo> bookListByBookIdx = new ArrayList<>();
+        for (int i = 0; i < recCountMaxAndBookIdxListByList.size(); i++) {
+            bookListByBookIdx.add(bookMapper.selectBookByBookIdx(recCountMaxAndBookIdxListByList.get(i).get("bookIdx")));
+            bookImageController.userGenreBookImage(recCountMaxAndBookIdxListByList.get(i).get("bookIdx"));
         }
-        return ResponseEntity.ok(bookListByBIdx);
+        return ResponseEntity.ok(bookListByBookIdx);
     }
 
     @GetMapping("todayBook")
     @Operation(summary = "오늘의 책", description = "오늘의 책 추천")
     public ResponseEntity<BookVo> todayBook() {
-        Map<String, Object> bIdxAndMaxCount = new HashMap<>();
+        Map<String, Object> bookIdxAndMaxCount = new HashMap<>();
         BookVo book = new BookVo();
         try {
-            bIdxAndMaxCount = recMapper.recCountMaxBook();
-            int bIdx = (int) bIdxAndMaxCount.get("bIdx");
-            book = bookMapper.selectOneBookByBIdx(bIdx);
-            bookImageController.bookImageOne(bIdx);
+            bookIdxAndMaxCount = recMapper.recCountMaxBook();
+            int bookIdx = (int) bookIdxAndMaxCount.get("bookIdx");
+            book = bookMapper.selectOneBookByBookIdx(bookIdx);
+            bookImageController.bookImageOne(bookIdx);
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.ok(null);

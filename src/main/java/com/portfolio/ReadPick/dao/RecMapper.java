@@ -11,13 +11,13 @@ import com.portfolio.ReadPick.vo.RecVo;
 @Mapper
 public interface RecMapper {
 
-	String selectOneUserRec(int bIdx, int userIdx);
+	String selectOneUserRec(int bookIdx, int userIdx);
 
     int insertRec(RecVo recVo);
 
     int updateRec(RecVo recVo);
 
-    int recCount(int bIdx);
+    int recCount(int bookIdx);
 
     int recCountMax();
 
@@ -29,11 +29,11 @@ public interface RecMapper {
 
     List<Integer> selectBsssIdxListByUserIdx(int userIdx);
 
-    List<Integer> selectBIdxByCategoryIdx(int bmIdx, int bsIdx, int bssIdx);
+    List<Integer> selectBookIdxByCategoryIdx(int bmIdx, int bsIdx, int bssIdx);
 
-    // List<BookVo> selectBookListByBIdx(List<Integer> bIdxLis
+    // List<BookVo> selectBookListByBookIdx(List<Integer> bookIdxLis
 
-    List<Map<String, Object>> recCountMaxByUserRecBIdxList(List<Integer> bIdxList);
+    List<Map<String, Object>> recCountMaxByUserRecBookIdxList(List<Integer> bookIdxList);
 
     Map<String, Object> recCountMaxBook();
 }

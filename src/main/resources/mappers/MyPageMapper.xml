@@ -13,7 +13,7 @@
         bookmark where userIdx = #{userIdx} and isBookmarked = #{isBookmarked} order by bookmarkAt desc; </select>
 
     <select id="bookmarkImageList" resultType="bookImage" parameterType="int">
-        select * from bookImage where bIdx = #{bIdx} 
+        select * from bookImage where bookIdx = #{bookIdx} 
     </select>
 
     <!-- /select -->

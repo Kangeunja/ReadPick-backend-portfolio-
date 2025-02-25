@@ -15,6 +15,6 @@ public interface MyPageMapper {
 
     List<BookmarkVo> bookmarkList(BookmarkVo bookmarkVo);
 
-	BookImageVo bookmarkImageList(int bIdx);
+	BookImageVo bookmarkImageList(int bookIdx);
 
 }

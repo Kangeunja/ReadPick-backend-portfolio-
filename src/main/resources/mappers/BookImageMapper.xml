@@ -5,18 +5,18 @@
 
 
     <!-- insert -->
-    <insert id="insertFile" parameterType="bookImage"> insert into bookImage values (null, #{bIdx},
+    <insert id="insertFile" parameterType="bookImage"> insert into bookImage values (null, #{bookIdx},
         #{fileName}, #{fileType})</insert>
     <!-- /insert -->
 
 
     <!-- select -->
 
-    <select id="selectOneImageByBIdx" resultType="bookImage" parameterType="int"> select * from
-        bookimage where bIdx = #{bIdx}</select>
+    <select id="selectOneImageByBookIdx" resultType="bookImage" parameterType="int"> select * from
+        bookimage where bookIdx = #{bookIdx}</select>
 
-    <select id="selectImageByBIdx" resultType="bookImage" parameterType="int">select * from
-        bookImage where bIdx = #{bIdx}</select>
+    <select id="selectImageByBookIdx" resultType="bookImage" parameterType="int">select * from
+        bookImage where bookIdx = #{bookIdx}</select>
 
     <!-- /select -->
 

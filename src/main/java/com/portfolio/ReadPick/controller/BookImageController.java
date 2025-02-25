@@ -22,16 +22,16 @@ public class BookImageController {
     BookImageMapper bookImageMapper;
 
     @GetMapping("bookImageOne")
-    public ResponseEntity<BookImageVo> bookImageOne(int bIdx) {
-        BookVo bookOneByIsbn = bookMapper.selectOneBookByBIdx(bIdx);
-        BookImageVo image = bookImageMapper.selectOneImageByBIdx(bookOneByIsbn.getBIdx());
+    public ResponseEntity<BookImageVo> bookImageOne(int bookIdx) {
+        BookVo bookOneByIsbn = bookMapper.selectOneBookByBookIdx(bookIdx);
+        BookImageVo image = bookImageMapper.selectOneImageByBookIdx(bookOneByIsbn.getBookIdx());
         return ResponseEntity.ok(image);
     }
     
 
     @GetMapping("userGenreBookImage")
-    public ResponseEntity<List<BookImageVo>> userGenreBookImage(Object bIdx) {
-        List<BookImageVo> imageList = bookImageMapper.selectImageByBIdx((int) bIdx);
+    public ResponseEntity<List<BookImageVo>> userGenreBookImage(Object bookIdx) {
+        List<BookImageVo> imageList = bookImageMapper.selectImageByBookIdx((int) bookIdx);
         return ResponseEntity.ok(imageList);
     }
 

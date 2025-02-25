@@ -6,13 +6,13 @@
     <!-- insert -->
 
     <insert id="insertBookmark" parameterType="bookmark"> insert into bookmark values(#{userIdx},
-        #{bIdx}, null, #{isBookmarked})</insert>
+        #{bookIdx}, null, #{isBookmarked})</insert>
 
     <!-- /insert -->
 
 
     <!-- select -->
-    <select id="selectOneUserBookmark"> select isBookmarked from bookmark where bIdx = #{bIdx} and
+    <select id="selectOneUserBookmark"> select isBookmarked from bookmark where bookIdx = #{bookIdx} and
         userIdx = #{userIdx}</select>
     <!-- /select -->
 
@@ -20,7 +20,7 @@
     <!-- update -->
 
     <update id="updateBookmark" parameterType="bookmark"> update bookmark set isBookmarked =
-        #{isBookmarked} where userIdx = #{userIdx} and bIdx = #{bIdx}</update>
+        #{isBookmarked} where userIdx = #{userIdx} and bookIdx = #{bookIdx}</update>
 
     <!-- /update -->
 

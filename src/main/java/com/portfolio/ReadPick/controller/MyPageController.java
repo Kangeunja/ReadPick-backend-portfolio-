@@ -86,7 +86,7 @@ public class MyPageController {
         }
         ;
         for (int i = 0; i < bookmarkList.size(); i++) {
-            bookList.add(bookMapper.selectOneBookByBIdx(bookmarkList.get(i).getBIdx()));
+            bookList.add(bookMapper.selectOneBookByBookIdx(bookmarkList.get(i).getBookIdx()));
         }
         return ResponseEntity.ok(bookList);
     }
@@ -104,7 +104,7 @@ public class MyPageController {
             return ResponseEntity.ok(imageList);
         }
         for (int i = 0; i < bookmarkList.size(); i++) {
-            imageList.add(myPageMapper.bookmarkImageList(bookmarkList.get(i).getBIdx()));
+            imageList.add(myPageMapper.bookmarkImageList(bookmarkList.get(i).getBookIdx()));
         }
         return ResponseEntity.ok(imageList);
     }

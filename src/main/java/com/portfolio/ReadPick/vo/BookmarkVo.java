@@ -9,6 +9,6 @@ import lombok.Data;
 public class BookmarkVo {
 
     int userIdx;
-    int bIdx;
+    int bookIdx;
     String isBookmarked;
 }

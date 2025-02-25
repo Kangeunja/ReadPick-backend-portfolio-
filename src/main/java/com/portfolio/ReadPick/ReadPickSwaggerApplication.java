@@ -79,16 +79,16 @@ class ExampleController {
     //     return bookMapper.selectOneBookByIsbn(isbn);
     // }
 
-    // @GetMapping("imageOneByBIdx")
-    // @Operation(summary = "bIdx로 이미지정보 조회")
-    // public BookImageVo imageOneByBIdx(int bIdx) {
+    // @GetMapping("imageOneByBookIdx")
+    // @Operation(summary = "bookIdx로 이미지정보 조회")
+    // public BookImageVo imageOneByBookIdx(int bookIdx) {
 
-    //     return bookImageMapper.selectOneImageByBIdx(bIdx);
+    //     return bookImageMapper.selectOneImageByBookIdx(bookIdx);
     // }
 
     // @GetMapping("bookmark")
     // @Operation(summary = "북마크 추가/삭제", description = "로그인한 유저가 특정 게시물을 북마크 추가 또는 삭제할 수 있습니다.")
-    // public Map<String, Object> bookmark(int bIdx, Integer user) {
+    // public Map<String, Object> bookmark(int bookIdx, Integer user) {
 
     //     // UserVo user = (UserVo) session.getAttribute("user");
     //     Map<String, Object> bookmark = new HashMap<>();
@@ -99,25 +99,25 @@ class ExampleController {
     //     }
 
     //     // int userIdx = user.getUserIdx();
-    //     String nowBookmark = bookmarkMapper.selectOneUserBookmark(bIdx, user);
+    //     String nowBookmark = bookmarkMapper.selectOneUserBookmark(bookIdx, user);
     //     if (nowBookmark == null) {
     //         BookmarkVo bookmarkVo = new BookmarkVo();
     //         bookmarkVo.setUserIdx(user);
-    //         bookmarkVo.setBIdx(bIdx);
+    //         bookmarkVo.setBookIdx(bookIdx);
     //         bookmarkVo.setIsBookmarked("Y");
     //         int res = bookmarkMapper.insertBookmark(bookmarkVo);
     //         bookmark.put("message", "북마크추가완료");
     //     } else if (nowBookmark.equals("N")) {
     //         BookmarkVo bookmarkVo = new BookmarkVo();
     //         bookmarkVo.setUserIdx(user);
-    //         bookmarkVo.setBIdx(bIdx);
+    //         bookmarkVo.setBookIdx(bookIdx);
     //         bookmarkVo.setIsBookmarked("Y");
     //         int res = bookmarkMapper.updateBookmark(bookmarkVo);
     //         bookmark.put("message", "북마크추가완료");
     //     } else if (nowBookmark.equals("Y")) {
     //         BookmarkVo bookmarkVo = new BookmarkVo();
     //         bookmarkVo.setUserIdx(user);
-    //         bookmarkVo.setBIdx(bIdx);
+    //         bookmarkVo.setBookIdx(bookIdx);
     //         bookmarkVo.setIsBookmarked("N");
     //         int res = bookmarkMapper.updateBookmark(bookmarkVo);
     //         bookmark.put("message", "북마크해제완료");

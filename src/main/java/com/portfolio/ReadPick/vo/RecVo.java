@@ -8,6 +8,6 @@ import lombok.Data;
 @Alias("rec")
 public class RecVo {
     int userIdx;
-    int bIdx;
+    int bookIdx;
     String isRecommended;
 }

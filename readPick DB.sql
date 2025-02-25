@@ -52,7 +52,7 @@ create table isbn(
 
 
 create table book (
-	bIdx int primary key auto_increment,
+	bookIdx int primary key auto_increment,
     bmIdx int not null,
     bsIdx int not null,
     bssIdx int not null,
@@ -73,10 +73,10 @@ create table book (
 
 create table bookImage(
 	fileIdx	int primary key auto_increment,
-	bIdx int not null,
+	bookIdx int not null,
     fileName varchar(150) not null,
 	fileTypeURL char(1) default'N' not null, 
-    FOREIGN KEY (bIdx) REFERENCES book (bIdx) ON DELETE CASCADE
+    FOREIGN KEY (bookIdx) REFERENCES book (bookIdx) ON DELETE CASCADE
 );
 
 create table users(
@@ -101,7 +101,7 @@ create table userPick(
     FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
     foreign key (bmIdx) references bookMainCategory (bmIdx) on delete cascade,
     foreign key (bsIdx) references bookSubCategory (bsIdx) on delete cascade,
-    foreign key (bssIdx) references bookSubsubCategory (bssIdx) on delete cascade,
+    foreign key (bssIdx) references booksubsubcategory (bssIdx) on delete cascade,
     primary key(userIdx, bmIdx, bsIdx, bssIdx)
 );
 
@@ -121,34 +121,35 @@ create table userPickCount(
 );
 
 create table review(
-	rIdx	int primary key auto_increment,
 	userIdx	int not null,
-    bIdx	int not null,
-    content longtext not null,
-    createAt datetime DEFAULT now(),    
+    bookIdx	int not null,
+    content varchar(600) not null,
+    reviewAt char(1) default 'N' not null,
+    regDate datetime DEFAULT now(),
     FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
-    FOREIGN KEY (bIdx) REFERENCES book (bIdx) ON DELETE CASCADE
+    FOREIGN KEY (bookIdx) REFERENCES book (bookIdx) ON DELETE CASCADE,
+    primary key (userIdx, bookIdx)
 );
 
 -- 찜 목록 저장
 create table bookmark (
     userIdx int not null,
-    bIdx int not null,
+    bookIdx int not null,
     bookmarkAt int auto_increment unique,
     isBookmarked char(1) default 'N',
     foreign key (userIdx) references users (userIdx) on delete cascade,
-    foreign key (bIdx) references book (bIdx) on delete cascade,
-    primary key(userIdx, bIdx)
+    foreign key (bookIdx) references book (bookIdx) on delete cascade,
+    primary key(userIdx, bookIdx)
 );
 
 create table rec (
     userIdx int not null,
-    bIdx int not null,
+    bookIdx int not null,
     recAt int auto_increment unique,
     isRecommended char(1) default 'N',
     foreign key (userIdx) references users (userIdx) on delete cascade,
-    foreign key (bIdx) references book (bIdx) on delete cascade,
-    primary key(userIdx, bIdx)
+    foreign key (bookIdx) references book (bookIdx) on delete cascade,
+    primary key(userIdx, bookIdx)
 );
 
 -- 검색할때만 쓰일 테이블
@@ -203,10 +204,12 @@ group by i.isbn, bs.bmIdx, bm.bmName, bss.bsIdx, bs.bsName, bsss.bssIdx, bss.bss
 
 create or replace view bookAndImageView as
 select 
-    b.bIdx,
+    b.bookIdx,
     bi.fileName
 from
 	book b
 left join 
-    bookImage bi on b.bIdx = bi.bIdx
-group by b.bIdx, bi.fileName;
+    bookImage bi on b.bookIdx = bi.bookIdx
+group by b.bookIdx, bi.fileName;
+
+select * from userPick;

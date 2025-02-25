@@ -8,7 +8,7 @@ import lombok.Data;
 @Alias("bookImage")
 public class BookImageVo {
 
-    int bIdx;
+    int bookIdx;
     int fileIdx;
     String fileName;
     String fileType;
