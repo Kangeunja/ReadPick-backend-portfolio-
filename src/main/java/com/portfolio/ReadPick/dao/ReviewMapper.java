@@ -11,4 +11,8 @@ public interface ReviewMapper {
 
     ReviewVo selectOneReview(int userIdx, int bookIdx);
 
+    void reviewUpdate(ReviewVo reviewVo);
+
+	void reviewDelete(int userIdx, int bookIdx);
+
 }

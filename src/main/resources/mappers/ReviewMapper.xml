@@ -23,10 +23,18 @@
 
     <!-- update -->
 
+    <update id="reviewUpdate" parameterType="review">
+        update review set content = #{content} where userIdx = #{userIdx} and bookIdx = {bookIdx}
+    </update>
+
     <!-- /update -->
 
 
     <!-- delete -->
+
+    <delete id="reviewDelete" parameterType="int">
+        delete from review where userIdx = #{userIdx} and bookIdx = #{bookIdx}
+    </delete>
 
     <!-- /delete -->
 
