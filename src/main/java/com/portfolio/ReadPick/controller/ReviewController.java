@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.servlet.http.HttpSession;
 
-
 @RestController
 public class ReviewController {
 
@@ -55,9 +54,22 @@ public class ReviewController {
         }
         int userIdx = user.getUserIdx();
 
-        return ResponseEntity.ok(reviewMapper.selectOneReview(userIdx, bookIdx));
-    }
+        ReviewVo review = new ReviewVo();
 
+        try {
+            review = reviewMapper.selectOneReview(userIdx, bookIdx);
+            if (review == null) {
+                System.out.println("review가 비어있음");
+                return ResponseEntity.ok(null);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("modifyReview:fail");
+            return ResponseEntity.ok(null);
+        }
+
+        return ResponseEntity.ok(review);
+    }
 
     // 리뷰수정
     @GetMapping("reviewUpdate")
@@ -94,6 +106,5 @@ public class ReviewController {
 
         return ResponseEntity.ok("success");
     }
-    
 
 }
