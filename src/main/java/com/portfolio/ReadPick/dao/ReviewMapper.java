@@ -1,5 +1,7 @@
 package com.portfolio.ReadPick.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.ReviewVo;
@@ -14,5 +16,7 @@ public interface ReviewMapper {
     void reviewUpdate(ReviewVo reviewVo);
 
 	void reviewDelete(int userIdx, int bookIdx);
+
+	List<ReviewVo> selectReview(int bookIdx);
 
 }

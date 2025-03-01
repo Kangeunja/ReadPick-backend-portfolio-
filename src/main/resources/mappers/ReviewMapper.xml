@@ -18,6 +18,10 @@
         select * from review where userIdx = #{userIdx} and bookIdx = #{bookIdx}
     </select>
 
+    <select id="selectReview" parameterType="int" resultType="review">
+        select * from review where bookIdx = #{bookIdx}
+    </select>
+
     <!-- /select -->
 
 

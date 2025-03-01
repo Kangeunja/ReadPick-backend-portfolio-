@@ -1,5 +1,8 @@
 package com.portfolio.ReadPick.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -107,4 +110,19 @@ public class ReviewController {
         return ResponseEntity.ok("success");
     }
 
+    @GetMapping("reviewList")
+    @Operation(summary = "리뷰리스트", description = "프론트에서 bookIdx를 보내줄 것")
+    public ResponseEntity<List<ReviewVo>> reviewList(int bookIdx) {
+
+        List<ReviewVo> review = new ArrayList<>();
+
+        try {
+            review = reviewMapper.selectReview(bookIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.ok(null);
+        }
+
+        return ResponseEntity.ok(review);
+    }
 }
