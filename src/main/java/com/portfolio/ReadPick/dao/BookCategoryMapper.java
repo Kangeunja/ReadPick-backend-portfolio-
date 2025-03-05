@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookCategoryVo;
 import com.portfolio.ReadPick.vo.BsVo;
+import com.portfolio.ReadPick.vo.BssVo;
 
 @Mapper
 public interface BookCategoryMapper {
@@ -45,7 +46,7 @@ public interface BookCategoryMapper {
 
     int selectBmIdxOneByBsIdx(int bsIdx);
 
-    BookCategoryVo selectOneBsListByBsIdx(int bsIdx);
+    BsVo selectOneBsByBsIdx(int bsIdx);
 
     // BookCategoryVo selectBsOne(int bsIdx);
 
@@ -54,5 +55,7 @@ public interface BookCategoryMapper {
     List<BsVo> selectCategoryView();
 
     List<BookCategoryVo> selectUserPick();
+
+    List<BssVo> selectBssListByBsIdx(int bsIdx);
 
 }

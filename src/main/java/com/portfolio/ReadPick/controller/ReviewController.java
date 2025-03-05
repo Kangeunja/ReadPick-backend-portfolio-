@@ -26,7 +26,7 @@ public class ReviewController {
     ReviewMapper reviewMapper;
 
     @GetMapping("reviewInsert")
-    @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에")
+    @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음")
     public ResponseEntity<String> reviewInsert(@RequestBody ReviewVo reviewVo) {
 
         UserVo user = (UserVo) session.getAttribute("user");

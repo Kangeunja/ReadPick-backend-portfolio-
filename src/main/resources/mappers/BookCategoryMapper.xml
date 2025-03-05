@@ -67,7 +67,7 @@
     <select id="selectBmIdxOneByBsIdx" parameterType="int"> select bmIdx from bookSubCategory where
         bsIdx = #{bsIdx} </select>
 
-    <select id="selectOneBsListByBsIdx" resultType="bc" parameterType="int"> select * from
+    <select id="selectOneBsByBsIdx" resultType="bs" parameterType="int"> select * from
         bookSubCategory where bsIdx = #{bsIdx} </select>
 
     <select id="selectBssOne" resultType="bc" parameterType="int"> select * from bookSubSubCategory
@@ -79,6 +79,10 @@
 
     <select id="selectUserPick" resultType="bc">
         select * from userPick;
+    </select>
+
+    <select id="selectBssListByBsIdx" parameterType="int" resultType="bss">
+        select * from booksubsubcategory where bsIdx = #{bsIdx}
     </select>
     <!-- /select -->
 

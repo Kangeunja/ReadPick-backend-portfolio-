@@ -17,15 +17,15 @@ import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.RecMapper;
 import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
-import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
+import com.portfolio.ReadPick.vo.BsVo;
+import com.portfolio.ReadPick.vo.BssVo;
 import com.portfolio.ReadPick.vo.RecVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class BookController {
@@ -53,21 +53,22 @@ public class BookController {
 
     @Autowired
     RecMapper recMapper;
-
-    // bsName으로 책 리스트를 찾아와 bsCategory에 출력
-
-    @GetMapping("bsListOneByBsIdx")
-    @Operation(summary = "메인 페이지에서 선택한 중분류", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
-    public ResponseEntity<BookCategoryVo> bsListOneByBsIdx(int bsIdx) {
-        BookCategoryVo bsNameByBsIdx = bookCategoryMapper.selectOneBsListByBsIdx(bsIdx);
-        return ResponseEntity.ok(bsNameByBsIdx);
-    }
+    
 
     @GetMapping("bssListByBsIdx")
     @Operation(summary = "메인 페이지에서 선택한 중분류의 소분류 리스트", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
-    public ResponseEntity<List<BookCategoryVo>> bssListByBsIdx(int bsIdx) {
-        List<BookCategoryVo> bssListByBsIdx = bookCategoryMapper.selectBssList(bsIdx);
-        return ResponseEntity.ok(bssListByBsIdx);
+    public ResponseEntity<BsVo> bssListByBsIdx(int bsIdx) {
+        // List<BookCategoryVo> bssListByBsIdx = bookCategoryMapper.selectBssList(bsIdx);
+        List<BssVo> bssListByBsIdx = bookCategoryMapper.selectBssListByBsIdx(bsIdx);
+        BsVo bsVo = new BsVo();
+        try {
+            bsVo = bookCategoryMapper.selectOneBsByBsIdx(bsIdx);
+            bsVo.setBssList(bssListByBsIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return ResponseEntity.ok(bsVo);
     }
 
     @GetMapping("bookListByBsIdx")
