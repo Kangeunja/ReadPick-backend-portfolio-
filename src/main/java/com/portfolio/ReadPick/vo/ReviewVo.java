@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Alias("review")
 public class ReviewVo {
+    int rvIdx;
     int bookIdx;
     int userIdx;
     String content;

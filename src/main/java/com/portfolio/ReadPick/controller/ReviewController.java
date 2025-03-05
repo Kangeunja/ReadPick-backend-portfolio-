@@ -125,4 +125,24 @@ public class ReviewController {
 
         return ResponseEntity.ok(review);
     }
+
+    // 무한 스크롤 페이징
+    @GetMapping("reviewMore")
+    @Operation(summary = "리뷰 무한 스크롤", description = "프론트에서 마지막으로 조회된 리뷰의 rvIdx를 보내줄 것")
+    public ResponseEntity<List<ReviewVo>> reviewMore(int rvIdx) {
+
+        List<ReviewVo> review = new ArrayList<>();
+
+        int bookIdx = reviewMapper.selectOneBookIdx(rvIdx); 
+        try {
+            review = reviewMapper.selectReviewMore(bookIdx, rvIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("페이징실패");
+            return ResponseEntity.ok(null);
+        }
+
+        return ResponseEntity.ok(review);
+    }
+
 }

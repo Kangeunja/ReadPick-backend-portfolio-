@@ -19,4 +19,8 @@ public interface ReviewMapper {
 
 	List<ReviewVo> selectReview(int bookIdx);
 
+    int selectOneBookIdx(int rvIdx);
+
+    List<ReviewVo> selectReviewMore(int bookIdx, int rvIdx);
+
 }
