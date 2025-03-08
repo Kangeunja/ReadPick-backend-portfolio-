@@ -121,11 +121,12 @@ create table userPickCount(
 );
 
 create table review(
+	rvIdx int unique auto_increment,
 	userIdx	int not null,
     bookIdx	int not null,
     content varchar(600) not null,
     reviewAt char(1) default 'N' not null,
-    regDate datetime DEFAULT now(),
+    regDate datetime default now() not null,
     FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
     FOREIGN KEY (bookIdx) REFERENCES book (bookIdx) ON DELETE CASCADE,
     primary key (userIdx, bookIdx)
