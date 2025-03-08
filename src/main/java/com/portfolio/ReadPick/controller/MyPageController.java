@@ -64,7 +64,7 @@ public class MyPageController {
     }
 
     @PostMapping("userInfoModify")
-    @Operation(summary = "회원정보 변경", description = "회원정보 변경")
+    @Operation(summary = "회원정보 변경", description = "회원정보 변경 보내줄 데이터는 유저이름, 닉네임, 아이디, 비밀번호, 이메일")
     public ResponseEntity<String> userInfoModify(@RequestBody UserVo userVo) {
         int userIdx = ((UserVo) session.getAttribute("user")).getUserIdx();
         userVo.setUserIdx(userIdx);
