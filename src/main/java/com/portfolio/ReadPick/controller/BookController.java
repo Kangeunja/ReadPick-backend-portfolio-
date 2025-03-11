@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
@@ -26,6 +28,7 @@ import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
+
 
 @RestController
 public class BookController {
@@ -53,6 +56,13 @@ public class BookController {
 
     @Autowired
     RecMapper recMapper;
+
+    @GetMapping("bsList")
+    @Operation(summary = "메인 페이지에 띄울 중분류 리스트")
+    public ResponseEntity<List<BookCategoryVo>> bsList() {
+        return ResponseEntity.ok(bookCategoryMapper.selectBsList());
+    }
+    
     
 
     @GetMapping("bssListByBsIdx")
@@ -103,7 +113,7 @@ public class BookController {
         return ResponseEntity.ok(isBookmark);
     }
 
-    @GetMapping("bookmark")
+    @PostMapping("bookmark")
     @Operation(summary = "북마크 해제 및 추가", description = "북마크 버튼을 누르면 유저의 로그인 여부를 체크 후 토글로 북마크 처리 <br> map 이름은 bookmark")
     public ResponseEntity<Map<String, Object>> bookmark(int bookIdx) {
 
@@ -146,7 +156,7 @@ public class BookController {
     }
 
     // 책 추천 로직
-    @GetMapping("recommend")
+    @PostMapping("recommend")
     @Operation(summary = "책 추천", description = "책 추천")
     public ResponseEntity<Map<String, Object>> recommend(int bookIdx) {
 

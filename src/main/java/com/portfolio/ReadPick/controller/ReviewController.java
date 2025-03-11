@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.ReviewMapper;
@@ -25,7 +26,7 @@ public class ReviewController {
     @Autowired
     ReviewMapper reviewMapper;
 
-    @GetMapping("reviewInsert")
+    @PostMapping("reviewInsert")
     @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음")
     public ResponseEntity<String> reviewInsert(@RequestBody ReviewVo reviewVo) {
 
@@ -75,7 +76,7 @@ public class ReviewController {
     }
 
     // 리뷰수정
-    @GetMapping("reviewUpdate")
+    @PostMapping("reviewUpdate")
     @Operation(summary = "리뷰수정확인버튼", description = "리뷰를 새로운 내용으로 수정")
     public ResponseEntity<String> reviewUpdate(@RequestBody ReviewVo reviewVo) {
 
