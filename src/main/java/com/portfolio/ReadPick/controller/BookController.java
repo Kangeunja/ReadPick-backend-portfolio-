@@ -67,18 +67,25 @@ public class BookController {
 
     @GetMapping("bssListByBsIdx")
     @Operation(summary = "메인 페이지에서 선택한 중분류의 소분류 리스트", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
-    public ResponseEntity<BsVo> bssListByBsIdx(int bsIdx) {
-        // List<BookCategoryVo> bssListByBsIdx = bookCategoryMapper.selectBssList(bsIdx);
-        List<BssVo> bssListByBsIdx = bookCategoryMapper.selectBssListByBsIdx(bsIdx);
-        BsVo bsVo = new BsVo();
-        try {
-            bsVo = bookCategoryMapper.selectOneBsByBsIdx(bsIdx);
-            bsVo.setBssList(bssListByBsIdx);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    public ResponseEntity<List<BsVo>> bssListByBsIdx() {
 
-        return ResponseEntity.ok(bsVo);
+        List<BookCategoryVo> bsList = bookCategoryMapper.selectBsList();
+        List<BsVo> bsVoList = new ArrayList<BsVo>();
+        for(BookCategoryVo bs : bsList) {
+            int bsIdx = bs.getBsIdx();
+            List<BssVo> bssListByBsIdx = bookCategoryMapper.selectBssListByBsIdx(bsIdx);
+            BsVo bsVo = new BsVo();
+            try {
+                bsVo = bookCategoryMapper.selectOneBsByBsIdx(bsIdx);
+                bsVo.setBssList(bssListByBsIdx);
+                bsVoList.add(bsVo);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        
+
+        return ResponseEntity.ok(bsVoList);
     }
 
     @GetMapping("bookListByBsIdx")
