@@ -88,6 +88,13 @@ public class BookController {
         return ResponseEntity.ok(bookListByBsIdx);
     }
 
+    @GetMapping("bookListByBssIdx")
+    @Operation(summary = "bssIdx를 이용해 책리스트 출력", description = "호출 시 메인페이지에서 선택한 소분류의 bssIdx를 보내줄 것")
+    public ResponseEntity<List<BookVo>> bookListByBssIdx(int bssIdx) {
+        List<BookVo> bookListByBssIdx = bookMapper.selectBookListByBssIdx(bssIdx);
+        return ResponseEntity.ok(bookListByBssIdx);
+    }
+
     @GetMapping("bookOne")
     @Operation(summary = "bookIdx를 이용해 책의 정보 출력", description = "호출 시 선택한 책의 bookIdx을 보내줄 것")
     public ResponseEntity<BookVo> bookOne(int bookIdx) {

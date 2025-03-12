@@ -34,13 +34,17 @@
     <select id="selectBookListByBsIdx" resultType="book" parameterType="int"> select * from book
         where bsIdx = #{bsIdx} order by bookIdx desc</select>
 
+    <!-- bssIdx으로 해당하는 책 리스트 조회 -->
+    <select id="selectBookListByBssIdx" resultType="book" parameterType="int"> select * from book
+        where bssIdx = #{bssIdx} order by bookIdx desc</select>
+
     <!-- bookIdx으로 책 조회 -->
     <select id="selectBookByBookIdx" resultType="book" parameterType="int"> select * from book where
         bookIdx = #{bookIdx} </select>
 
     <!-- bookIdx으로 책 한 권 조회 -->
-    <select id="selectOneBookByBookIdx" resultType="book" parameterType="int"> select * from book where
-        bookIdx = #{bookIdx} </select>
+    <select id="selectOneBookByBookIdx" resultType="book" parameterType="int"> select * from book
+        where bookIdx = #{bookIdx} </select>
 
     <!-- /select -->
 

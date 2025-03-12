@@ -29,12 +29,15 @@ public interface BookMapper {
     // List<String> selectBsNameList();
 
     List<BookVo> selectBookListByBsIdx(int bsIdx);
+    
+    List<BookVo> selectBookListByBssIdx(int bssIdx);
 
     BookVo selectOneBookByIsbn(String isbn);
 
     BookVo selectBookByBookIdx(Object bookIdx);
 
     BookVo selectOneBookByBookIdx(int bookIdx);
+
     
 
 }
