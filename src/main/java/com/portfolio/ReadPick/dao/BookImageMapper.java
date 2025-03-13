@@ -15,4 +15,10 @@ public interface BookImageMapper {
 
     List<BookImageVo> selectImageByBookIdx(int bookIdx);
 
+    List<BookImageVo> selectBsImageByBsIdx(int bsIdx);
+
+    List<BookImageVo> selectBssImageByBssIdx(int bssIdx);
+
+    List<BookImageVo> selectBsssImageByBsssIdx(int bsssIdx);
+
 }

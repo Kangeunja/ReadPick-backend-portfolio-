@@ -18,6 +18,17 @@
     <select id="selectImageByBookIdx" resultType="bookImage" parameterType="int">select * from
         bookImage where bookIdx = #{bookIdx}</select>
 
+    <select id="selectBsImageByBsIdx" resultType="bookImage" parameterType="int">
+        select * from bookAndImageView where bsIdx = #{bsIdx} order by bookIdx desc;
+    </select>
+
+    <select id="selectBssImageByBssIdx" resultType="bookImage" parameterType="int">
+        select * from bookAndImageView where bssIdx = #{bssIdx} order by bookIdx desc;
+    </select>
+
+    <select id="selectBsssImageByBsssIdx" resultType="bookImage" parameterType="int">
+        select * from bookAndImageView where bsssIdx = #{bsssIdx} order by bookIdx desc;
+    </select>
     <!-- /select -->
 
 

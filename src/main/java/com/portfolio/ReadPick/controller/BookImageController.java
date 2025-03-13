@@ -12,6 +12,8 @@ import com.portfolio.ReadPick.dao.BookMapper;
 import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 public class BookImageController {
 
@@ -22,10 +24,32 @@ public class BookImageController {
     BookImageMapper bookImageMapper;
 
     @GetMapping("bookImageOne")
+    @Operation(summary = "상세페이지에 띄울 유저가 선택한 책 하나의 이미지")
     public ResponseEntity<BookImageVo> bookImageOne(int bookIdx) {
         BookVo bookOneByIsbn = bookMapper.selectOneBookByBookIdx(bookIdx);
         BookImageVo image = bookImageMapper.selectOneImageByBookIdx(bookOneByIsbn.getBookIdx());
         return ResponseEntity.ok(image);
+    }
+
+    @GetMapping("bsImageList")
+    @Operation(summary = "유저가 선택한 중분류의 이미지리스트")
+    public ResponseEntity<List<BookImageVo>> bsImageList(int bsIdx) {
+        List<BookImageVo> bsImageList = bookImageMapper.selectBsImageByBsIdx(bsIdx);
+        return ResponseEntity.ok(bsImageList);
+    }
+
+    @GetMapping("bssImageList")
+    @Operation(summary = "유저가 선택한 소분류의 이미지리스트")
+    public ResponseEntity<List<BookImageVo>> bssImageList(int bssIdx) {
+        List<BookImageVo> bssImageList = bookImageMapper.selectBssImageByBssIdx(bssIdx);
+        return ResponseEntity.ok(bssImageList);
+    }
+
+    @GetMapping("bsssImageList")
+    @Operation(summary = "유저가 선택한 세부분류의 이미지리스트")
+    public ResponseEntity<List<BookImageVo>> bsssImageList(int bsssIdx) {
+        List<BookImageVo> bsssImageList = bookImageMapper.selectBsssImageByBsssIdx(bsssIdx);
+        return ResponseEntity.ok(bsssImageList);
     }
     
 
