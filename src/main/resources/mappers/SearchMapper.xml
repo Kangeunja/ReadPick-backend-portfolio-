@@ -15,8 +15,8 @@
 
 
 <!-- select -->
-    <select id="selectBookListByBName" resultType="book" parameterType="String">
-        select * from book where bName = #{bName} order by bookIdx asc;
+    <select id="selectBookListByBookName" resultType="book" parameterType="String">
+        select * from book where bookName = #{bookName} order by bookIdx asc;
     </select>
 
     <select id="selectBookListByAuthor" resultType="book" parameterType="String">

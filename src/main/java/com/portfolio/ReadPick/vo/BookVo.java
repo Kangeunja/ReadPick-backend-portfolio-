@@ -12,13 +12,14 @@ public class BookVo {
     int bsIdx;  //하위카테고리
     int bssIdx; //하위카테고리
     Integer bsssIdx;   //세부카테고리
-    String bName;
+    String bookName;
     String author;
     String bContent;
     String link;
     String publisher;
     String pubDate;
     String isbn;
+    String bookImageName;
 
     int bsssIsbnIdx;
 

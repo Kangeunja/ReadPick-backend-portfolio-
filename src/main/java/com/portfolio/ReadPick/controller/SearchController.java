@@ -16,10 +16,10 @@ public class SearchController {
     @Autowired
     private SearchMapper searchMapper;
 
-    @GetMapping("bNameSearch")
-    public ResponseEntity<List<BookVo>> bNameSearch(String bName) {
+    @GetMapping("bookNameSearch")
+    public ResponseEntity<List<BookVo>> bookNameSearch(String bookName) {
         
-        return ResponseEntity.ok(searchMapper.selectBookListByBName(bName));
+        return ResponseEntity.ok(searchMapper.selectBookListByBookName(bookName));
     }
 
     @GetMapping("authorSearch")

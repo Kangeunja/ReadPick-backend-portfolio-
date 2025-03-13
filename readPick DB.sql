@@ -3,7 +3,7 @@ drop table if exists rec;
 drop table if exists searchKeyword;
 drop table if exists review;
 drop table if exists bookmark;
-drop table if exists userPickCount;
+-- drop table if exists userPickCount;
 drop table if exists userPick;
 drop table if exists users;
 drop table if exists bookImage;
@@ -58,7 +58,7 @@ create table book (
     bssIdx int not null,
     bsssIdx int not null,
     isbn varchar(13),
-    bName varchar(395) not null,
+    bookName varchar(395) not null,
     author varchar(300) not null,
     bContent longtext not null,
     link longtext not null,
@@ -76,7 +76,7 @@ create table bookImage(
 	bookIdx int not null,
     fileName varchar(150) not null,
 	fileTypeURL char(1) default'N' not null, 
-    FOREIGN KEY (bookIdx) REFERENCES book (bookIdx) ON DELETE CASCADE
+    foreign key (bookIdx) references book (bookIdx) on delete cascade
 );
 
 create table users(
@@ -98,7 +98,7 @@ create table userPick(
     bmIdx int not null,
     bsIdx int not null,
     bssIdx int not null,
-    FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
+    foreign key (userIdx) references users (userIdx) on delete cascade,
     foreign key (bmIdx) references bookMainCategory (bmIdx) on delete cascade,
     foreign key (bsIdx) references bookSubCategory (bsIdx) on delete cascade,
     foreign key (bssIdx) references booksubsubcategory (bssIdx) on delete cascade,
@@ -106,19 +106,20 @@ create table userPick(
 );
 
 -- 유저가 검색할 때 중복체크를 위한 테이블
-create table userPickCount(  
-	userIdx	int not null,
-    bmIdx int,
-    bsIdx int,
-    bssIdx int,
-    bsssIdx int,
-    FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
-    foreign key (bmIdx) references bookMainCategory (bmIdx) on delete cascade,
-    foreign key (bsIdx) references bookSubCategory (bsIdx) on delete cascade,
-    foreign key (bssIdx) references bookSubsubCategory (bssIdx) on delete cascade,
-    foreign key (bsssIdx) references bookDetailCategory (bsssIdx) on delete cascade,
-    primary key(userIdx, bmIdx, bsIdx, bssIdx, bsssIdx)
-);
+-- create table userPickCount(  
+-- 	userIdx	int not null,
+--     bmIdx int,
+--     bsIdx int,
+--     bssIdx int,
+--     bsssIdx int,
+--     count int default 0,
+--     foreign key (userIdx) references users (userIdx) on delete cascade,
+--     foreign key (bmIdx) references bookMainCategory (bmIdx) on delete cascade,
+--     foreign key (bsIdx) references bookSubCategory (bsIdx) on delete cascade,
+--     foreign key (bssIdx) references bookSubsubCategory (bssIdx) on delete cascade,
+--     foreign key (bsssIdx) references bookDetailCategory (bsssIdx) on delete cascade,
+--     primary key(userIdx, bmIdx, bsIdx, bssIdx, bsssIdx)
+-- );
 
 create table review(
 	rvIdx int unique auto_increment,
@@ -127,8 +128,8 @@ create table review(
     content varchar(600) not null,
     reviewAt char(1) default 'N' not null,
     regDate datetime default now() not null,
-    FOREIGN KEY (userIdx) REFERENCES users (userIdx) ON DELETE CASCADE,
-    FOREIGN KEY (bookIdx) REFERENCES book (bookIdx) ON DELETE CASCADE,
+    foreign key (userIdx) references users (userIdx) on delete cascade,
+    foreign key (bookIdx) references book (bookIdx) on delete cascade,
     primary key (userIdx, bookIdx)
 );
 
@@ -206,11 +207,24 @@ group by i.isbn, bs.bmIdx, bm.bmName, bss.bsIdx, bs.bsName, bsss.bssIdx, bss.bss
 create or replace view bookAndImageView as
 select 
     b.bookIdx,
-    bi.fileName
+    bi.fileName,
+    bi.fileIdx,
+    bm.bmIdx,
+    bs.bsIdx,
+    bss.bssIdx,
+    d.bsssIdx
 from
 	book b
 left join 
     bookImage bi on b.bookIdx = bi.bookIdx
-group by b.bookIdx, bi.fileName;
+left join
+	bookmaincategory bm on b.bmIdx = bm.bmIdx
+left join
+	booksubcategory bs on b.bsIdx = bs.bsIdx
+left join
+	booksubsubcategory bss on b.bssIdx = bss.bssIdx
+left join
+	bookdetailcategory d on b.bsssIdx = d.bsssIdx
+group by b.bookIdx, bi.fileName, bm.bmIdx, bs.bsIdx, bss.bssIdx, d.bsssIdx;
 
 select * from userPick;

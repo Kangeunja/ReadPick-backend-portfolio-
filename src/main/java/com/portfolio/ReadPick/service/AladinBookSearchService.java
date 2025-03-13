@@ -56,7 +56,7 @@ public class AladinBookSearchService {
                 bookVo.setBsssIdx(bookCategoryMapper.selectBsssIdxOne(searchIsbn));
                 String title = item.get("title").asText();
                 // title = title.replaceAll("</b>", "");
-                bookVo.setBName(title);
+                bookVo.setBookName(title);
                 bookVo.setAuthor(item.get("author").asText());
                 bookVo.setBContent(item.get("description").asText());
                 bookVo.setLink(item.get("link").asText());
