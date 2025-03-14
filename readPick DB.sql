@@ -60,7 +60,7 @@ create table book (
     isbn varchar(13),
     bookName varchar(395) not null,
     author varchar(300) not null,
-    bContent longtext not null,
+    content longtext not null,
     link longtext not null,
     publisher varchar(60) not null,
     pubDate varchar(20) not null,
