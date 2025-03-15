@@ -28,13 +28,17 @@ public class ReviewController {
 
     @PostMapping("reviewInsert")
     @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음")
-    public ResponseEntity<String> reviewInsert(@RequestBody ReviewVo reviewVo) {
+    public ResponseEntity<String> reviewInsert(int bookIdx, String content) {
 
         UserVo user = (UserVo) session.getAttribute("user");
+        ReviewVo reviewVo = new ReviewVo();
+
         if (user == null) {
             return ResponseEntity.ok("login:fail");
         }
         try {
+            reviewVo.setBookIdx(bookIdx);
+            reviewVo.setContent(content);
             reviewVo.setUserIdx(user.getUserIdx());
             reviewVo.setReviewAt("Y");
             reviewMapper.insertReview(reviewVo);
