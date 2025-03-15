@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.ReviewMapper;
@@ -14,7 +15,6 @@ import com.portfolio.ReadPick.vo.ReviewVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -27,18 +27,15 @@ public class ReviewController {
     ReviewMapper reviewMapper;
 
     @PostMapping("reviewInsert")
-    @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음")
-    public ResponseEntity<String> reviewInsert(int bookIdx, String content) {
-
+    @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음 <br> 프론트에서 bookIdx를 보내줄것")
+    public ResponseEntity<String> reviewInsert(@RequestBody ReviewVo reviewVo) {
+        
         UserVo user = (UserVo) session.getAttribute("user");
-        ReviewVo reviewVo = new ReviewVo();
 
         if (user == null) {
             return ResponseEntity.ok("login:fail");
         }
         try {
-            reviewVo.setBookIdx(bookIdx);
-            reviewVo.setContent(content);
             reviewVo.setUserIdx(user.getUserIdx());
             reviewVo.setReviewAt("Y");
             reviewMapper.insertReview(reviewVo);
@@ -83,6 +80,11 @@ public class ReviewController {
     @PostMapping("reviewUpdate")
     @Operation(summary = "리뷰수정확인버튼", description = "리뷰를 새로운 내용으로 수정")
     public ResponseEntity<String> reviewUpdate(@RequestBody ReviewVo reviewVo) {
+
+        UserVo user = (UserVo) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("login:fail");
+        }
 
         try {
             reviewMapper.reviewUpdate(reviewVo);
