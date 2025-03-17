@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.portfolio.ReadPick.vo.UserImageVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 @Mapper
@@ -16,5 +17,7 @@ public interface UserMapper {
     int userInsert(UserVo user);
 
 	int userFirstAtUpdate(UserVo user);
+
+	void insertUserImage(UserImageVo userImage);
 
 }

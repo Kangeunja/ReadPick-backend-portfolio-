@@ -1,21 +1,27 @@
 package com.portfolio.ReadPick.controller;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.UserMapper;
 import com.portfolio.ReadPick.vo.BsVo;
+import com.portfolio.ReadPick.vo.UserImageVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -34,6 +40,9 @@ public class UserController {
 
     @Autowired
     BookmarkMapper bookmarkMapper;
+
+    @Autowired
+    ServletContext application;
 
     @PostMapping("list")
     public ResponseEntity<List<UserVo>> list() {
@@ -169,6 +178,44 @@ public class UserController {
         }
         // System.out.println(user.getFirstAt());
         return ResponseEntity.ok(user.getFirstAt());
+    }
+
+    // user 프로필 이미지 추가
+    @PostMapping(value =  "userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> userImageInsert(@RequestPart("file") MultipartFile file) throws Exception {
+
+        UserVo user = (UserVo) session.getAttribute("user");
+
+        if (user == null) {
+            return ResponseEntity.ok("login:fail");
+        }
+        int userIdx = user.getUserIdx();
+        String absPath = application.getRealPath("/resources/images/");
+
+        try {
+            if (!file.isEmpty()) {
+                String filename = file.getOriginalFilename();
+                File f = new File(absPath, filename);
+                if (f.exists()) {// 동일한 파일이 존재하냐?
+                    // 시간_파일명 이름변경
+                    long tm = System.currentTimeMillis();
+                    filename = String.format("%d_%s", tm, filename);
+                    f = new File(absPath, filename);
+                }
+                file.transferTo(f);
+                UserImageVo userImage = new UserImageVo();
+                userImage.setUserIdx(userIdx);
+                userImage.setFileName(filename);
+                userMapper.insertUserImage(userImage);
+            } else {
+                return ResponseEntity.ok("fail");
+            }
+        } catch (Exception e) {
+            System.out.println("userImageInsert: " + e.getMessage());
+            return ResponseEntity.ok("fail");
+        }
+
+        return ResponseEntity.ok("success");
     }
 
 }

@@ -11,6 +11,10 @@
 
     <insert id="insertUserPick" parameterType="int"> insert into userPick values(#{userIdx},
         #{bmIdx}, #{bsIdx}, #{bssIdx}); </insert>
+
+    <insert id="insertUserImage" parameterType="userImage">
+        insert into userImage values(null, #{userIdx}, #{fileName})
+    </insert>
     <!-- /insert -->
 
 

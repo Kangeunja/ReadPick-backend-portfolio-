@@ -1,4 +1,6 @@
 drop view  if exists fullCategoryView;
+drop table if exists userImage;
+-- drop table if exists jobCategory;
 drop table if exists rec;
 drop table if exists searchKeyword;
 drop table if exists review;
@@ -60,7 +62,7 @@ create table book (
     isbn varchar(13),
     bookName varchar(395) not null,
     author varchar(300) not null,
-    content longtext not null,
+    bContent longtext not null,
     link longtext not null,
     publisher varchar(60) not null,
     pubDate varchar(20) not null,
@@ -154,6 +156,23 @@ create table rec (
     primary key(userIdx, bookIdx)
 );
 
+create table userImage (
+    fileIdx int not null auto_increment unique,
+	userIdx int not null,
+    fileName varchar(150) not null,
+    foreign key (userIdx) references users (userIdx) on delete cascade,
+    primary key (userIdx)
+);
+
+-- create table jobCategory (
+-- 	userIdx int not null,
+--     jobIdx int not null auto_increment,
+--     jobName varchar(33) not null,
+--     foreign key (userIdx) references users (userIdx) on delete cascade,
+--     primary key (jobIdx)
+-- );
+
+
 -- 검색할때만 쓰일 테이블
 create table searchKeyword(
 	keywordIdx int primary key auto_increment,
@@ -225,6 +244,22 @@ left join
 	booksubsubcategory bss on b.bssIdx = bss.bssIdx
 left join
 	bookdetailcategory d on b.bsssIdx = d.bsssIdx
-group by b.bookIdx, bi.fileName, bm.bmIdx, bs.bsIdx, bss.bssIdx, d.bsssIdx;
+group by b.bookIdx, bi.fileName, bi.fileIdx, bm.bmIdx, bs.bsIdx, bss.bssIdx, d.bsssIdx;
 
-select * from userPick;
+create or replace view reviewUserView as
+select 
+    rv.userIdx,
+    rv.bookIdx,
+    rv.rvIdx,
+    rv.content,
+    rv.regDate,
+    ui.fileName,
+    u.nickName
+from
+	review rv
+left join 
+    userImage ui on rv.userIdx = ui.userIdx
+left join
+	users u on rv.userIdx = u.userIdx
+group by rv.userIdx, rv.bookIdx, rv.rvIdx, rv.content, rv.regDate, ui.fileName, u.nickName;
+

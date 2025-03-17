@@ -18,16 +18,16 @@
         select * from review where userIdx = #{userIdx} and bookIdx = #{bookIdx}
     </select>
 
-    <select id="selectReview" parameterType="int" resultType="review">
-        select * from review where bookIdx = #{bookIdx} order by rvIdx desc limit 1;
+    <select id="selectReview" parameterType="int" resultType="ru">
+        select * from reviewUserView where bookIdx = #{bookIdx} order by rvIdx desc limit 1;
     </select>
 
     <select id="selectOneBookIdx" parameterType="int" resultType="int">
         select bookIdx from review where rvIdx = #{rvIdx}
     </select>
 
-    <select id="selectReviewMore" parameterType="int" resultType="review">
-        select * from review where bookIdx = #{bookIdx} and rvIdx &lt;<!-- < 특수문자의 대체문자--> #{rvIdx} order by rvIdx desc limit 2;
+    <select id="selectReviewMore" parameterType="int" resultType="ru">
+        select * from reviewUserView where bookIdx = #{bookIdx} and rvIdx &lt;<!-- < 특수문자의 대체문자--> #{rvIdx} order by rvIdx desc limit 2;
     </select>
 
     <!-- /select -->

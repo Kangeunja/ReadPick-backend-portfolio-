@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.ReviewMapper;
+import com.portfolio.ReadPick.vo.ReviewUserVo;
 import com.portfolio.ReadPick.vo.ReviewVo;
 import com.portfolio.ReadPick.vo.UserVo;
 
@@ -119,9 +120,9 @@ public class ReviewController {
 
     @GetMapping("reviewList")
     @Operation(summary = "리뷰리스트", description = "프론트에서 bookIdx를 보내줄 것")
-    public ResponseEntity<List<ReviewVo>> reviewList(int bookIdx) {
+    public ResponseEntity<List<ReviewUserVo>> reviewList(int bookIdx) {
 
-        List<ReviewVo> review = new ArrayList<>();
+        List<ReviewUserVo> review = new ArrayList<>();
 
         try {
             review = reviewMapper.selectReview(bookIdx);
@@ -136,12 +137,12 @@ public class ReviewController {
     // 무한 스크롤 페이징
     @GetMapping("reviewMore")
     @Operation(summary = "리뷰 무한 스크롤", description = "프론트에서 마지막으로 조회된 리뷰의 rvIdx를 보내줄 것")
-    public ResponseEntity<List<ReviewVo>> reviewMore(int rvIdx) {
+    public ResponseEntity<List<ReviewUserVo>> reviewMore(int rvIdx) {
 
-        List<ReviewVo> review = new ArrayList<>();
+        List<ReviewUserVo> review = new ArrayList<>();
 
-        int bookIdx = reviewMapper.selectOneBookIdx(rvIdx); 
         try {
+            int bookIdx = reviewMapper.selectOneBookIdx(rvIdx); 
             review = reviewMapper.selectReviewMore(bookIdx, rvIdx);
         } catch (Exception e) {
             System.out.println(e);
