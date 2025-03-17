@@ -91,12 +91,11 @@ public class ReviewController {
             int userIdx = user.getUserIdx();
             reviewVo.setUserIdx(userIdx);
             reviewMapper.reviewUpdate(reviewVo);
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.ok("reviewUpdate:fail");
         }
-
-        return ResponseEntity.ok("success");
     }
 
     // 리뷰삭제
