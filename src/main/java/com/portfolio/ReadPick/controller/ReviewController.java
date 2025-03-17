@@ -81,13 +81,15 @@ public class ReviewController {
     @PostMapping("reviewUpdate")
     @Operation(summary = "리뷰수정확인버튼", description = "리뷰를 새로운 내용으로 수정")
     public ResponseEntity<String> reviewUpdate(@RequestBody ReviewVo reviewVo) {
-
+        
         UserVo user = (UserVo) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("login:fail");
         }
 
         try {
+            int userIdx = user.getUserIdx();
+            reviewVo.setUserIdx(userIdx);
             reviewMapper.reviewUpdate(reviewVo);
         } catch (Exception e) {
             System.out.println(e);
