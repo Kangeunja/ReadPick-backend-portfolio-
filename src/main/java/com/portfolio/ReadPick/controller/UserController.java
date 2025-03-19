@@ -16,8 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
 import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.UserMapper;
+import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BsVo;
 import com.portfolio.ReadPick.vo.UserImageVo;
+import com.portfolio.ReadPick.vo.UserSessionDTO;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +44,9 @@ public class UserController {
     BookmarkMapper bookmarkMapper;
 
     @Autowired
+    BookService bookService;
+
+    @Autowired
     ServletContext application;
 
     @PostMapping("list")
@@ -54,7 +59,7 @@ public class UserController {
 
     @PostMapping("login")
     @Operation(summary = "로그인", description = "로그인하기")
-    public ResponseEntity<String> login(@RequestBody UserVo user) {
+    public ResponseEntity<?> login(@RequestBody UserVo user) {
         String id = user.getId();
         String pw = user.getPw();
 
@@ -70,8 +75,13 @@ public class UserController {
             session.setMaxInactiveInterval(30 * 60); // 세션 유효 시간 30분
         }
 
-        return ResponseEntity.ok("success");
+        System.out.println("user = " + session.getAttribute("user"));
+
+        // 로그인정보전달용 DTO객체
+        UserSessionDTO sessionUserInfo = (UserSessionDTO) session.getAttribute("user");
+        return ResponseEntity.ok(sessionUserInfo);
     }
+    
 
     // 로그아웃
     @PostMapping("logout")
