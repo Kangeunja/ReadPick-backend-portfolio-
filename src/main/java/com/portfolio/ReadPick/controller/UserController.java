@@ -74,11 +74,16 @@ public class UserController {
             session.setAttribute("user", dbUser);
             session.setMaxInactiveInterval(30 * 60); // 세션 유효 시간 30분
         }
-
-        System.out.println("user = " + session.getAttribute("user"));
-
+        
         // 로그인정보전달용 DTO객체
-        UserSessionDTO sessionUserInfo = (UserSessionDTO) session.getAttribute("user");
+        UserSessionDTO sessionUserInfo = new UserSessionDTO();
+        sessionUserInfo.setUserIdx(dbUser.getUserIdx());
+        sessionUserInfo.setNickName(dbUser.getNickName());
+        sessionUserInfo.setUserName(dbUser.getUserName());
+        sessionUserInfo.setEmail(dbUser.getEmail());
+        sessionUserInfo.setAdminAt(dbUser.getAdminAt());
+        sessionUserInfo.setFirstAt(dbUser.getFirstAt());
+        sessionUserInfo.setId(dbUser.getId());
         return ResponseEntity.ok(sessionUserInfo);
     }
     
