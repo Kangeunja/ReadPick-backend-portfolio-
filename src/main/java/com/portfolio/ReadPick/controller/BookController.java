@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.BookCategoryMapper;
@@ -28,7 +27,6 @@ import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
-
 
 @RestController
 public class BookController {
@@ -62,8 +60,6 @@ public class BookController {
     public ResponseEntity<List<BookCategoryVo>> bsList() {
         return ResponseEntity.ok(bookCategoryMapper.selectBsList());
     }
-    
-    
 
     @GetMapping("bssListByBsIdx")
     @Operation(summary = "메인 페이지에서 선택한 중분류의 소분류 리스트", description = "호출 시 메인페이지에서 선택한 중분류의 bsIdx를 보내줄 것")
@@ -71,7 +67,7 @@ public class BookController {
 
         List<BookCategoryVo> bsList = bookCategoryMapper.selectBsList();
         List<BsVo> bsVoList = new ArrayList<BsVo>();
-        for(BookCategoryVo bs : bsList) {
+        for (BookCategoryVo bs : bsList) {
             int bsIdx = bs.getBsIdx();
             List<BssVo> bssListByBsIdx = bookCategoryMapper.selectBssListByBsIdx(bsIdx);
             BsVo bsVo = new BsVo();
@@ -83,7 +79,6 @@ public class BookController {
                 System.out.println(e);
             }
         }
-        
 
         return ResponseEntity.ok(bsVoList);
     }
@@ -214,6 +209,23 @@ public class BookController {
 
     }
 
+    @GetMapping("isRec")
+    @Operation(summary = "추천 확인", description = "로그인된 사용자와 책의 번호를 확인해서 추천여부를 체크하고, 추천을 누른 경우 Y, 아닌 경우 N을 반환")
+    public ResponseEntity<String> isRec(int bookIdx) {
+        UserVo user = (UserVo) session.getAttribute("user");
+        String isRec = "N";
+        if (user != null) {
+            int userIdx = user.getUserIdx();
+            if (recMapper.selectOneUserIsRec(bookIdx, userIdx) == null
+                    || recMapper.selectOneUserIsRec(bookIdx, userIdx).equals("N")) {
+                return ResponseEntity.ok(isRec);
+            } else if (recMapper.selectOneUserIsRec(bookIdx, userIdx).equals("Y")) {
+                isRec = "Y";
+            }
+        }
+        return ResponseEntity.ok(isRec);
+    }
+
     // 추천 카운트
     @GetMapping("recCount")
     @Operation(summary = "추천 수 체크", description = "사용 시 bookIdx(int)를 보내줄 것 ")
@@ -240,13 +252,15 @@ public class BookController {
             bookIdxList.addAll(recMapper.selectBookIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
         }
 
-        List<Map<String, Object>> recCountMaxAndBookIdxListByList = recMapper.recCountMaxByUserRecBookIdxList(bookIdxList);
+        List<Map<String, Object>> recCountMaxAndBookIdxListByList = recMapper
+                .recCountMaxByUserRecBookIdxList(bookIdxList);
         if (recCountMaxAndBookIdxListByList == null) {
             return ResponseEntity.ok(null);
         }
         List<BookVo> bookListByBookIdx = new ArrayList<>();
         for (int i = 0; i < recCountMaxAndBookIdxListByList.size(); i++) {
-            bookListByBookIdx.add(bookMapper.selectBookByBookIdx(recCountMaxAndBookIdxListByList.get(i).get("bookIdx")));
+            bookListByBookIdx
+                    .add(bookMapper.selectBookByBookIdx(recCountMaxAndBookIdxListByList.get(i).get("bookIdx")));
             bookImageController.userGenreBookImage(recCountMaxAndBookIdxListByList.get(i).get("bookIdx"));
         }
         return ResponseEntity.ok(bookListByBookIdx);

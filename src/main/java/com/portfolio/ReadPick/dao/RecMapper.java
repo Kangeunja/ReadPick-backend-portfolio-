@@ -36,4 +36,7 @@ public interface RecMapper {
     List<Map<String, Object>> recCountMaxByUserRecBookIdxList(List<Integer> bookIdxList);
 
     Map<String, Object> recCountMaxBook();
+    
+    String selectOneUserIsRec(int bookIdx, int userIdx);
+
 }
