@@ -19,7 +19,7 @@
     </select>
 
     <select id="selectReview" parameterType="int" resultType="ru">
-        select * from reviewUserView where bookIdx = #{bookIdx} order by rvIdx desc limit 2;
+        select * from reviewUserView where bookIdx = #{bookIdx} order by rvIdx desc limit 4;
     </select>
 
     <select id="selectOneBookIdx" parameterType="int" resultType="int">
