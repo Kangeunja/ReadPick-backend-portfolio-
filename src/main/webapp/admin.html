@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>admin</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        color: #000;
+        margin: 0;
+        padding: 0;
+        max-width: 80%;
+        margin: auto;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px; /* 최대 너비 설정 */
+        margin: 0 auto;
+        padding: 0 15px; /* 양쪽 여백 추가 */
+      }
+
+      header {
+        margin-top: 80px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); */
+      }
+
+      .nav li {
+        list-style: none;
+        margin: 0 15px;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 8px 12px;
+        transition: all 0.3s ease;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2); /* 더 진하고 선명한 그림자 */
+        border-radius: 15px;
+      }
+
+      .nav li:hover {
+        background: #f4f4f4;
+      }
+
+      .tab-content {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .tab-pane {
+        display: none;
+      }
+
+      .active {
+        display: block !important;
+      }
+
+      table {
+        width: 100%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 더 진하고 선명한 그림자 */
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 셀에 더 진한 그림자 추가 */
+      }
+
+      th {
+        background: #f9f9f9;
+      }
+
+      button {
+        background: none;
+        padding: 6px 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); /* 더 진하고 선명한 그림자 */
+        border-radius: 10px;
+      }
+
+      button:hover {
+        background: #f4f4f4;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Admin Dashboard</h1>
+        <ul class="nav">
+          <li onclick="showTab('menu1')">회원 관리</li>
+          <li onclick="showTab('menu2')">도서 관리</li>
+          <li onclick="showTab('menu3')">리뷰 관리</li>
+        </ul>
+      </div>
+    </header>
+    <div class="tab-content">
+      <div id="menu1" class="tab-pane active">
+        <h2 class="title-center">회원 관리</h2>
+        <div
+          style="
+            text-align: right;
+            margin-top: 25px;
+            margin-bottom: 20px;
+            margin-left: 200px;
+            margin-right: 50px;
+          "
+        >
+          <form action="" class="form-inline" style="display: inline-block">
+            <select
+              id="search"
+              class="form-control"
+              style="width: 200px; margin-right: 10px"
+            >
+              <option value="all">전체보기</option>
+              <option value="name">아이디</option>
+            </select>
+            <input
+              id="search_text"
+              class="form-control"
+              style="width: 300px; margin-right: 1px"
+              value="검색어"
+            />
+            <input
+              type="button"
+              class="btn btn-default"
+              name="searchBtn"
+              id="searchBtn"
+              value="검색"
+              onclick="userSearch();"
+            />
+          </form>
+        </div>
+        <div>
+          <table class="table-common">
+            <tr>
+              <th>회원 ID</th>
+              <th>이름</th>
+              <th>이메일</th>
+              <th>가입일</th>
+              <th>회원삭제</th>
+            </tr>
+            <tr>
+              <td>회원 아이디 데이터 넣는 곳</td>
+              <td>회원 이름 데이터 넣는 곳</td>
+              <td>회원 이메일 데이터 넣는 곳</td>
+              <td>회원 가입일 데이터 넣는 곳</td>
+              <td><button>회원삭제</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="menu2" class="tab-pane">
+        <h2 class="title-center">도서 관리</h2>
+        <div>
+          <table class="table-common">
+            <tr>
+              <th>도서 번호</th>
+              <th>도서 제목</th>
+              <th>ISBN</th>
+              <th>출판일</th>
+              <th>삭제</th>
+              <th>수정</th>
+              <th>추가</th>
+            </tr>
+            <tr>
+              <td>도서 번호 데이터 넣는 곳</td>
+              <td>도서 제목 데이터 넣는 곳</td>
+              <td>ISBN 데이터 넣는 곳</td>
+              <td>출판일 데이터 넣는 곳</td>
+              <td><button>삭제</button></td>
+              <td><button>수정</button></td>
+              <td><button>추가</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="menu3" class="tab-pane">
+        <h2 class="title-center">리뷰 관리</h2>
+        <p>리뷰 관리 내용</p>
+      </div>
+    </div>
+    <script>
+      function showTab(tabId) {
+        document.querySelectorAll(".tab-pane").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+        document.getElementById(tabId).classList.add("active");
+      }
+    </script>
+  </body>
+</html>
