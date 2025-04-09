@@ -240,35 +240,44 @@ public class BookController {
     public ResponseEntity<List<BookVo>> userGenreBook() {
 
         UserVo user = (UserVo) session.getAttribute("user");
-        int userIdx = user.getUserIdx();
-        List<Integer> bssIdxList = recMapper.selectBssIdxListByUserIdx(userIdx);
-        List<Integer> bsIdxList = recMapper.selectBsIdxListByUserIdx(userIdx);
-        List<Integer> bmIdxList = recMapper.selectBmIdxListByUserIdx(userIdx);
-
-        List<Integer> bookIdxList = new ArrayList<>();
-        for (int i = 0; i < bssIdxList.size(); i++) {
-            int bssIdx = bssIdxList.get(i);
-            int bsIdx = bsIdxList.get(i);
-            int bmIdx = bmIdxList.get(i);
-            bookIdxList.addAll(recMapper.selectBookIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
-        }
-
-        List<Map<String, Object>> recCountMaxAndBookIdxListByList = recMapper
-                .recCountMaxByUserRecBookIdxList(bookIdxList);
-        if (recCountMaxAndBookIdxListByList == null) {
+        if (user == null) {
+            System.out.println("로그인 필요");
             return ResponseEntity.ok(null);
         }
-        List<BookVo> bookListByBookIdx = new ArrayList<>();
-        for (int i = 0; i < recCountMaxAndBookIdxListByList.size(); i++) {
-            bookListByBookIdx
-                    .add(bookMapper.selectBookByBookIdx(recCountMaxAndBookIdxListByList.get(i).get("bookIdx")));
-            bookImageController.userGenreBookImage(recCountMaxAndBookIdxListByList.get(i).get("bookIdx"));
+        try {
+            int userIdx = user.getUserIdx();
+            List<Integer> bssIdxList = recMapper.selectBssIdxListByUserIdx(userIdx);
+            List<Integer> bsIdxList = recMapper.selectBsIdxListByUserIdx(userIdx);
+            List<Integer> bmIdxList = recMapper.selectBmIdxListByUserIdx(userIdx);
+            List<Integer> bookIdxList = new ArrayList<>();
+            for (int i = 0; i < bssIdxList.size(); i++) {
+                int bssIdx = bssIdxList.get(i);
+                int bsIdx = bsIdxList.get(i);
+                int bmIdx = bmIdxList.get(i);
+                bookIdxList.addAll(recMapper.selectBookIdxByCategoryIdx(bmIdx, bsIdx, bssIdx));
+            }
+            if (bookIdxList.isEmpty()) {
+                System.out.println("추천할 책이 없습니다.");
+                return ResponseEntity.ok(null);
+            }
+            List<Map<String, Object>> recCountMaxAndBookIdxListByList = recMapper.recCountMaxByUserRecBookIdxList(bookIdxList);
+            if (recCountMaxAndBookIdxListByList == null) {
+                return ResponseEntity.ok(null);
+            }
+            List<BookVo> bookListByBookIdx = new ArrayList<>();
+            for (int i = 0; i < recCountMaxAndBookIdxListByList.size(); i++) {
+                bookListByBookIdx.add(bookMapper.selectBookByBookIdx(recCountMaxAndBookIdxListByList.get(i).get("bookIdx")));
+                bookListByBookIdx.get(i).setBookImageName(bookService.userGenreBookImage(recCountMaxAndBookIdxListByList.get(i).get("bookIdx")));
+            }
+            return ResponseEntity.ok(bookListByBookIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.ok(null);
         }
-        return ResponseEntity.ok(bookListByBookIdx);
     }
 
     @GetMapping("todayBook")
-    @Operation(summary = "오늘의 책", description = "오늘의 책 추천")
+    @Operation(summary = "오늘의 책", description = "전체 책 중에서 가장 높은 추천수를 가진 책을 오늘의 책으로 추천")
     public ResponseEntity<BookVo> todayBook() {
         Map<String, Object> bookIdxAndMaxCount = new HashMap<>();
         BookVo book = new BookVo();

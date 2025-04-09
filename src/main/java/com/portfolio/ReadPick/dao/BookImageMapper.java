@@ -21,4 +21,6 @@ public interface BookImageMapper {
 
     List<BookImageVo> selectBsssImageByBsssIdx(int bsssIdx);
 
+    String selectImageOneByBookIdx(int bookIdx);
+
 }

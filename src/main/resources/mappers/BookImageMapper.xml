@@ -29,6 +29,11 @@
     <select id="selectBsssImageByBsssIdx" resultType="bookImage" parameterType="int">
         select * from bookAndImageView where bsssIdx = #{bsssIdx} order by bookIdx desc;
     </select>
+
+    <select id="selectImageOneByBookIdx" resultType="String" parameterType="int">
+        select fileName from bookImage where bookIdx = #{bookIdx}
+    </select>
+
     <!-- /select -->
 
 

@@ -24,11 +24,10 @@
 
     <!-- 유저가 선택한 장르 중 가장 높은 추천수를 가진 책을 리턴 -->
     <select id="recCountMaxByUserRecBookIdxList" resultType="map" parameterType="list"> select
-        bookIdx, recCountMax from ( select bookIdx, count(*) as recCountMax from rec where bookIdx
-        in <foreach
-            item="bookIdx" collection="bookIdxList" open="(" separator="," close=")"> #{bookIdx} </foreach>
-        and isRecommended = 'Y' group by bookIdx ) as countResults order by recCountMax desc limit
-        4; </select>
+        bookIdx, recCountMax from ( select bookIdx, count(*) as recCountMax from rec where
+        isRecommended = 'Y' and bookIdx in <foreach item="bookIdx" collection="list" open="("
+            separator="," close=")"> #{bookIdx} </foreach> group by bookIdx ) as countResults order
+        by recCountMax desc limit 4; </select>
 
     <!-- 현재 추천이 되어있는 모든 책들 중 가장 높은 추천수를 가진 책을 리턴 -->
     <select id="recCountMaxBook" resultType="map"> select bookIdx, recCountMax from ( select
@@ -37,13 +36,13 @@
 
 
     <select id="selectBssIdxListByUserIdx" resultType="Integer" parameterType="int"> select bssIdx
-        from userPick where UserIdx = #{UserIdx} order by bssIdx desc </select>
+        from userPick where userIdx = #{userIdx} order by bssIdx desc </select>
 
     <select id="selectBsIdxListByUserIdx" resultType="Integer" parameterType="int"> select bsIdx
-        from userPick where UserIdx = #{UserIdx} order by bsIdx desc </select>
+        from userPick where userIdx = #{userIdx} order by bsIdx desc </select>
 
     <select id="selectBmIdxListByUserIdx" resultType="Integer" parameterType="int"> select bmIdx
-        from userPick where UserIdx = #{UserIdx} order by bmIdx desc </select>
+        from userPick where userIdx = #{userIdx} order by bmIdx desc </select>
 
     <select id="selectBookIdxByCategoryIdx" resultType="Integer" parameterType="int"> select bookIdx
         from book where bmIdx = #{bmIdx} and bsIdx = #{bsIdx} and bssIdx = #{bssIdx};</select>

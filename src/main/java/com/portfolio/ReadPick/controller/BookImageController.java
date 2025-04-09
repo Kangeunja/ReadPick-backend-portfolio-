@@ -55,11 +55,11 @@ public class BookImageController {
     }
     
 
-    @GetMapping("userGenreBookImage")
-    public ResponseEntity<List<BookImageVo>> userGenreBookImage(Object bookIdx) {
-        List<BookImageVo> imageList = bookImageMapper.selectImageByBookIdx((int) bookIdx);
-        return ResponseEntity.ok(imageList);
-    }
+    // @GetMapping("userGenreBookImage")
+    // public ResponseEntity<List<BookImageVo>> userGenreBookImage(Object bookIdx) {
+    //     List<BookImageVo> imageList = bookImageMapper.selectImageByBookIdx((int) bookIdx);
+    //     return ResponseEntity.ok(imageList);
+    // }
 
     // @GetMapping("todayBookImage")
     // @Operation(summary = "오늘의 책 이미지")

@@ -33,7 +33,7 @@ public interface RecMapper {
 
     // List<BookVo> selectBookListByBookIdx(List<Integer> bookIdxLis
 
-    List<Map<String, Object>> recCountMaxByUserRecBookIdxList(List<Integer> bookIdxList);
+    List<Map<String, Object>> recCountMaxByUserRecBookIdxList(List<Integer> list);
 
     Map<String, Object> recCountMaxBook();
     
