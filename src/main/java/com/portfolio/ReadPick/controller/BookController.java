@@ -18,6 +18,7 @@ import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.RecMapper;
 import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
+import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
 import com.portfolio.ReadPick.vo.BsVo;
@@ -101,7 +102,7 @@ public class BookController {
     @Operation(summary = "bookIdx를 이용해 책의 정보 출력", description = "호출 시 선택한 책의 bookIdx을 보내줄 것")
     public ResponseEntity<BookVo> bookOne(int bookIdx) {
         BookVo bookOneByBookIdx = bookMapper.selectOneBookByBookIdx(bookIdx);
-        bookService.bookImageService(bookIdx);
+        bookOneByBookIdx.setBookImageName(bookService.bookImageService(bookIdx).getFileName());
         return ResponseEntity.ok(bookOneByBookIdx);
     }
 
@@ -275,7 +276,7 @@ public class BookController {
             bookIdxAndMaxCount = recMapper.recCountMaxBook();
             int bookIdx = (int) bookIdxAndMaxCount.get("bookIdx");
             book = bookMapper.selectOneBookByBookIdx(bookIdx);
-            bookImageController.bookImageOne(bookIdx);
+            book.setBookImageName(bookService.bookImageService(bookIdx).getFileName());
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.ok(null);

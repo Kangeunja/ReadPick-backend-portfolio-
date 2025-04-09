@@ -3,15 +3,16 @@ package com.portfolio.ReadPick.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.portfolio.ReadPick.controller.BookImageController;
+import com.portfolio.ReadPick.dao.BookImageMapper;
+import com.portfolio.ReadPick.vo.BookImageVo;
 
 @Service
 public class BookService {
 
     @Autowired
-    BookImageController bookImageController;
+    BookImageMapper bookImageMapper;
 
-    public void bookImageService(int bookIdx){
-        bookImageController.bookImageOne(bookIdx);
+    public BookImageVo bookImageService(int bookIdx){
+        return bookImageMapper.selectOneImageByBookIdx(bookIdx);
     }
 }

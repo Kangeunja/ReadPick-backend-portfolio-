@@ -13,6 +13,8 @@ import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class BookImageController {
@@ -58,5 +60,13 @@ public class BookImageController {
         List<BookImageVo> imageList = bookImageMapper.selectImageByBookIdx((int) bookIdx);
         return ResponseEntity.ok(imageList);
     }
+
+    // @GetMapping("todayBookImage")
+    // @Operation(summary = "오늘의 책 이미지")
+    // public ResponseEntity<String> todayBookImage(@RequestParam String param) {
+
+    //     return ResponseEntity.ok(param);
+    // }
+    
 
 }
