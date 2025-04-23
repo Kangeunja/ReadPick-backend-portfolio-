@@ -229,7 +229,7 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(absPath + file.getOriginalFilename());
     }
 
     // 프로필 이미지 삭제
@@ -303,7 +303,7 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(absPath + file.getOriginalFilename());
     }
 
 }
