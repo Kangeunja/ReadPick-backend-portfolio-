@@ -241,7 +241,7 @@ public class BookController {
 
         UserVo user = (UserVo) session.getAttribute("user");
         if (user == null) {
-            System.out.println("로그인 필요");
+            // System.out.println("로그인 필요");
             return ResponseEntity.ok(null);
         }
         try {
