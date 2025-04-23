@@ -56,7 +56,6 @@ public class UserController {
 
         return ResponseEntity.ok(list);
     }
-    
 
     @PostMapping("login")
     @Operation(summary = "로그인", description = "로그인하기")
@@ -75,7 +74,7 @@ public class UserController {
             session.setAttribute("user", dbUser);
             session.setMaxInactiveInterval(30 * 60); // 세션 유효 시간 30분
         }
-        
+
         // 로그인정보전달용 DTO객체
         UserSessionDTO sessionUserInfo = new UserSessionDTO();
         sessionUserInfo.setUserIdx(dbUser.getUserIdx());
@@ -87,7 +86,6 @@ public class UserController {
         sessionUserInfo.setId(dbUser.getId());
         return ResponseEntity.ok(sessionUserInfo);
     }
-    
 
     // 로그아웃
     @PostMapping("logout")
@@ -197,7 +195,7 @@ public class UserController {
     }
 
     // user 프로필 이미지 추가
-    @PostMapping(value =  "userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> userImageInsert(@RequestPart("file") MultipartFile file) throws Exception {
 
         UserVo user = (UserVo) session.getAttribute("user");
@@ -211,6 +209,10 @@ public class UserController {
         try {
             if (!file.isEmpty()) {
                 String filename = file.getOriginalFilename();
+                UserImageVo userImage = new UserImageVo();
+                userImage.setUserIdx(userIdx);
+                userImage.setFileName(filename);
+                userMapper.insertUserImage(userImage);
                 File f = new File(absPath, filename);
                 if (f.exists()) {// 동일한 파일이 존재하냐?
                     // 시간_파일명 이름변경
@@ -219,15 +221,85 @@ public class UserController {
                     f = new File(absPath, filename);
                 }
                 file.transferTo(f);
-                UserImageVo userImage = new UserImageVo();
-                userImage.setUserIdx(userIdx);
-                userImage.setFileName(filename);
-                userMapper.insertUserImage(userImage);
             } else {
                 return ResponseEntity.ok("fail");
             }
         } catch (Exception e) {
             System.out.println("userImageInsert: " + e.getMessage());
+            return ResponseEntity.ok("fail");
+        }
+
+        return ResponseEntity.ok("success");
+    }
+
+    // 프로필 이미지 삭제
+    @PostMapping("userImageDelete")
+    public ResponseEntity<String> userImageDelete() {
+        UserVo user = (UserVo) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("login:fail");
+        }
+        int userIdx = user.getUserIdx();
+        String absPath = application.getRealPath("/resources/images/");
+        String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
+        File deleteFile = new File(absPath, deleteFileName);
+        if (deleteFile.exists()) {
+            boolean deleted = deleteFile.delete();
+            if (!deleted) {
+                System.out.println("파일 삭제 실패: " + deleted);
+            } else {
+                System.out.println("파일 삭제 성공: " + deleted);
+            }
+        }
+
+        int res = userMapper.deleteUserImage(userIdx);
+        return ResponseEntity.ok("success");
+    }
+
+    // 프로필 이미지 변경
+    @PostMapping(value = "userImageUpdate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> userImageUpdate(@RequestPart("file") MultipartFile file) throws Exception {
+        UserVo user = (UserVo) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("login:fail");
+        }
+        int userIdx = user.getUserIdx();
+        String absPath = application.getRealPath("/resources/images/");
+
+        // 기존 이미지 삭제
+        String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
+        System.out.println("deleteFileName: " + deleteFileName);
+        File deleteFile = new File(absPath, deleteFileName);
+        try {
+            if (deleteFile.exists()) {
+                boolean deleted = deleteFile.delete();
+                if (!deleted) {
+                    System.out.println("파일 삭제 실패: " + deleted);
+                } else {
+                    System.out.println("파일 삭제 성공: " + deleted);
+                }
+            } else {
+                return ResponseEntity.ok("fileDelete:fail");
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e);
+        }
+
+        try {
+            if (!file.isEmpty()) {
+                String fileName = file.getOriginalFilename();
+                File f = new File(absPath, fileName);
+                file.transferTo(f);
+                UserImageVo userImage = new UserImageVo();
+                userImage.setUserIdx(userIdx);
+                userImage.setFileName(fileName);
+                userMapper.updateUserImage(userImage);
+            } else {
+                return ResponseEntity.ok("fail");
+            }
+        } catch (Exception e) {
+            System.out.println("userImageUpdate: " + e.getMessage());
             return ResponseEntity.ok("fail");
         }
 

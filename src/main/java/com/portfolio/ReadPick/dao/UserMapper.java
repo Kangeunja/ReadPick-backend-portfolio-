@@ -20,4 +20,10 @@ public interface UserMapper {
 
 	void insertUserImage(UserImageVo userImage);
 
+    int deleteUserImage(int userIdx);
+
+    String selectUserImageFromUserIdx(int userIdx);
+
+    void updateUserImage(UserImageVo userImage);
+
 }

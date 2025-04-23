@@ -24,16 +24,21 @@
 
     <select id="selectOneFromId" parameterType="user" resultType="user"> select * from users where id = #{id} </select>
 
+    <select id="selectUserImageFromUserIdx" parameterType="int" resultType="String"> select fileName from userImage where userIdx = #{userIdx} </select>
     <!-- /select -->
 
 
     <!-- update -->
     <update id="userFirstAtUpdate" parameterType="user"> update users set firstAt = #{firstAt} where
         userIdx = #{userIdx} </update>
+
+    <update id="updateUserImage" parameterType="userImage"> update userImage set fileName = #{fileName} where userIdx = #{userIdx} </update>
     <!-- /update -->
 
 
     <!-- delete -->
+
+    <delete id="deleteUserImage" parameterType="int"> delete from userimage where userIdx = #{userIdx} </delete>
 
 
     <!-- /delete -->
