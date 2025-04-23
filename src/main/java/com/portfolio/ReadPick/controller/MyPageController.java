@@ -83,6 +83,9 @@ public class MyPageController {
     @Operation(summary = "유저가 찜한 책 리스트")
     public ResponseEntity<List<BookVo>> userPickBookList() {
         UserVo user = (UserVo) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok(null);
+        }
         BookmarkVo bookmarkVo = new BookmarkVo();
         bookmarkVo.setUserIdx(user.getUserIdx());
         bookmarkVo.setIsBookmarked("Y");
