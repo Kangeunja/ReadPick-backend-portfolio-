@@ -11,7 +11,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+            return true; // 무조건 통과
+        }
         HttpSession session = request.getSession(false); // 기존 세션만 가져옴 (새로 만들지 않음)
 
         // 세션이 없거나, 사용자 정보가 없는 경우

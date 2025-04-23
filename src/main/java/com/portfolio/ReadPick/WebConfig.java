@@ -15,6 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private LoginCheckInterceptor loginCheckInterceptor;
 
+    // CORS 설정
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
