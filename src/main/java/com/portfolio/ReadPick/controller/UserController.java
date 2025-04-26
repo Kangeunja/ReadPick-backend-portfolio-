@@ -204,7 +204,7 @@ public class UserController {
             return ResponseEntity.ok("login:fail");
         }
         int userIdx = user.getUserIdx();
-        String absPath = application.getRealPath("/resources/images/");
+        String absPath = "C:\\Users\\호앵\\Desktop\\portfolio\\ReadPick\\src\\main\\resources\\static\\images";
 
         try {
             if (!file.isEmpty()) {
@@ -240,7 +240,7 @@ public class UserController {
             return ResponseEntity.ok("login:fail");
         }
         int userIdx = user.getUserIdx();
-        String absPath = application.getRealPath("/resources/images/");
+        String absPath = "C:\\Users\\호앵\\Desktop\\portfolio\\ReadPick\\src\\main\\resources\\static\\images";
         String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
         File deleteFile = new File(absPath, deleteFileName);
         if (deleteFile.exists()) {
@@ -264,7 +264,7 @@ public class UserController {
             return ResponseEntity.ok("login:fail");
         }
         int userIdx = user.getUserIdx();
-        String absPath = application.getRealPath("/resources/images/");
+        String absPath = "C:\\Users\\호앵\\Desktop\\portfolio\\ReadPick\\src\\main\\resources\\static\\images";
 
         // 기존 이미지 삭제
         String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
