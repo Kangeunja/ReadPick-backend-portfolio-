@@ -212,6 +212,9 @@ public class UserController {
 
         String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
 
+        // 은봉이
+        // String fileUploadPath = "C:/Users/dmswk/Desktop/READPICKImages/";
+
         try {
             if (!file.isEmpty()) {
                 String filename = file.getOriginalFilename();
@@ -236,6 +239,8 @@ public class UserController {
         }
 
         return ResponseEntity.ok("http://localhost:8080/ReadPickImages/" + file.getOriginalFilename());
+        // 은봉이
+        // return ResponseEntity.ok("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
     }
 
     // 프로필 이미지 삭제
@@ -247,6 +252,8 @@ public class UserController {
         }
         int userIdx = user.getUserIdx();
         String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
+        // 은봉이
+        // String fileUploadPath = "C:/Users/dmswk/Desktop/READPICKImages/";
         String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
         File deleteFile = new File(fileUploadPath, deleteFileName);
         if (deleteFile.exists()) {
@@ -271,6 +278,9 @@ public class UserController {
         }
         int userIdx = user.getUserIdx();
         String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
+
+        // 은봉이
+        // String fileUploadPath = "C:/Users/dmswk/Desktop/READPICKImages/";
 
         // 기존 이미지 삭제
         String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
@@ -310,6 +320,8 @@ public class UserController {
         }
 
         return ResponseEntity.ok("http://localhost:8080/ReadPickImages/" + file.getOriginalFilename());
+        // 은봉이
+        // return ResponseEntity.ok("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
     }
 
 }
