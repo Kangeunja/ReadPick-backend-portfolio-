@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +46,14 @@ public class UserController {
 
     @Autowired
     BookService bookService;
+    
+    // @Autowired
+    // @Value("${file.upload.dir}")
+    // String fileUploadPath;
 
     @Autowired
     ServletContext application;
-
+    
     @PostMapping("list")
     public ResponseEntity<List<UserVo>> list() {
 
@@ -204,7 +209,8 @@ public class UserController {
             return ResponseEntity.ok("login:fail");
         }
         int userIdx = user.getUserIdx();
-        String absPath = "C:\\Users\\호앵\\Desktop\\portfolio\\ReadPick\\src\\main\\resources\\static\\images";
+
+        String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
 
         try {
             if (!file.isEmpty()) {
@@ -212,15 +218,15 @@ public class UserController {
                 UserImageVo userImage = new UserImageVo();
                 userImage.setUserIdx(userIdx);
                 userImage.setFileName(filename);
-                userMapper.insertUserImage(userImage);
-                File f = new File(absPath, filename);
+                File f = new File(fileUploadPath, filename);
                 if (f.exists()) {// 동일한 파일이 존재하냐?
                     // 시간_파일명 이름변경
                     long tm = System.currentTimeMillis();
                     filename = String.format("%d_%s", tm, filename);
-                    f = new File(absPath, filename);
+                    f = new File(fileUploadPath + filename);
                 }
                 file.transferTo(f);
+                userMapper.insertUserImage(userImage);
             } else {
                 return ResponseEntity.ok("fail");
             }
@@ -229,7 +235,7 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        return ResponseEntity.ok(absPath + file.getOriginalFilename());
+        return ResponseEntity.ok("http://localhost:8080/ReadPickImages/" + file.getOriginalFilename());
     }
 
     // 프로필 이미지 삭제
@@ -240,9 +246,9 @@ public class UserController {
             return ResponseEntity.ok("login:fail");
         }
         int userIdx = user.getUserIdx();
-        String absPath = "C:\\Users\\호앵\\Desktop\\portfolio\\ReadPick\\src\\main\\resources\\static\\images";
+        String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
         String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
-        File deleteFile = new File(absPath, deleteFileName);
+        File deleteFile = new File(fileUploadPath, deleteFileName);
         if (deleteFile.exists()) {
             boolean deleted = deleteFile.delete();
             if (!deleted) {
@@ -264,12 +270,12 @@ public class UserController {
             return ResponseEntity.ok("login:fail");
         }
         int userIdx = user.getUserIdx();
-        String absPath = "C:\\Users\\호앵\\Desktop\\portfolio\\ReadPick\\src\\main\\resources\\static\\images";
+        String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
 
         // 기존 이미지 삭제
         String deleteFileName = userMapper.selectUserImageFromUserIdx(userIdx);
         System.out.println("deleteFileName: " + deleteFileName);
-        File deleteFile = new File(absPath, deleteFileName);
+        File deleteFile = new File(fileUploadPath, deleteFileName);
         try {
             if (deleteFile.exists()) {
                 boolean deleted = deleteFile.delete();
@@ -289,7 +295,7 @@ public class UserController {
         try {
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
-                File f = new File(absPath, fileName);
+                File f = new File(fileUploadPath, fileName);
                 file.transferTo(f);
                 UserImageVo userImage = new UserImageVo();
                 userImage.setUserIdx(userIdx);
@@ -303,7 +309,7 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        return ResponseEntity.ok(absPath + file.getOriginalFilename());
+        return ResponseEntity.ok("http://localhost:8080/ReadPickImages/" + file.getOriginalFilename());
     }
 
 }

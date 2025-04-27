@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
             .addResourceHandler("/assets/profile/**") // 이 URL로 요청 오면
-            .addResourceLocations("file:C:/Users/호앵/Desktop/portfolio/ReadPick/src/main/webapp/resources/images/"); // 이 실제 디렉토리에서 파일 찾음
+            .addResourceLocations("file:C:/Users/호앵/Desktop/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
     }
 }
 
