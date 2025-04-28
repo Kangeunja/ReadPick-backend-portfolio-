@@ -1,13 +1,17 @@
 package com.portfolio.ReadPick.controller;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -48,7 +52,7 @@ public class UserController {
     BookService bookService;
     
 
-    String fileUploadPath = "C:/Users/호앵/Desktop/ReadPickImages/";
+    String fileUploadPath = "C:/Users/호앵/Desktop/READPICKImages/";
     // 은봉이
     // String fileUploadPath = "C:/Users/dmswk/Desktop/READPICKImages/";
 
@@ -75,12 +79,7 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
-        if (session.getAttribute("user") == null) {
-            session.setAttribute("user", dbUser);
-            session.setMaxInactiveInterval(30 * 60); // 세션 유효 시간 30분
-        }
-
+        
         // 로그인정보전달용 DTO객체
         UserSessionDTO sessionUserInfo = new UserSessionDTO();
         sessionUserInfo.setUserIdx(dbUser.getUserIdx());
@@ -90,6 +89,17 @@ public class UserController {
         sessionUserInfo.setAdminAt(dbUser.getAdminAt());
         sessionUserInfo.setFirstAt(dbUser.getFirstAt());
         sessionUserInfo.setId(dbUser.getId());
+        String fileName = userMapper.selectUserImageFromUserIdx(dbUser.getUserIdx());
+        if (fileName == null || fileName.equals("")) {
+            sessionUserInfo.setFileName("default");
+        }else {
+            sessionUserInfo.setFileName(fileName);
+        }
+        // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
+        if (session.getAttribute("user") == null) {
+            session.setAttribute("user", sessionUserInfo);
+            session.setMaxInactiveInterval(30 * 60); // 세션 유효 시간 30분
+        }
         return ResponseEntity.ok(sessionUserInfo);
     }
 
@@ -139,7 +149,7 @@ public class UserController {
     @PostMapping("checkLogin")
     @Operation(summary = "로그인체크", description = "로그인체크")
     public ResponseEntity<String> checkLogin(HttpServletResponse response) {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             Cookie cookie = new Cookie("JSESSIONID", null);
             cookie.setPath("/");
@@ -164,7 +174,7 @@ public class UserController {
     @Operation(summary = "테스트불가", description = "처음 로그인 했을 때 고른 장르들을 저장하는 코드지만 데이터를 정확하게 보내야 하는 이슈로 스웨거에서 테스트불가")
     public ResponseEntity<String> userPickResult(@RequestBody List<List<Integer>> userPick) {
 
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
 
         try {
             if (user != null) {
@@ -192,7 +202,7 @@ public class UserController {
     @GetMapping("firstAt")
     @Operation(summary = "첫 로그인 여부", description = "유저가 로그인 시 첫 로그인 여부를 확인")
     public ResponseEntity<String> firstAt() {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("로그인필요");
         }
@@ -204,7 +214,7 @@ public class UserController {
     @PostMapping(value = "userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> userImageInsert(@RequestPart("file") MultipartFile file) throws Exception {
 
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
 
         if (user == null) {
             return ResponseEntity.ok("login:fail");
@@ -234,14 +244,17 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        return ResponseEntity.ok("http://localhost:8080/ReadPickImages/" + file.getOriginalFilename());
+        UserSessionDTO sessionUserInfo = (UserSessionDTO) session.getAttribute("user");
+        sessionUserInfo.setFileName("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
+        session.setAttribute("user", sessionUserInfo);
+        return ResponseEntity.ok("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
     
     }
 
     // 프로필 이미지 삭제
     @PostMapping("userImageDelete")
     public ResponseEntity<String> userImageDelete() {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("login:fail");
         }
@@ -256,15 +269,17 @@ public class UserController {
                 System.out.println("파일 삭제 성공: " + deleted);
             }
         }
-
         int res = userMapper.deleteUserImage(userIdx);
+        UserSessionDTO sessionUserInfo = (UserSessionDTO) session.getAttribute("user");
+        sessionUserInfo.setFileName("default");
+        session.setAttribute("user", sessionUserInfo);
         return ResponseEntity.ok("success");
     }
 
     // 프로필 이미지 변경
     @PostMapping(value = "userImageUpdate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> userImageUpdate(@RequestPart("file") MultipartFile file) throws Exception {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("login:fail");
         }
@@ -277,9 +292,7 @@ public class UserController {
         try {
             if (deleteFile.exists()) {
                 boolean deleted = deleteFile.delete();
-                if (!deleted) {
-                    System.out.println("파일 삭제 실패: " + deleted);
-                } else {
+                if (deleted) {
                     System.out.println("파일 삭제 성공: " + deleted);
                 }
             } else {
@@ -307,7 +320,39 @@ public class UserController {
             return ResponseEntity.ok("fail");
         }
 
-        return ResponseEntity.ok("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());// return ResponseEntity.ok("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
+        UserSessionDTO sessionUserInfo = (UserSessionDTO) session.getAttribute("user");
+        sessionUserInfo.setFileName("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
+        session.setAttribute("user", sessionUserInfo);
+        return ResponseEntity.ok("http://localhost:8080/READPICKImages/" + file.getOriginalFilename());
+    }
+
+    // 프로필 이미지 가져오기
+    @GetMapping("/READPICKImages/{imageName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+        // 요청된 이미지 파일 경로 설정
+        Path imagePath = Paths.get(fileUploadPath).resolve(imageName);
+        
+        // 이미지가 존재하지 않으면 404 반환
+        if (!imagePath.toFile().exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // 이미지 파일 반환
+        Resource resource = new FileSystemResource(imagePath);
+        
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)  // 이미지의 MIME 타입 설정
+                .body(resource);  // 이미지 리소스를 바디로 반환
+    }
+
+    @GetMapping("sessionCheck")
+    public ResponseEntity<?> sessionCheck() {   
+
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("fail");
+        }
+        return ResponseEntity.ok(user);
     }
 
 }

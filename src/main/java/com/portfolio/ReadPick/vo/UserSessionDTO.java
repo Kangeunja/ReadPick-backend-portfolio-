@@ -12,4 +12,6 @@ public class UserSessionDTO {
     String adminAt;
     String firstAt;
     String id;
+    String fileName;
+    String pw;
 }

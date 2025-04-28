@@ -17,6 +17,7 @@ import com.portfolio.ReadPick.dao.UserMapper;
 import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
+import com.portfolio.ReadPick.vo.UserSessionDTO;
 import com.portfolio.ReadPick.vo.UserVo;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,8 +54,8 @@ public class MyPageController {
 
     @PostMapping("userInfo")
     @Operation(summary = "회원정보", description = "회원정보")
-    public ResponseEntity<UserVo> userInfo(HttpServletResponse response) {
-        UserVo user = (UserVo) session.getAttribute("user");
+    public ResponseEntity<UserSessionDTO> userInfo(HttpServletResponse response) {
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             Cookie cookie = new Cookie("JSESSIONID", null);
             cookie.setPath("/");
@@ -62,27 +63,38 @@ public class MyPageController {
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
+        user.setPw(userMapper.selectPwFromUserIdx(user.getUserIdx()));
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("userInfoModify")
     @Operation(summary = "회원정보 변경", description = "회원정보 변경 보내줄 데이터는 유저이름, 닉네임, 아이디, 비밀번호, 이메일")
     public ResponseEntity<String> userInfoModify(@RequestBody UserVo userVo) {
-        UserVo user = (UserVo) session.getAttribute("user");
+        System.out.println(userVo);
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("fail:userNull");
         }
         int userIdx = user.getUserIdx();
         userVo.setUserIdx(userIdx);
         int res = myPageMapper.userInfoModify(userVo);
-        session.setAttribute("user", userVo);
-        return ResponseEntity.ok("success");
+        boolean isSuccess = res > 0;
+        if (!isSuccess) {
+            return ResponseEntity.ok("fail:modifyFail");
+        }else{
+            user.setEmail(userVo.getEmail());
+            user.setNickName(userVo.getNickName());
+            user.setUserName(userVo.getUserName());
+            user.setId(userVo.getId());
+            session.setAttribute("user", user);
+            return ResponseEntity.ok("success");
+        }
     }
 
     @PostMapping("userPickBookList")
     @Operation(summary = "유저가 찜한 책 리스트")
     public ResponseEntity<List<BookVo>> userPickBookList() {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok(null);
         }
@@ -104,7 +116,10 @@ public class MyPageController {
     @PostMapping("bookmarkImageList")
     @Operation(summary = "유저가 찜한 책 사진")
     public ResponseEntity<List<BookImageVo>> bookmarkImageList() {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok(null);
+        }
         BookmarkVo bookmarkVo = new BookmarkVo();
         bookmarkVo.setUserIdx(user.getUserIdx());
         bookmarkVo.setIsBookmarked("Y");

@@ -18,13 +18,12 @@ import com.portfolio.ReadPick.dao.BookmarkMapper;
 import com.portfolio.ReadPick.dao.RecMapper;
 import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BookCategoryVo;
-import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
 import com.portfolio.ReadPick.vo.BsVo;
 import com.portfolio.ReadPick.vo.BssVo;
 import com.portfolio.ReadPick.vo.RecVo;
-import com.portfolio.ReadPick.vo.UserVo;
+import com.portfolio.ReadPick.vo.UserSessionDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
@@ -109,7 +108,7 @@ public class BookController {
     @GetMapping("isBookmark")
     @Operation(summary = "북마크 확인", description = "로그인된 사용자와 책의 번호를 확인해서 북마크를 체크하고, 북마크가 있는 경우 Y, 없는 경우 N을 반환")
     public ResponseEntity<String> isBookmark(int bookIdx) {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         String isBookmark = "N";
         if (user != null) {
             int userIdx = user.getUserIdx();
@@ -127,7 +126,7 @@ public class BookController {
     @Operation(summary = "북마크 해제 및 추가", description = "북마크 버튼을 누르면 유저의 로그인 여부를 체크 후 토글로 북마크 처리 <br> map 이름은 bookmark")
     public ResponseEntity<Map<String, Object>> bookmark(int bookIdx) {
 
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         Map<String, Object> bookmark = new HashMap<>();
 
         if (user == null) {
@@ -170,7 +169,7 @@ public class BookController {
     @Operation(summary = "책 추천", description = "책 추천")
     public ResponseEntity<Map<String, Object>> recommend(int bookIdx) {
 
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         Map<String, Object> rec = new HashMap<>();
 
         if (user == null) {
@@ -213,7 +212,7 @@ public class BookController {
     @GetMapping("isRec")
     @Operation(summary = "추천 확인", description = "로그인된 사용자와 책의 번호를 확인해서 추천여부를 체크하고, 추천을 누른 경우 Y, 아닌 경우 N을 반환")
     public ResponseEntity<String> isRec(int bookIdx) {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         String isRec = "N";
         if (user != null) {
             int userIdx = user.getUserIdx();
@@ -239,7 +238,7 @@ public class BookController {
     @Operation(summary = "유저 장르 별 책 추천", description = "유저가 선택한 장르 중 가장 높은 추천을 받은 책 4개를 리턴")
     public ResponseEntity<List<BookVo>> userGenreBook() {
 
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             // System.out.println("로그인 필요");
             return ResponseEntity.ok(null);
