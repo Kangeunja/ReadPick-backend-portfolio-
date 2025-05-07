@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portfolio.ReadPick.dao.ReviewMapper;
 import com.portfolio.ReadPick.vo.ReviewUserVo;
 import com.portfolio.ReadPick.vo.ReviewVo;
-import com.portfolio.ReadPick.vo.UserVo;
+import com.portfolio.ReadPick.vo.UserSessionDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
@@ -31,7 +31,7 @@ public class ReviewController {
     @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음 <br> 프론트에서 bookIdx를 보내줄것")
     public ResponseEntity<String> reviewInsert(@RequestBody ReviewVo reviewVo) {
         
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
 
         if (user == null) {
             return ResponseEntity.ok("login:fail");
@@ -53,7 +53,7 @@ public class ReviewController {
     @Operation(summary = "기존리뷰정보전달", description = "리뷰수정버튼을 누르면 해당 리뷰의 정보를 전달")
     public ResponseEntity<ReviewVo> modifyReview(int bookIdx) {
 
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             System.out.println("login:fail");
             return ResponseEntity.ok(null);
@@ -82,7 +82,7 @@ public class ReviewController {
     @Operation(summary = "리뷰수정확인버튼", description = "리뷰를 새로운 내용으로 수정")
     public ResponseEntity<String> reviewUpdate(@RequestBody ReviewVo reviewVo) {
         
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("login:fail");
         }
@@ -102,7 +102,7 @@ public class ReviewController {
     @GetMapping("reviewDelete")
     @Operation(summary = "리뷰삭제", description = "리뷰삭제")
     public ResponseEntity<String> reviewDelete(int bookIdx) {
-        UserVo user = (UserVo) session.getAttribute("user");
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
 
         if (user == null) {
             return ResponseEntity.ok("login:fail");

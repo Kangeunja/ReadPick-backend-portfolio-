@@ -299,7 +299,6 @@ public class UserController {
                 return ResponseEntity.ok("fileDelete:fail");
             }
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e);
         }
 
