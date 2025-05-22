@@ -26,7 +26,7 @@
 
     <select id="selectUserImageFromUserIdx" parameterType="int" resultType="String"> select fileName from userImage where userIdx = #{userIdx} </select>
     
-    <select id="selectPwFromUserIdx">select pw from users where userIdx = #{userIdx}</select>
+    <!-- <select id="selectPwFromUserIdx">select pw from users where userIdx = #{userIdx}</select> -->
 
     <!-- /select -->
 
