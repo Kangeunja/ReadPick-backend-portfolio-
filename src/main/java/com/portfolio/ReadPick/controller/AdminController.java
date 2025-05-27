@@ -45,5 +45,8 @@ public class AdminController {
         List<BookVo> bookList = adminMapper.selectAdminBookList();
         return ResponseEntity.ok(bookList);
     }
+    // 리뷰삭제기능 추가
+    // 책 수정 삭제 기능 추가
+    // 유저 조회 및 삭제 기능 추가
 
 }
