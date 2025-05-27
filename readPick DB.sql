@@ -3,6 +3,7 @@ drop table if exists userImage;
 -- drop table if exists jobCategory;
 drop table if exists rec;
 drop table if exists searchKeyword;
+drop table if exists reportedReview;
 drop table if exists review;
 drop table if exists bookmark;
 -- drop table if exists userPickCount;
@@ -76,9 +77,9 @@ create table book (
 create table bookImage(
 	fileIdx	int primary key auto_increment,
 	bookIdx int not null,
-    fileName varchar(150) not null,
+    	fileName varchar(150) not null,
 	fileTypeURL char(1) default'N' not null, 
-    foreign key (bookIdx) references book (bookIdx) on delete cascade
+    	foreign key (bookIdx) references book (bookIdx) on delete cascade
 );
 
 create table users(
@@ -89,10 +90,11 @@ create table users(
     pw 		 varchar(20) not null, 
     email	 varchar(40) not null,
 	adminAt  char(1) default 'N' not null,
-    firstAt char(1) default 'Y' not null
+    firstAt char(1) default 'Y' not null,
+    regDate timestamp default current_timestamp
 );
 
-insert into users value(null, "관리자","관리자", "admin", "admin", "admin123@gmail.com","Y","Y"); 
+insert into users value(null, "관리자","관리자", "admin", "admin", "admin123@gmail.com","Y","Y", default); 
 
 -- 가입 시 입력한 유저의 관심분야
 create table userPick(
@@ -130,10 +132,20 @@ create table review(
     content varchar(600) not null,
     reviewAt char(1) default 'N' not null,
     regDate datetime default now() not null,
+    -- reportedReview char(1) default 'N' not null,
     foreign key (userIdx) references users (userIdx) on delete cascade,
     foreign key (bookIdx) references book (bookIdx) on delete cascade,
     primary key (userIdx, bookIdx)
 );
+
+create table reportedReview(
+	rvIdx int not null,
+	userIdx	int not null,
+    foreign key (userIdx) references users (userIdx) on delete cascade,
+    foreign key (rvIdx) references review (rvIdx) on delete cascade,
+    primary key (rvIdx, userIdx)
+);
+
 
 -- 찜 목록 저장
 create table bookmark (
