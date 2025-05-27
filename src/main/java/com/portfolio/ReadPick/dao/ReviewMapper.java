@@ -24,4 +24,7 @@ public interface ReviewMapper {
 
     List<ReviewUserVo> selectReviewMore(int bookIdx, int rvIdx);
 
+    int insertReportReview(int rvIdx, int userIdx);
+
+
 }

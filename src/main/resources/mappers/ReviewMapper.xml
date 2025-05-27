@@ -6,9 +6,13 @@
 
     <!-- insert -->
 
-    <select id="insertReview" parameterType="review">
+    <insert id="insertReview" parameterType="review">
         insert into review values(null, #{userIdx}, #{bookIdx}, #{content}, #{reviewAt}, default)
-    </select>
+    </insert>
+
+    <insert id="insertReportReview" parameterType="int">
+        insert into reportedReview values(#{rvIdx}, #{userIdx})
+    </insert>
     
     <!-- /insert -->
 

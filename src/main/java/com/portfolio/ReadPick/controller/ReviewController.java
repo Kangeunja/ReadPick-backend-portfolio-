@@ -30,7 +30,7 @@ public class ReviewController {
     @PostMapping("reviewInsert")
     @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음 <br> 프론트에서 bookIdx를 보내줄것")
     public ResponseEntity<String> reviewInsert(@RequestBody ReviewVo reviewVo) {
-        
+
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
 
         if (user == null) {
@@ -81,7 +81,7 @@ public class ReviewController {
     @PostMapping("reviewUpdate")
     @Operation(summary = "리뷰수정확인버튼", description = "리뷰를 새로운 내용으로 수정")
     public ResponseEntity<String> reviewUpdate(@RequestBody ReviewVo reviewVo) {
-        
+
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok("login:fail");
@@ -143,7 +143,7 @@ public class ReviewController {
         List<ReviewUserVo> review = new ArrayList<>();
 
         try {
-            int bookIdx = reviewMapper.selectOneBookIdx(rvIdx); 
+            int bookIdx = reviewMapper.selectOneBookIdx(rvIdx);
             review = reviewMapper.selectReviewMore(bookIdx, rvIdx);
         } catch (Exception e) {
             System.out.println(e);
@@ -152,6 +152,25 @@ public class ReviewController {
         }
 
         return ResponseEntity.ok(review);
+    }
+
+    @GetMapping("reportReview")
+    @Operation(summary = "리뷰신고", description = "리뷰신고처리 API")
+    public ResponseEntity<String> reportReview(int rvIdx) {
+
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("login:fail");
+        }
+        int userIdx = user.getUserIdx();
+        try {
+            int res = reviewMapper.insertReportReview(rvIdx, userIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.ok("reportReview:fail");
+        }
+
+        return ResponseEntity.ok("reportReview:success");
     }
 
 }

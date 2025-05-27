@@ -3,7 +3,7 @@
 
 <mapper namespace="com.portfolio.ReadPick.dao.AdminMapper">
 
-    
+
     <!-- insert -->
 
     <!-- /insert -->
@@ -11,10 +11,20 @@
 
     <!-- select -->
 
-    <select id="userList" resultType="adminUser">
-        SELECT * FROM users order by userIdx desc
+    <select id="userList" resultType="adminUser"> SELECT * FROM users order by userIdx desc </select>
+
+    <select id="selectAdminReviewFromIdxList" parameterType="list" resultType="adminReview"> select * from
+        review where rvIdx in <foreach item="rvIdx" collection="rvIdxList" open="(" separator=","
+            close=")">#{rvIdx}</foreach>
     </select>
 
+    <select id="selectAdminReviewIdxList" resultType="Integer"> select rvIdx from reportedReview
+        group by rvIdx having count(rvIdx) &gt;= 2 </select>
+
+        
+    <select id="selectAdminBookList">
+        select * from book order by bookIdx desc
+    </select>
     <!-- /select -->
 
 

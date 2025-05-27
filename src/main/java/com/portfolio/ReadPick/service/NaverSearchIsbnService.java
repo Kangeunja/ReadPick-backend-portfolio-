@@ -36,7 +36,7 @@ public class NaverSearchIsbnService {
     public void searchIsbnSave(String searchOneName) {
         System.out.println("searchOneName : " + searchOneName);
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 20;
+        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 5;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);
