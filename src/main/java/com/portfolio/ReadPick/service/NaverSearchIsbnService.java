@@ -29,6 +29,8 @@ public class NaverSearchIsbnService {
     @Autowired
     AladinCategorySearchService aladinBookSearchService;
 
+    int start = 1; // 검색 시작 위치
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     HashSet<String> duplicate = new HashSet<>();
@@ -36,7 +38,8 @@ public class NaverSearchIsbnService {
     public void searchIsbnSave(String searchOneName) {
         System.out.println("searchOneName : " + searchOneName);
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 5;
+
+        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 1 + "&start=" + start;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);
@@ -55,6 +58,7 @@ public class NaverSearchIsbnService {
                 Thread.sleep(100);
                 // System.out.println(isbn);
             }
+            start += 1; // 다음 검색 시작 위치로 이동
         } catch (Exception e) {
             System.out.println("NaverSearchIsbnServiceError : " + e);
         }

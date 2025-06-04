@@ -36,6 +36,10 @@
 
     <!-- delete -->
 
+    <delete id="reviewDelete" parameterType="int">
+        delete from review where rvIdx = #{rvIdx}
+    </delete>
+
 
     <!-- /delete -->
 

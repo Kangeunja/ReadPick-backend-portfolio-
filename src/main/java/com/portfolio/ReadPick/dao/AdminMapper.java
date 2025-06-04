@@ -19,4 +19,14 @@ public interface AdminMapper {
     List<AdminReviewVo> selectAdminReviewFromIdxList(List<Integer> rvIdxList);
 
     List<BookVo> selectAdminBookList();
+
+    int reviewDelete(int rvIdx);
+
+    int deleteBook(int bookIdx);
+
+	int reviewReset(int rvIdx);
+
+    List<Integer> selectReportCount();
+
+    int userDelete(int userIdx);
 }

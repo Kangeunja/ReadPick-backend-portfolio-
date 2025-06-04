@@ -9,6 +9,8 @@ import lombok.Data;
 public class AdminReviewVo {
     int rvIdx;
     int bookIdx;
+    int userIdx;
+    int reportCount;
     String content;
     String regDate;
 }
