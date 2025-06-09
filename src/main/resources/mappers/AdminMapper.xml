@@ -40,6 +40,10 @@
         delete from review where rvIdx = #{rvIdx}
     </delete>
 
+    <delete id="userDelete" parameterType="int">
+        delete from users where userIdx = #{userIdx}
+    </delete>
+
 
     <!-- /delete -->
 
