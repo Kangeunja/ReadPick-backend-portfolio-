@@ -86,6 +86,7 @@ public class MyPageController {
             user.setNickName(userVo.getNickName());
             user.setUserName(userVo.getUserName());
             user.setId(userVo.getId());
+            user.setPw(userVo.getPw());
             session.setAttribute("user", user);
             return ResponseEntity.ok("success");
         }
