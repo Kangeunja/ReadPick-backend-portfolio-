@@ -23,7 +23,7 @@
     </select>
 
     <select id="selectReview" parameterType="int" resultType="ru">
-        select * from reviewUserView where bookIdx = #{bookIdx} order by rvIdx desc limit 4;
+        select * from reviewUserView where bookIdx = #{bookIdx} order by rvIdx desc limit 3;
     </select>
 
     <select id="selectOneBookIdx" parameterType="int" resultType="int">
@@ -31,7 +31,7 @@
     </select>
 
     <select id="selectReviewMore" parameterType="int" resultType="ru">
-        select * from reviewUserView where bookIdx = #{bookIdx} and rvIdx &lt;<!-- < 특수문자의 대체문자--> #{rvIdx} order by rvIdx desc limit 4;
+        select * from reviewUserView where bookIdx = #{bookIdx} and rvIdx &lt;<!-- < 특수문자의 대체문자--> #{rvIdx} order by rvIdx desc limit 3;
     </select>
 
     <!-- /select -->
