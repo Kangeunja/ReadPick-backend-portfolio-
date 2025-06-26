@@ -123,16 +123,26 @@ public class ReviewController {
     @Operation(summary = "리뷰리스트", description = "프론트에서 bookIdx를 보내줄 것")
     public ResponseEntity<List<ReviewUserVo>> reviewList(int bookIdx) {
 
-        List<ReviewUserVo> review = new ArrayList<>();
+        List<ReviewUserVo> reviewList = new ArrayList<>();
 
         try {
-            review = reviewMapper.selectReview(bookIdx);
+            reviewList = reviewMapper.selectReview(bookIdx);
+            for (ReviewUserVo review : reviewList) {
+                // 리뷰 작성자의 프로필 이미지가 없을 경우 기본 이미지로 설정
+                if (review.getFileName() == null || review.getFileName().isEmpty()) {
+                    review.setFileName("default");
+                } else {
+                    review.setFileName("http://localhost:8080/READPICKImages/" + review.getFileName());
+                }
+            }
+
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.ok(null);
         }
+        System.out.println(reviewList);
 
-        return ResponseEntity.ok(review);
+        return ResponseEntity.ok(reviewList);
     }
 
     // 무한 스크롤 페이징
