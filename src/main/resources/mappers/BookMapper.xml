@@ -7,7 +7,7 @@
 
     <insert id="isbnInsert" parameterType="book"> insert into isbn values(null, #{bsssIdx}, #{isbn})</insert>
     <insert id="insertBook" parameterType="book"> insert into book values (null, #{bmIdx}, #{bsIdx},
-        #{bssIdx}, #{bsssIdx}, #{isbn}, #{bookName}, #{author}, #{content}, #{link}, #{publisher},
+        #{bssIdx}, #{bsssIdx}, #{isbn}, #{bookName}, #{author}, #{bookContent}, #{link}, #{publisher},
         #{pubDate}) </insert>
 
     <!-- /insert -->

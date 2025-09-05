@@ -58,7 +58,7 @@ public class AladinBookSearchService {
                 // title = title.replaceAll("</b>", "");
                 bookVo.setBookName(title);
                 bookVo.setAuthor(item.get("author").asText());
-                bookVo.setContent(item.get("description").asText());
+                bookVo.setBookContent(item.get("description").asText());
                 bookVo.setLink(item.get("link").asText());
                 bookVo.setPublisher(item.get("publisher").asText());
                 bookVo.setPubDate(item.get("pubDate").asText());

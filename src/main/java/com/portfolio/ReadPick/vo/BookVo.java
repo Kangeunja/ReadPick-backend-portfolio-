@@ -14,7 +14,7 @@ public class BookVo {
     Integer bsssIdx;   //세부카테고리
     String bookName;
     String author;
-    String content;
+    String bookContent;
     String link;
     String publisher;
     String pubDate;
