@@ -13,7 +13,7 @@
     <!-- select -->
 
     <select id="selectOneImageByBookIdx" resultType="bookImage" parameterType="int"> select * from
-        bookimage where bookIdx = #{bookIdx}</select>
+        bookImage where bookIdx = #{bookIdx}</select>
 
     <select id="selectImageByBookIdx" resultType="bookImage" parameterType="int">select * from
         bookImage where bookIdx = #{bookIdx}</select>

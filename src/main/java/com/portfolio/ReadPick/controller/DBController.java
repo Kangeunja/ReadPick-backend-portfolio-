@@ -13,6 +13,7 @@ import com.portfolio.ReadPick.service.NaverSearchIsbnService;
 import com.portfolio.ReadPick.vo.BookVo;
 
 @RestController
+@RequestMapping("api")
 public class DBController {
 
     @Autowired

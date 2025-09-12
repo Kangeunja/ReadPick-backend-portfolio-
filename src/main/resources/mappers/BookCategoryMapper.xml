@@ -82,7 +82,7 @@
     </select>
 
     <select id="selectBssListByBsIdx" parameterType="int" resultType="bss">
-        select * from booksubsubcategory where bsIdx = #{bsIdx}
+        select * from bookSubSubCategory where bsIdx = #{bsIdx}
     </select>
     <!-- /select -->
 
