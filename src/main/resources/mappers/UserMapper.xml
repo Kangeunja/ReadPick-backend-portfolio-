@@ -41,7 +41,7 @@
 
     <!-- delete -->
 
-    <delete id="deleteUserImage" parameterType="int"> delete from userimage where userIdx = #{userIdx} </delete>
+    <delete id="deleteUserImage" parameterType="int"> delete from userImage where userIdx = #{userIdx} </delete>
 
 
     <!-- /delete -->

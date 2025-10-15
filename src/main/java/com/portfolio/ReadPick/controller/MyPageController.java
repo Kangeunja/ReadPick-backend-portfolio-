@@ -25,7 +25,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@RequestMapping("myPage")
+@RequestMapping("api/myPage")
 @RestController
 public class MyPageController {
 

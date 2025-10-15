@@ -134,7 +134,7 @@ public class ReviewController {
                 if (review.getFileName() == null || review.getFileName().isEmpty()) {
                     review.setFileName("default");
                 } else {
-                    review.setFileName("http://localhost:8080/READPICKImages/" + review.getFileName());
+                    review.setFileName("http://43.200.71.170:8080/ReadPickImages/" + review.getFileName());
                 }
             }
 
@@ -152,18 +152,26 @@ public class ReviewController {
     @Operation(summary = "리뷰 무한 스크롤", description = "프론트에서 마지막으로 조회된 리뷰의 rvIdx를 보내줄 것")
     public ResponseEntity<List<ReviewUserVo>> reviewMore(int rvIdx) {
 
-        List<ReviewUserVo> review = new ArrayList<>();
+        List<ReviewUserVo> reviewList = new ArrayList<>();
 
         try {
             int bookIdx = reviewMapper.selectOneBookIdx(rvIdx);
-            review = reviewMapper.selectReviewMore(bookIdx, rvIdx);
+            reviewList = reviewMapper.selectReviewMore(bookIdx, rvIdx);
+            for (ReviewUserVo review : reviewList) {
+                // 리뷰 작성자의 프로필 이미지가 없을 경우 기본 이미지로 설정
+                if (review.getFileName() == null || review.getFileName().isEmpty()) {
+                    review.setFileName("default");
+                } else {
+                    review.setFileName("http://43.200.71.170:8080/ReadPickImages/" + review.getFileName());
+                }
+            }
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("페이징실패");
             return ResponseEntity.ok(null);
         }
 
-        return ResponseEntity.ok(review);
+        return ResponseEntity.ok(reviewList);
     }
 
     @GetMapping("reportReview")

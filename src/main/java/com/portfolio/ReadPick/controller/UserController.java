@@ -44,9 +44,9 @@ public class UserController {
     BookService bookService;
     
 
-    String fileUploadPath = "C:/Users/호앵/Desktop/READPICKImages/";
+    String fileUploadPath = "/home/ubuntu/ReadPickImages";
     // 은봉이
-    // String fileUploadPath = "C:/Users/dmswk/Desktop/READPICKImages/";
+    // String fileUploadPath = "C:/Users/dmswk/Desktop/ReadPickImages/";
 
     @Autowired
     ServletContext application;
@@ -85,7 +85,7 @@ public class UserController {
         if (fileName == null || fileName.equals("")) {
             sessionUserInfo.setFileName("default");
         }else {
-            sessionUserInfo.setFileName("http://localhost:8080/READPICKImages/"+fileName);
+            sessionUserInfo.setFileName("http://43.200.71.170:8080/ReadPickImages/"+fileName);
         }
         // 로그인처리: 현재 로그인된 객체(user)정보를 session저장
         if (session.getAttribute("user") == null) {

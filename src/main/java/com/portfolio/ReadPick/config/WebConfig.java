@@ -1,13 +1,12 @@
-package com.portfolio.ReadPick;
+package com.portfolio.ReadPick.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.portfolio.ReadPick.config.LoginCheckInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -35,8 +34,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-            .addResourceHandler("/assets/profile/**") // 이 URL로 요청 오면
-            .addResourceLocations("file:C:/Users/호앵/Desktop/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
+            .addResourceHandler("/assets/profile/**", "http://43.200.71.170:8080/ReadPickImages/**") // 이 URL로 요청 오면
+            .addResourceLocations("file:/home/ubuntu/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
     }
+
+    @Override
+public void addViewControllers(ViewControllerRegistry registry) {
+    // /api가 아닌 모든 경로를 index.html로 포워딩
+    registry.addViewController("/{path:[^\\.]*}")
+            .setViewName("forward:/index.html");
+    registry.addViewController("/**/{path:[^\\.]*}")
+            .setViewName("forward:/index.html");
+}
 }
 

@@ -14,11 +14,10 @@ import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/")
 public class BookImageController {
 
     @Autowired

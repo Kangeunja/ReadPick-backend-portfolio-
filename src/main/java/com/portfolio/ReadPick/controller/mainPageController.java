@@ -14,7 +14,7 @@ import com.portfolio.ReadPick.vo.BookCategoryVo;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/")
 public class MainPageController {
 
     @Autowired
