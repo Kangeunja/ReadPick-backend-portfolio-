@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://43.200.71.170:3000") // 리액트 애플리케이션 주소
+                .allowedOrigins("http://localhost:3000") // 리액트 애플리케이션 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
@@ -30,21 +30,19 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/myPage/userInfo"); // 로그인 체크할 URL 패턴;
     }
 
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-            .addResourceHandler("/assets/profile/**", "http://43.200.71.170:8080/ReadPickImages/**") // 이 URL로 요청 오면
-            .addResourceLocations("file:/home/ubuntu/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
+                .addResourceHandler("/assets/profile/**") // 이 URL로 요청 오면
+                .addResourceLocations("file:/C:/Users/hoyeong/Desktop/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
     }
 
-    @Override
-public void addViewControllers(ViewControllerRegistry registry) {
-    // /api가 아닌 모든 경로를 index.html로 포워딩
-    registry.addViewController("/{path:[^\\.]*}")
-            .setViewName("forward:/index.html");
-    registry.addViewController("/**/{path:[^\\.]*}")
-            .setViewName("forward:/index.html");
+    // @Override
+    // public void addViewControllers(ViewControllerRegistry registry) {
+    //     // /api가 아닌 모든 경로를 index.html로 포워딩
+    //     registry.addViewController("/{path:[^\\.]*}")
+    //             .setViewName("forward:/index.html");
+    //     registry.addViewController("/**/{path:[^\\.]*}")
+    //             .setViewName("forward:/index.html");
+    // }
 }
-}
-

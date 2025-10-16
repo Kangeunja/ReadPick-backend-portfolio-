@@ -35,7 +35,8 @@ public class UserImageController {
     @Autowired
     UserMapper userMapper;
 
-    String fileUploadPath = "/home/ubuntu/ReadPickImages/";
+    // String fileUploadPath = "/home/ubuntu/ReadPickImages/";
+    String fileUploadPath = "C:/Users/hoyeong/Desktop/ReadPickImages/";
 
     // user 프로필 이미지 추가
     @PostMapping(value = "/api/userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -67,7 +68,7 @@ public class UserImageController {
             userMapper.insertUserImage(userImage);
 
             // 세션 업데이트
-            user.setFileName("http://43.200.71.170:8080/ReadPickImages/" + newFileName);
+            user.setFileName("http://localhost:8080/ReadPickImages/" + newFileName);
             session.setAttribute("user", user);
 
             return ResponseEntity.ok(user.getFileName());
@@ -144,7 +145,7 @@ public class UserImageController {
             userMapper.updateUserImage(userImage);
 
             // 세션 업데이트
-            user.setFileName("http://43.200.71.170:8080/ReadPickImages/" + newFileName);
+            user.setFileName("http://localhost:8080/ReadPickImages/" + newFileName);
             session.setAttribute("user", user);
 
             return ResponseEntity.ok(user.getFileName());

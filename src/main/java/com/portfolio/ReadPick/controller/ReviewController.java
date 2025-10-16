@@ -134,7 +134,7 @@ public class ReviewController {
                 if (review.getFileName() == null || review.getFileName().isEmpty()) {
                     review.setFileName("default");
                 } else {
-                    review.setFileName("http://43.200.71.170:8080/ReadPickImages/" + review.getFileName());
+                    review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
                 }
             }
 
@@ -162,7 +162,7 @@ public class ReviewController {
                 if (review.getFileName() == null || review.getFileName().isEmpty()) {
                     review.setFileName("default");
                 } else {
-                    review.setFileName("http://43.200.71.170:8080/ReadPickImages/" + review.getFileName());
+                    review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
                 }
             }
         } catch (Exception e) {
