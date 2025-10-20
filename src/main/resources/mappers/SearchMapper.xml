@@ -16,16 +16,16 @@
 
 <!-- select -->
     <select id="selectBookListByBookName" resultType="book" parameterType="String">
-        select * from book where bookName = #{bookName} order by bookIdx asc;
+        select * from book where bookName like '%#{bookName}%' order by bookIdx asc;
     </select>
 
     <select id="selectBookListByAuthor" resultType="book" parameterType="String">
-        select * from book where author = #{author} order by bookIdx asc;
+        select * from book where author like '%#{author}%' order by bookIdx asc;
     </select>
 
-    <select id="selectBookListByIsbn" resultType="book" parameterType="String">
+    <!-- <select id="selectBookListByIsbn" resultType="book" parameterType="String">
         select * from book where isbn = #{isbn} order by bookIdx asc;
-    </select>
+    </select> -->
 
 <!-- /select -->
 

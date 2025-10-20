@@ -17,6 +17,7 @@ import com.portfolio.ReadPick.dao.UserMapper;
 import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
+import com.portfolio.ReadPick.vo.UserPickDTO;
 import com.portfolio.ReadPick.vo.UserSessionDTO;
 import com.portfolio.ReadPick.vo.UserVo;
 
@@ -133,6 +134,19 @@ public class MyPageController {
             imageList.add(myPageMapper.bookmarkImageList(bookmarkList.get(i).getBookIdx()));
         }
         return ResponseEntity.ok(imageList);
+    }
+
+    @PostMapping("myPickGenre")
+    @Operation(summary = "유저가 찜한 장르의 리스트")
+    public ResponseEntity<List<UserPickDTO>> myPickGenre() {
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok(null);
+        }
+
+        List<UserPickDTO> genreList = myPageMapper.myPickGenre(user.getUserIdx());
+        
+        return ResponseEntity.ok(genreList);
     }
 
 }

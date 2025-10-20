@@ -13,7 +13,7 @@ public interface SearchMapper {
 
     List<BookVo> selectBookListByAuthor(String author);
 
-    List<BookVo> selectBookListByIsbn(String isbn);
+    // List<BookVo> selectBookListByIsbn(String isbn);
 
 
 

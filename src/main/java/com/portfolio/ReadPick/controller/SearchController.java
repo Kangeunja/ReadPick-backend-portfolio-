@@ -30,11 +30,11 @@ public class SearchController {
         return ResponseEntity.ok(searchMapper.selectBookListByAuthor(author));
     }
 
-    @GetMapping("isbnSearch")
-    public ResponseEntity<List<BookVo>> isbnSearch(String isbn) {
+    // @GetMapping("isbnSearch")
+    // public ResponseEntity<List<BookVo>> isbnSearch(String isbn) {
         
-        return ResponseEntity.ok(searchMapper.selectBookListByIsbn(isbn));
-    }
+    //     return ResponseEntity.ok(searchMapper.selectBookListByIsbn(isbn));
+    // }
 
 
 }

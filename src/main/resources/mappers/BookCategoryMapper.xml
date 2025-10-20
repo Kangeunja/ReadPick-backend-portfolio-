@@ -11,7 +11,6 @@
             <id property="bssIdx" column="bssIdx" />
             <result property="bsIdx" column="bsIdx" />
             <result property="bssName" column="bssName" />
-            <result property="bmName" column="bm_name" />
         </collection>
     </resultMap>
     
@@ -59,7 +58,7 @@
     <select id="selectBsssIdxBybsssName" resultType="int">select bsssIdx from bookDetailCategory
         where bsssName=#{bsssName}</select>
 
-    <select id="selectBsList" resultType="bc"> select * from bookSubCategory order by bsIdx; </select>
+    <select id="selectBsList" resultType="bc"> select * from bookSubCategory order by bsIdx</select>
 
     <select id="selectBssList" parameterType="int"> select * from bookSubSubCategory where bsIdx =
         #{bsIdx} </select>

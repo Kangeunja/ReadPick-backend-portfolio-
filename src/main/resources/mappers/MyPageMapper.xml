@@ -3,6 +3,21 @@
 
 <mapper namespace="com.portfolio.ReadPick.dao.MyPageMapper">
 
+    <resultMap id="UserPickMap" type="com.portfolio.ReadPick.vo.BmVo">
+        <id property="bmIdx" column="bmIdx" />
+        <result property="bmName" column="bmName" />
+        <collection property="bsList" ofType="com.portfolio.ReadPick.vo.BsVo">
+            <id property="bsIdx" column="bsIdx" />
+            <result property="bsName" column="bsName" />
+            <result property="bmIdx" column="bmIdx"/>
+            <collection property="bssList" ofType="com.portfolio.ReadPick.vo.BssVo">
+                <id property="bssIdx" column="bssIdx" />
+                <result property="bsIdx" column="bsIdx" />
+                <result property="bssName" column="bssName" />
+            </collection>
+        </collection>
+    </resultMap>
+
     <!-- insert -->
 
     <!-- /insert -->
@@ -14,6 +29,10 @@
 
     <select id="bookmarkImageList" resultType="bookImage" parameterType="int">
         select * from bookImage where bookIdx = #{bookIdx} 
+    </select>
+
+    <select id="myPickGenre" resultMap="UserPickMap" parameterType="int">
+        select distinct  * from fullCategoryView where bssIdx in (select bssIdx from userPick where userIdx = #{userIdx}) order by bmIdx asc;
     </select>
 
     <!-- /select -->

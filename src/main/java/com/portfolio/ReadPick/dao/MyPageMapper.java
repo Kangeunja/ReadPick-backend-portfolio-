@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookmarkVo;
+import com.portfolio.ReadPick.vo.UserPickDTO;
 import com.portfolio.ReadPick.vo.UserVo;
 
 @Mapper
@@ -16,5 +17,7 @@ public interface MyPageMapper {
     List<BookmarkVo> bookmarkList(BookmarkVo bookmarkVo);
 
 	BookImageVo bookmarkImageList(int bookIdx);
+
+    List<UserPickDTO> myPickGenre(int userIdx);
 
 }
