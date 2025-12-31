@@ -16,13 +16,21 @@
 
 <!-- select -->
     <select id="selectBookListByBookName" resultType="book" parameterType="String">
-        select * from book where bookName like concat('%',#{bookName},'%') order by bookIdx asc;
+        select count(*), * from book where bookName like concat('%',#{bookName},'%') order by bookIdx asc;
     </select>
 
     <select id="selectBookListByAuthor" resultType="book" parameterType="String">
         select * from book where author like concat('%',#{author},'%') order by bookIdx asc;
     </select>
 
+    <select id="authorSearchCount" resultType="int" parameterType="String">
+        select count(*) from book where author like concat('%',#{author},'%');
+    </select>
+
+    <select id="bookNameSearchCount" resultType="int" parameterType="String">
+        select count(*) from book where bookName like concat('%',#{bookName},'%');
+    </select>
+    
     <!-- <select id="selectBookListByIsbn" resultType="book" parameterType="String">
         select * from book where isbn = #{isbn} order by bookIdx asc;
     </select> -->

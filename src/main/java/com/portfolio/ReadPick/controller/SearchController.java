@@ -25,36 +25,44 @@ public class SearchController {
 
     @GetMapping("bookNameSearch")
     public ResponseEntity<List<BookVo>> bookNameSearch(String bookName) {
-        
         List<BookVo> bookList = new ArrayList<>();
         List<BookVo> bookIdxList = searchMapper.selectBookListByBookName(bookName);
-
         for (BookVo book : bookIdxList) {
             int bookIdx = book.getBookIdx();
             String image = bookService.userGenreBookImage(bookIdx);
             book.setBookImageName(image);
             bookList.add(book);
         }
-        
         return ResponseEntity.ok(bookList);
+    }
+
+    @GetMapping("searchBookNameCount")
+    public ResponseEntity<Integer> searchBookNameCount(String bookName) {
+        int count = searchMapper.bookNameSearchCount(bookName);
+        return ResponseEntity.ok(count);
     }
 
     @GetMapping("authorSearch")
     public ResponseEntity<List<BookVo>> authorSearch(String author) {
-        
         List<BookVo> bookList = new ArrayList<>();
-        List<BookVo> bookIdxList = searchMapper.selectBookListByAuthor(author);
-        
+        List<BookVo> bookIdxList = searchMapper.selectBookListByAuthor(author);        
         for (BookVo book : bookIdxList) {
             int bookIdx = book.getBookIdx();
             String image = bookService.userGenreBookImage(bookIdx);
             book.setBookImageName(image);
             bookList.add(book);
-        }
-        
+        }   
         return ResponseEntity.ok(bookList);
     }
-
+    
+    
+    @GetMapping("searchAuthorCount")
+    public ResponseEntity<Integer> searchAuthorCount(String author) {
+        int count = searchMapper.authorSearchCount(author);
+        return ResponseEntity.ok(count);
+    }
+    
+    
     // @GetMapping("isbnSearch")
     // public ResponseEntity<List<BookVo>> isbnSearch(String isbn) {
         

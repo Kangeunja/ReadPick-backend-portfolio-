@@ -21,6 +21,8 @@ public class BookVo {
     String isbn;
     String bookImageName;
 
+    int count;
+    
     int bsssIsbnIdx;
 
 
