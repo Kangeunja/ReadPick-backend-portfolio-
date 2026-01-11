@@ -28,5 +28,11 @@ public interface ReviewMapper {
 
     int reviewCount(int bookIdx);
 
+    List<ReviewUserVo> selectMyReview(int userIdx);
+
+    int selectMyReviewCount(int userIdx);
+
+    List<ReviewUserVo> selectMyReviewMore(int userIdx, int rvIdx);
+
 
 }

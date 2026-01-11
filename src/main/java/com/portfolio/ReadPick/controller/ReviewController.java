@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -205,6 +206,96 @@ public class ReviewController {
         }
         return ResponseEntity.ok(count);
     }
-    
+
+    // 내리뷰확인
+
+    @GetMapping("myReview")
+    @Operation(summary = "내리뷰확인", description = "내가 작성한 리뷰 확인")    
+    public ResponseEntity<List<ReviewUserVo>> myReview() {
+
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            System.out.println("login:fail");
+            return ResponseEntity.ok(null);
+        }
+
+        int userIdx = user.getUserIdx();
+
+        List<ReviewUserVo> review = new ArrayList<>();
+
+        try {
+            review = reviewMapper.selectMyReview(userIdx);
+            if (review == null) {
+                System.out.println("review가 비어있음");
+                return ResponseEntity.ok(null);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("myReview:fail");
+            return ResponseEntity.ok(null);
+        }
+
+        return ResponseEntity.ok(review);
+    }
+
+    @GetMapping("myReviewCount")
+    @Operation(summary = "내리뷰개수", description = "내가 작성한 리뷰 개수 확인")
+    public ResponseEntity<Integer> myReviewCount() {
+
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            System.out.println("login:fail");
+            return ResponseEntity.ok(0);
+        }
+
+        int userIdx = user.getUserIdx();
+
+        int count = 0;
+
+        try {
+
+            count = reviewMapper.selectMyReviewCount(userIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("myReviewCount:fail");
+            return ResponseEntity.ok(0);
+        }
+
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("myReviewMore")
+    @Operation(summary = "내가 쓴 리뷰 무한 스크롤", description = "프론트에서 마지막으로 조회된 리뷰의 rvIdx를 보내줄 것")
+    public ResponseEntity<List<ReviewUserVo>> myReviewMore(int rvIdx) {
+
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            System.out.println("login:fail");
+            return ResponseEntity.ok(null);
+        } 
+
+        int userIdx = user.getUserIdx();
+
+        List<ReviewUserVo> reviewList = new ArrayList<>();
+
+        try {
+            reviewList = reviewMapper.selectMyReviewMore(userIdx, rvIdx);
+            for (ReviewUserVo review : reviewList) {
+                // 리뷰 작성자의 프로필 이미지가 없을 경우 기본 이미지로 설정
+                if (review.getFileName() == null || review.getFileName().isEmpty()) {
+                    review.setFileName("default");
+                } else {
+                    review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("페이징실패");
+            return ResponseEntity.ok(null);
+        }
+
+        return ResponseEntity.ok(reviewList);
+    }
+
 
 }
