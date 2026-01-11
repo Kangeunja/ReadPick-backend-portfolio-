@@ -26,5 +26,7 @@ public interface ReviewMapper {
 
     int insertReportReview(int rvIdx, int userIdx);
 
+    int reviewCount(int bookIdx);
+
 
 }

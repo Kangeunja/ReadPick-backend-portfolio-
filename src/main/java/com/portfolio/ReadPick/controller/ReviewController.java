@@ -193,4 +193,18 @@ public class ReviewController {
         return ResponseEntity.ok("reportReview:success");
     }
 
+    @GetMapping("reviewCount")
+    @Operation(summary = "리뷰개수", description = "해당 도서의 리뷰개수 반환")
+    public ResponseEntity<Integer> reviewCount(int bookIdx) {
+        int count = 0;
+        try {
+            count = reviewMapper.reviewCount(bookIdx);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.ok(0);
+        }
+        return ResponseEntity.ok(count);
+    }
+    
+
 }
