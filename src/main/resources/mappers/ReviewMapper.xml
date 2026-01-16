@@ -26,8 +26,8 @@
         select * from reviewUserView where bookIdx = #{bookIdx} order by rvIdx desc limit 3;
     </select>
 
-    <select id="selectOneBookIdx" parameterType="int" resultType="int">
-        select bookIdx from review where rvIdx = #{rvIdx}
+    <select id="selectBookByRvIdx" parameterType="int" resultType="book">
+        select b.* from book b join review r on b.bookIdx = r.bookIdx where r.rvIdx = #{rvIdx}
     </select>
 
     <select id="selectReviewMore" parameterType="int" resultType="ru">

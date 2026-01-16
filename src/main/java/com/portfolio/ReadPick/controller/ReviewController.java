@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.ReadPick.dao.ReviewMapper;
+import com.portfolio.ReadPick.service.BookService;
+import com.portfolio.ReadPick.vo.BookImageVo;
+import com.portfolio.ReadPick.vo.BookVo;
 import com.portfolio.ReadPick.vo.ReviewUserVo;
 import com.portfolio.ReadPick.vo.ReviewVo;
 import com.portfolio.ReadPick.vo.UserSessionDTO;
@@ -29,6 +31,9 @@ public class ReviewController {
 
     @Autowired
     ReviewMapper reviewMapper;
+
+    @Autowired
+    BookService bookService;
 
     @PostMapping("reviewInsert")
     @Operation(summary = "리뷰작성", description = "리뷰작성 유저가 입력할 부분은 내용밖에 없음 <br> 프론트에서 bookIdx를 보내줄것")
@@ -156,7 +161,7 @@ public class ReviewController {
         List<ReviewUserVo> reviewList = new ArrayList<>();
 
         try {
-            int bookIdx = reviewMapper.selectOneBookIdx(rvIdx);
+            int bookIdx = reviewMapper.selectBookByRvIdx(rvIdx).getBookIdx();
             reviewList = reviewMapper.selectReviewMore(bookIdx, rvIdx);
             for (ReviewUserVo review : reviewList) {
                 // 리뷰 작성자의 프로필 이미지가 없을 경우 기본 이미지로 설정
@@ -210,7 +215,7 @@ public class ReviewController {
     // 내리뷰확인
 
     @GetMapping("myReview")
-    @Operation(summary = "내리뷰확인", description = "내가 작성한 리뷰 확인")    
+    @Operation(summary = "내리뷰확인", description = "내가 작성한 리뷰 확인")
     public ResponseEntity<List<ReviewUserVo>> myReview() {
 
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
@@ -272,7 +277,7 @@ public class ReviewController {
         if (user == null) {
             System.out.println("login:fail");
             return ResponseEntity.ok(null);
-        } 
+        }
 
         int userIdx = user.getUserIdx();
 
@@ -297,5 +302,26 @@ public class ReviewController {
         return ResponseEntity.ok(reviewList);
     }
 
+    @GetMapping("userReviewBook")
+    @Operation(summary = "유저가 쓴 리뷰의 책 정보", description = "유저가 쓴 리뷰의 책정보를 불러오기")
+    public ResponseEntity<List<BookVo>> userReviewBook() {
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok(null);
+        }
+        BookImageVo image = new BookImageVo();
+        BookVo book = new BookVo();
+        List<Integer> myRvIdxs = new ArrayList<>();
+        for (ReviewUserVo rv : reviewMapper.selectMyReview(user.getUserIdx()))
+            myRvIdxs.add(rv.getRvIdx());
+        List<BookVo> reviewBooks = new ArrayList<>();
+        for (int rvIdx : myRvIdxs){
+            book = reviewMapper.selectBookByRvIdx(rvIdx);
+            image = bookService.bookImageService(book.getBookIdx());
+            book.setBookImageName(image.getFileName());
+            reviewBooks.add(book);
+        }
+        return ResponseEntity.ok(reviewBooks);
+    }
 
 }

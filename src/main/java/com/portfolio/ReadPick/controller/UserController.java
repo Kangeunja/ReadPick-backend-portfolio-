@@ -214,4 +214,19 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("userPWCheck")
+    @Operation(summary = "비밀번호 확인", description = "회원정보 수정 시 비밀번호 확인")
+    public ResponseEntity<String> userPWCheck(String pw) {
+        UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.ok("로그인필요");
+        }
+        UserVo dbUser = userMapper.selectOneFromId(user.getId());
+        if (dbUser.getPw().equals(pw)) {
+            return ResponseEntity.ok("success");
+        } else {
+            return ResponseEntity.ok("fail");
+        }
+    }
+
 }
