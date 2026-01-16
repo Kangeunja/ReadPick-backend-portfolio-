@@ -15,6 +15,7 @@ import com.portfolio.ReadPick.dao.ReviewMapper;
 import com.portfolio.ReadPick.service.BookService;
 import com.portfolio.ReadPick.vo.BookImageVo;
 import com.portfolio.ReadPick.vo.BookVo;
+import com.portfolio.ReadPick.vo.ReviewUserBookDTO;
 import com.portfolio.ReadPick.vo.ReviewUserVo;
 import com.portfolio.ReadPick.vo.ReviewVo;
 import com.portfolio.ReadPick.vo.UserSessionDTO;
@@ -304,22 +305,29 @@ public class ReviewController {
 
     @GetMapping("userReviewBook")
     @Operation(summary = "유저가 쓴 리뷰의 책 정보", description = "유저가 쓴 리뷰의 책정보를 불러오기")
-    public ResponseEntity<List<BookVo>> userReviewBook() {
+    public ResponseEntity<List<ReviewUserBookDTO>> userReviewBook() {
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.ok(null);
         }
         BookImageVo image = new BookImageVo();
-        BookVo book = new BookVo();
         List<Integer> myRvIdxs = new ArrayList<>();
-        for (ReviewUserVo rv : reviewMapper.selectMyReview(user.getUserIdx()))
-            myRvIdxs.add(rv.getRvIdx());
-        List<BookVo> reviewBooks = new ArrayList<>();
-        for (int rvIdx : myRvIdxs){
-            book = reviewMapper.selectBookByRvIdx(rvIdx);
-            image = bookService.bookImageService(book.getBookIdx());
-            book.setBookImageName(image.getFileName());
-            reviewBooks.add(book);
+        ReviewUserBookDTO rub = new ReviewUserBookDTO();
+        List<ReviewUserBookDTO> reviewBooks = new ArrayList<>();
+
+        try {
+            for (ReviewUserVo rv : reviewMapper.selectMyReview(user.getUserIdx()))
+                myRvIdxs.add(rv.getRvIdx());
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e);
+            return ResponseEntity.ok(null);
+        }
+        for (int rvIdx : myRvIdxs) {
+            rub = reviewMapper.selectBookByRvIdxForUser(rvIdx);
+            image = bookService.bookImageService(rub.getBookIdx());
+            rub.setBookImageName(image.getFileName());
+            reviewBooks.add(rub);
         }
         return ResponseEntity.ok(reviewBooks);
     }

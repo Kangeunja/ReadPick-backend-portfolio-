@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.portfolio.ReadPick.vo.BookVo;
+import com.portfolio.ReadPick.vo.ReviewUserBookDTO;
 import com.portfolio.ReadPick.vo.ReviewUserVo;
 import com.portfolio.ReadPick.vo.ReviewVo;
 
@@ -34,6 +35,8 @@ public interface ReviewMapper {
     int selectMyReviewCount(int userIdx);
 
     List<ReviewUserVo> selectMyReviewMore(int userIdx, int rvIdx);
+
+    ReviewUserBookDTO selectBookByRvIdxForUser(int rvIdx);
 
 
 }

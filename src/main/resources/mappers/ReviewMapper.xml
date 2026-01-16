@@ -50,6 +50,9 @@
         select count(*) from review where userIdx = #{userIdx};
     </select>
 
+    <select id="selectBookByRvIdxForUser" parameterType="int" resultType="rub">
+        select r.*, b.author, b.bookName from book b join reviewUserView r on b.bookIdx = r.bookIdx where r.rvIdx = #{rvIdx}
+    </select>
     <!-- /select -->
 
 
