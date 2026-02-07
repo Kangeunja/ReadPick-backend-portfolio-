@@ -1,5 +1,5 @@
 # 1. 빌드 이미지
-FROM maven:4.0.0-eclipse-temurin:17-jdk AS build
+FROM maven:4.0.0-eclipse-temurin-17-jdk AS build
 WORKDIR /app
 
 # 의존성만 먼저 설치 (캐싱 목적)
@@ -15,13 +15,13 @@ FROM eclipse-temurin:17-jdk-slim
 WORKDIR /app
 
 # 빌드된 war 복사
-COPY --from=build /app/target/*.war app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 # 서버 포트
 EXPOSE 8080
 
 # 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "app.war"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 
