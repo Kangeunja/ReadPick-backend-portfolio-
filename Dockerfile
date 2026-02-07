@@ -1,5 +1,5 @@
 # 1. 빌드 이미지
-FROM maven:3.9.3-openjdk-17 AS build
+FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
 # 의존성만 먼저 설치 (캐싱 목적)
