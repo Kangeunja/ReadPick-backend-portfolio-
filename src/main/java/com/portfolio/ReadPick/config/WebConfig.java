@@ -18,12 +18,12 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000",
-                  "https://fascinating-muffin-92a8a5.netlify.app"
+                  "https://readpick-front-portfolio.netlify.app/"
                 ) // 리액트 애플리케이션 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
-    }
+    }  
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
