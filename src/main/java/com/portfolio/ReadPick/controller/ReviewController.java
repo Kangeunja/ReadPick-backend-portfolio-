@@ -141,7 +141,8 @@ public class ReviewController {
                 if (review.getFileName() == null || review.getFileName().isEmpty()) {
                     review.setFileName("default");
                 } else {
-                    review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                    // review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                     review.setFileName(review.getFileName());
                 }
             }
 
@@ -168,8 +169,9 @@ public class ReviewController {
                 // 리뷰 작성자의 프로필 이미지가 없을 경우 기본 이미지로 설정
                 if (review.getFileName() == null || review.getFileName().isEmpty()) {
                     review.setFileName("default");
-                } else {
-                    review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                // } else {
+                //     review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                 review.setFileName(review.getFileName());
                 }
             }
         } catch (Exception e) {
@@ -291,7 +293,8 @@ public class ReviewController {
                 if (review.getFileName() == null || review.getFileName().isEmpty()) {
                     review.setFileName("default");
                 } else {
-                    review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                    // review.setFileName("http://localhost:8080/ReadPickImages/" + review.getFileName());
+                    review.setFileName(review.getFileName());
                 }
             }
         } catch (Exception e) {

@@ -31,12 +31,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/myPage/userInfo"); // 로그인 체크할 URL 패턴;
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/assets/profile/**") // 이 URL로 요청 오면
-                .addResourceLocations("file:/C:/Users/hoyeong/Desktop/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
-    }
+    // @Override
+    // public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    //     registry
+    //             .addResourceHandler("/assets/profile/**") // 이 URL로 요청 오면
+    //             .addResourceLocations("file:/C:/Users/hoyeong/Desktop/ReadPickImages/"); // 이 실제 디렉토리에서 파일 찾음
+    // }
 
     // @Override
     // public void addViewControllers(ViewControllerRegistry registry) {

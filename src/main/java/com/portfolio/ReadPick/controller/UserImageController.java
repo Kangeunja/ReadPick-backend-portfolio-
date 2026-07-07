@@ -36,7 +36,13 @@ public class UserImageController {
     UserMapper userMapper;
 
     // String fileUploadPath = "/home/ubuntu/ReadPickImages/";
-    String fileUploadPath = "C:/Users/hoyeong/Desktop/ReadPickImages/";
+    // String fileUploadPath = "C:/Users/hoyeong/Desktop/ReadPickImages/";
+    //  String fileUploadPath = "C:/Users/User/Desktop/ReadPickImages/";
+
+     // 컨트롤러 파일 맨 위에 이거 딱 한 줄 적고 끝내기!
+    String fileUploadPath = (System.getProperty("os.name").toLowerCase().contains("win")) 
+        ? "C:/Users/User/Desktop/ReadPickImages/" 
+        : "/tmp/";
 
     // user 프로필 이미지 추가
     @PostMapping(value = "/api/userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -68,10 +74,12 @@ public class UserImageController {
             userMapper.insertUserImage(userImage);
 
             // 세션 업데이트
-            user.setFileName("http://localhost:8080/ReadPickImages/" + newFileName);
+            // user.setFileName("http://localhost:8080/ReadPickImages/" + newFileName);
+            user.setFileName(newFileName);
             session.setAttribute("user", user);
 
-            return ResponseEntity.ok(user.getFileName());
+            // return ResponseEntity.ok(user.getFileName());
+            return ResponseEntity.ok(newFileName);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -145,10 +153,12 @@ public class UserImageController {
             userMapper.updateUserImage(userImage);
 
             // 세션 업데이트
-            user.setFileName("http://localhost:8080/ReadPickImages/" + newFileName);
+            // user.setFileName("http://localhost:8080/ReadPickImages/" + newFileName);
+            user.setFileName(newFileName);
             session.setAttribute("user", user);
 
-            return ResponseEntity.ok(user.getFileName());
+            // return ResponseEntity.ok(user.getFileName());
+            return ResponseEntity.ok(newFileName);
 
         } catch (IOException e) {
             e.printStackTrace();

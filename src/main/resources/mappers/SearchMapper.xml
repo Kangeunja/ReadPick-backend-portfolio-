@@ -16,7 +16,7 @@
 
 <!-- select -->
     <select id="selectBookListByBookName" resultType="book" parameterType="String">
-        select count(*), * from book where bookName like concat('%',#{bookName},'%') order by bookIdx asc;
+        select * from book where bookName like concat('%',#{bookName},'%') order by bookIdx asc;
     </select>
 
     <select id="selectBookListByAuthor" resultType="book" parameterType="String">

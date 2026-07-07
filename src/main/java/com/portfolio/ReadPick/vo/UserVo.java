@@ -17,5 +17,6 @@ public class UserVo {
     String adminAt; //Y/N
     String firstAt; //Y/N
 
-
+    String currentPw;
+    String newPw;
 }

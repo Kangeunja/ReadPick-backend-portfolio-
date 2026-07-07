@@ -78,6 +78,20 @@ public class MyPageController {
         }
         int userIdx = user.getUserIdx();
         userVo.setUserIdx(userIdx);
+
+        if(userVo.getNewPw() != null && !userVo.getNewPw().trim().isEmpty()) {
+            if (userVo.getCurrentPw() == null || userVo.getCurrentPw().trim().isEmpty()) {
+            return ResponseEntity.ok("fail:emptyCurrentPassword");
+        }
+        if (!user.getPw().equals(userVo.getCurrentPw())) {
+            return ResponseEntity.ok("fail:wrongCurrentPassword"); // 틀리면 에러 반환
+        }
+        userVo.setPw(userVo.getNewPw());
+        }else {
+       
+        userVo.setPw(user.getPw());
+    }
+
         int res = myPageMapper.userInfoModify(userVo);
         boolean isSuccess = res > 0;
         if (!isSuccess) {
