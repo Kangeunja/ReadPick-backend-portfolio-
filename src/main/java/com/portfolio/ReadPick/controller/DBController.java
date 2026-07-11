@@ -26,8 +26,10 @@ public class DBController {
     public String DBData() {
 
         List<BookVo> searchList = bookMapper.selectSearchList();
+        System.out.println("검색할 키워드 개수: " + searchList.size());
         for (int i = 0; i < searchList.size(); i++) {
             String searchOneName = searchList.get(i).getKeywordName();
+            System.out.println("현재 검색 중인 키워드: " + searchOneName);
             searchIsbn.searchIsbnSave(searchOneName);
         }
         System.out.println("=====책 저장 끝=====");

@@ -36,10 +36,14 @@ public class NaverSearchIsbnService {
     HashSet<String> duplicate = new HashSet<>();
     @Transactional
     public void searchIsbnSave(String searchOneName) {
+        // 1. 환경 변수가 제대로 들어왔는지 확인
+        System.out.println("DEBUG: 사용 중인 Client ID: " + clientId);
+
         System.out.println("searchOneName : " + searchOneName);
         RestTemplate restTemplate = new RestTemplate();
 
         String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 10 + "&start=" + start;
+        System.out.println("DEBUG: 호출할 URL: " + url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);
