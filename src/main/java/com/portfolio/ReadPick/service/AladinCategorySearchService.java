@@ -46,7 +46,7 @@ public class AladinCategorySearchService {
         BookCategoryVo bCVo = new BookCategoryVo();
 
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=" + ttbKey + "&itemIdType=ISBN13&ItemId="
+        String url = "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=" + ttbKey + "&itemIdType=ISBN13&ItemId="
                 + searchIsbn + "&output=js&Version=20131101";
 
         String response = restTemplate.exchange(url, HttpMethod.GET, null, String.class).getBody();
@@ -59,7 +59,7 @@ public class AladinCategorySearchService {
             Iterator<JsonNode> elements = jsonNode.get("item").elements(); // item이라 써진 field 값을 가져온다
             while (elements.hasNext()) { // 다음 칸이 있는지 확인 있다면 true 없다면 그대로 종료
                 JsonNode item = elements.next();
-                
+
                 if (item.get("categoryName") != null) {
                     System.out.println("카테고리 정보: " + item.get("categoryName").asText());
                 } else {
