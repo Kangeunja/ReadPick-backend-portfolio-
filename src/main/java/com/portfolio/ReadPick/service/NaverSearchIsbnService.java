@@ -1,6 +1,5 @@
 package com.portfolio.ReadPick.service;
 
-import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -40,15 +39,7 @@ public class NaverSearchIsbnService {
         System.out.println("searchOneName : " + searchOneName);
         RestTemplate restTemplate = new RestTemplate();
 
-        // String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 10 + "&start=" + start;
-        String url = "";
-        try{
-            String encodedQuery = URLEncoder.encode(searchOneName, "UTF-8");
-            url = "https://openapi.naver.com/v1/search/book.json?query=" + encodedQuery + "&display=10&start=" + start;
-        }catch(Exception e) {
-            System.out.println("인코딩 오류: " + e.getMessage());
-            return;
-        }
+        String url = "https://openapi.naver.com/v1/search/book.json?&query=" + searchOneName + "&display=" + 10 + "&start=" + start;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);
