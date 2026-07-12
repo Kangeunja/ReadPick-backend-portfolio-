@@ -50,7 +50,7 @@ public class AladinCategorySearchService {
                 + searchIsbn + "&output=js&Version=20131101";
 
         String response = restTemplate.exchange(url, HttpMethod.GET, null, String.class).getBody();
-        // System.out.println("response : "+response);
+        System.out.println("response : "+response);
 
         try {
             JsonNode jsonNode = objectMapper.readTree(response);
@@ -59,6 +59,13 @@ public class AladinCategorySearchService {
             Iterator<JsonNode> elements = jsonNode.get("item").elements(); // item이라 써진 field 값을 가져온다
             while (elements.hasNext()) { // 다음 칸이 있는지 확인 있다면 true 없다면 그대로 종료
                 JsonNode item = elements.next();
+                
+                if (item.get("categoryName") != null) {
+                    System.out.println("카테고리 정보: " + item.get("categoryName").asText());
+                } else {
+                    System.out.println("카테고리 정보가 없는 항목입니다.");
+                }
+
                 if (item.get("categoryName") == null)
                     return; // categoryName field가 없을 때만 처리
                 String[] categories = item.get("categoryName").asText().split(">");
