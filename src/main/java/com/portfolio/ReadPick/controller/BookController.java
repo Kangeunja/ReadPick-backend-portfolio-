@@ -280,18 +280,39 @@ public class BookController {
     @GetMapping("todayBook")
     @Operation(summary = "오늘의 책", description = "전체 책 중에서 가장 높은 추천수를 가진 책을 오늘의 책으로 추천")
     public ResponseEntity<BookVo> todayBook() {
-        Map<String, Object> bookIdxAndMaxCount = new HashMap<>();
-        BookVo book = new BookVo();
-        try {
-            bookIdxAndMaxCount = recMapper.recCountMaxBook();
+        try{
+            Map<String, Object> bookIdxAndMaxCount = recMapper.recCountMaxBook();
+
+            // 2. [방어 코드] 조회 결과가 null이거나, 필요한 bookIdx가 없으면 null 반환
+            if (bookIdxAndMaxCount == null || bookIdxAndMaxCount.get("bookIdx") == null) {
+                System.out.println("조회된 추천 데이터가 없습니다.");
+                return ResponseEntity.ok(null); 
+            }
+
             int bookIdx = (int) bookIdxAndMaxCount.get("bookIdx");
-            book = bookMapper.selectOneBookByBookIdx(bookIdx);
+            BookVo book = bookMapper.selectOneBookByBookIdx(bookIdx);
+
+            if (book != null) {
             book.setBookImageName(bookService.bookImageService(bookIdx).getFileName());
-        } catch (Exception e) {
-            System.out.println(e);
+            }
+            
+            return ResponseEntity.ok(book);
+        }catch(Exception e) {
+            System.out.println("todayBook 에러 발생: " + e.getMessage());
             return ResponseEntity.ok(null);
         }
-        return ResponseEntity.ok(book);
+        // Map<String, Object> bookIdxAndMaxCount = new HashMap<>();
+        // BookVo book = new BookVo();
+        // try {
+        //     bookIdxAndMaxCount = recMapper.recCountMaxBook();
+        //     int bookIdx = (int) bookIdxAndMaxCount.get("bookIdx");
+        //     book = bookMapper.selectOneBookByBookIdx(bookIdx);
+        //     book.setBookImageName(bookService.bookImageService(bookIdx).getFileName());
+        // } catch (Exception e) {
+        //     System.out.println(e);
+        //     return ResponseEntity.ok(null);
+        // }
+        // return ResponseEntity.ok(book);
     }
 
 }
