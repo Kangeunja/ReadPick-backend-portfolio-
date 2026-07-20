@@ -47,7 +47,8 @@ public class UserImageController {
         : "/tmp/";
 
     // user 프로필 이미지 추가
-    @PostMapping(value = "/api/userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // @PostMapping(value = "/api/userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+     @PostMapping(value = "/api/userImageInsert")
     public ResponseEntity<String> userImageInsert(@RequestBody Map<String, String> requestBody) {
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null)
@@ -121,7 +122,8 @@ public class UserImageController {
     }
 
     // ========================== 프로필 이미지 업데이트 ==========================
-    @PostMapping(value = "/api/userImageUpdate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // @PostMapping(value = "/api/userImageUpdate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+      @PostMapping(value = "/api/userImageUpdate")
     public ResponseEntity<String> userImageUpdate(@RequestBody Map<String, String> requestBody) {
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null)
