@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.portfolio.ReadPick.dao.UserMapper;
 import com.portfolio.ReadPick.vo.UserImageVo;
@@ -46,26 +48,28 @@ public class UserImageController {
 
     // user 프로필 이미지 추가
     @PostMapping(value = "/api/userImageInsert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> userImageInsert(@RequestPart("file") MultipartFile file) {
+    public ResponseEntity<String> userImageInsert(@RequestBody Map<String, String> requestBody) {
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null)
             return ResponseEntity.ok("login:fail");
 
-        if (file.isEmpty())
+        String newFileName = requestBody.get("fileName");
+        // if (file.isEmpty())
+        if (newFileName == null || newFileName.trim().isEmpty()) 
             return ResponseEntity.ok("fail");
 
         try {
             // UUID 기반 파일명 생성 (충돌 방지)
-            String originalFileName = file.getOriginalFilename();
-            String extension = "";
-            if (originalFileName != null && originalFileName.contains(".")) {
-                extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            }
-            String newFileName = UUID.randomUUID() + extension;
+            // String originalFileName = file.getOriginalFilename();
+            // String extension = "";
+            // if (originalFileName != null && originalFileName.contains(".")) {
+            //     extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            // }
+            // String newFileName = UUID.randomUUID() + extension;
 
             // 파일 저장
-            Path targetPath = Paths.get(fileUploadPath).resolve(newFileName);
-            file.transferTo(targetPath);
+            // Path targetPath = Paths.get(fileUploadPath).resolve(newFileName);
+            // file.transferTo(targetPath);
 
             // DB 저장
             UserImageVo userImage = new UserImageVo();
@@ -81,7 +85,8 @@ public class UserImageController {
             // return ResponseEntity.ok(user.getFileName());
             return ResponseEntity.ok(newFileName);
 
-        } catch (IOException e) {
+        // } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok("fail");
         }
@@ -117,35 +122,37 @@ public class UserImageController {
 
     // ========================== 프로필 이미지 업데이트 ==========================
     @PostMapping(value = "/api/userImageUpdate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> userImageUpdate(@RequestPart("file") MultipartFile file) {
+    public ResponseEntity<String> userImageUpdate(@RequestBody Map<String, String> requestBody) {
         UserSessionDTO user = (UserSessionDTO) session.getAttribute("user");
         if (user == null)
             return ResponseEntity.ok("login:fail");
 
         int userIdx = user.getUserIdx();
-        if (file.isEmpty())
+        String newFileName = requestBody.get("fileName");
+        // if (file.isEmpty())
+        if (newFileName == null || newFileName.trim().isEmpty())
             return ResponseEntity.ok("fail");
 
         try {
             // 기존 파일 삭제
-            String oldFileName = userMapper.selectUserImageFromUserIdx(userIdx);
-            if (oldFileName != null) {
-                Path oldPath = Paths.get(fileUploadPath).resolve(oldFileName).normalize();
-                if (oldPath.startsWith(fileUploadPath) && oldPath.toFile().exists()) {
-                    oldPath.toFile().delete();
-                }
-            }
+            // String oldFileName = userMapper.selectUserImageFromUserIdx(userIdx);
+            // if (oldFileName != null) {
+            //     Path oldPath = Paths.get(fileUploadPath).resolve(oldFileName).normalize();
+            //     if (oldPath.startsWith(fileUploadPath) && oldPath.toFile().exists()) {
+            //         oldPath.toFile().delete();
+            //     }
+            // }
 
             // 새 파일 업로드
-            String originalFileName = file.getOriginalFilename();
-            String extension = "";
-            if (originalFileName != null && originalFileName.contains(".")) {
-                extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            }
-            String newFileName = UUID.randomUUID() + extension;
+            // String originalFileName = file.getOriginalFilename();
+            // String extension = "";
+            // if (originalFileName != null && originalFileName.contains(".")) {
+            //     extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            // }
+            // String newFileName = UUID.randomUUID() + extension;
 
-            Path targetPath = Paths.get(fileUploadPath).resolve(newFileName);
-            file.transferTo(targetPath);
+            // Path targetPath = Paths.get(fileUploadPath).resolve(newFileName);
+            // file.transferTo(targetPath);
 
             UserImageVo userImage = new UserImageVo();
             userImage.setUserIdx(userIdx);
@@ -160,7 +167,8 @@ public class UserImageController {
             // return ResponseEntity.ok(user.getFileName());
             return ResponseEntity.ok(newFileName);
 
-        } catch (IOException e) {
+        // } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok("fail");
         }
