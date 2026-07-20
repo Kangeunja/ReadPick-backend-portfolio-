@@ -21,8 +21,10 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 
 # 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# ENTRYPOINT ["java", "-jar", "app.jar"]
 
+# 애플리케이션 실행 (메모리 최적화 옵션 추가)
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
 
 
 
