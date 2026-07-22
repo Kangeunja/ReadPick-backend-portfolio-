@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000",
-                  "https://readpick-front-portfolio.netlify.app/"
+                  "https://readpick-front-portfolio-v1.netlify.app/"
                 ) // 리액트 애플리케이션 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
